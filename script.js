@@ -27,6 +27,34 @@ const examples = {
 
 const content = document.querySelector('#demo-content');
 const steps = document.querySelectorAll('[data-step]');
+const scanline = document.querySelector('.demo-scanline');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let demoAnimations = [];
+
+function cancelDemoAnimations() {
+  for (const animation of demoAnimations) animation.cancel();
+  demoAnimations = [];
+}
+
+reducedMotion.addEventListener('change', () => {
+  if (reducedMotion.matches) cancelDemoAnimations();
+});
+
+function animateExample() {
+  if (reducedMotion.matches || !scanline?.animate) return;
+  demoAnimations.push(scanline.animate([
+    { transform: 'scaleX(0)', opacity: 1, offset: 0 },
+    { transform: 'scaleX(1)', opacity: 1, offset: 0.75 },
+    { transform: 'scaleX(1)', opacity: 0, offset: 1 },
+  ], { duration: 650, easing: 'ease-out' }));
+
+  Array.from(content.children).forEach((row, index) => {
+    demoAnimations.push(row.animate([
+      { opacity: 0, transform: 'translateY(6px)' },
+      { opacity: 1, transform: 'translateY(0)' },
+    ], { duration: 300, delay: index * 70, easing: 'ease-out', fill: 'backwards' }));
+  });
+}
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
@@ -58,8 +86,10 @@ function showExample(key) {
   summary.append(element('span', 'code-highlight', example.highlight), '.');
   response.append(summary, element('p', 'dim', example.detail));
   fragment.append(response);
+  cancelDemoAnimations();
   content.replaceChildren(fragment);
   for (const step of steps) step.setAttribute('aria-pressed', String(step.dataset.step === key));
+  animateExample();
 }
 
 for (const step of steps) {
@@ -91,5 +121,3 @@ copyButton.addEventListener('click', async () => {
     copyButton.setAttribute('aria-label', 'Copy install command');
   }, 6000);
 });
-
-document.querySelector('#year').textContent = new Date().getFullYear();
