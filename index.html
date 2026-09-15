@@ -3,356 +3,104 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080a08">
-  <meta name="description" content="Agent Number One — intelligent systems, built to act.">
+  <meta name="theme-color" content="#141610">
+  <meta name="description" content="Meet A1, the open-source AI coding agent for your terminal. Work on your codebase, choose your model, and make your workflow your own.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Agent Number One">
-  <meta property="og:description" content="Intelligent systems, built to act.">
+  <meta property="og:title" content="A1 — Your terminal. Now with initiative.">
+  <meta property="og:description" content="An open-source AI coding agent. Your codebase, your models, your way of working.">
   <meta property="og:url" content="https://agentnumberone.dev/">
+  <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://agentnumberone.dev/">
-  <title>Agent Number One — A1</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --ink: #f2f5ed;
-      --muted: #858d82;
-      --line: rgba(229, 255, 211, 0.13);
-      --signal: #b9ff66;
-      --signal-bright: #dcffaf;
-      --bg: #080a08;
-      --mx: 50%;
-      --my: 50%;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-
-    html, body { min-height: 100%; }
-
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle 35rem at var(--mx) var(--my), rgba(185, 255, 102, 0.075), transparent 70%),
-        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-      background-size: auto, 48px 48px, 48px 48px;
-      mask-image: linear-gradient(to bottom, black, transparent 90%);
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 10;
-      pointer-events: none;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
-    }
-
-    .page {
-      position: relative;
-      min-height: 100svh;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      padding: clamp(22px, 3vw, 42px);
-      isolation: isolate;
-    }
-
-    header, footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-      font-size: 10px;
-      line-height: 1;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0;
-      animation: fade-in 700ms ease 900ms forwards;
-    }
-
-    .wordmark {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--ink);
-      font-weight: 700;
-    }
-
-    .wordmark::before {
-      content: "";
-      width: 7px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: var(--signal);
-      box-shadow: 0 0 16px var(--signal);
-      animation: pulse 2.4s ease-in-out infinite;
-    }
-
-    .status { display: flex; align-items: center; gap: 8px; }
-    .status::before { content: "["; color: var(--line); }
-    .status::after { content: "]"; color: var(--line); }
-
-    main {
-      display: grid;
-      place-items: center;
-      min-height: 0;
-    }
-
-    .hero {
-      width: min(92vw, 840px);
-      display: grid;
-      place-items: center;
-      text-align: center;
-    }
-
-    .machine {
-      position: relative;
-      width: clamp(210px, 35vw, 410px);
-      aspect-ratio: 1;
-      display: grid;
-      place-items: center;
-      margin-bottom: clamp(24px, 4vh, 48px);
-    }
-
-    .orbit {
-      position: absolute;
-      inset: 4%;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      opacity: 0;
-      animation: orbit-enter 1.2s cubic-bezier(.22, 1, .36, 1) 180ms forwards, orbit-turn 32s linear 1.4s infinite;
-    }
-
-    .orbit::before, .orbit::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: -3px;
-      width: 5px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: var(--signal);
-      box-shadow: 0 0 14px var(--signal);
-    }
-
-    .orbit::after { left: auto; right: -3px; background: var(--ink); box-shadow: none; }
-
-    .orbit--inner {
-      inset: 17%;
-      border-style: dashed;
-      opacity: 0;
-      animation: orbit-enter 1.2s cubic-bezier(.22, 1, .36, 1) 300ms forwards, orbit-turn-reverse 24s linear 1.5s infinite;
-    }
-
-    .reticle {
-      position: absolute;
-      inset: 28%;
-      border: 1px solid rgba(185, 255, 102, 0.18);
-      transform: rotate(45deg) scale(0);
-      animation: reticle-enter 900ms cubic-bezier(.16, 1, .3, 1) 460ms forwards;
-    }
-
-    .reticle::before, .reticle::after {
-      content: "";
-      position: absolute;
-      inset: 12%;
-      border: 1px solid rgba(185, 255, 102, 0.09);
-    }
-
-    .reticle::after { inset: 28%; }
-
-    .mark {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: baseline;
-      color: var(--ink);
-      font-size: clamp(78px, 14vw, 162px);
-      font-weight: 850;
-      line-height: 0.8;
-      letter-spacing: -0.1em;
-      filter: drop-shadow(0 0 28px rgba(185, 255, 102, 0.08));
-    }
-
-    .mark span {
-      display: block;
-      clip-path: inset(100% 0 0 0);
-      transform: translateY(14px);
-      animation: mark-reveal 900ms cubic-bezier(.22, 1, .36, 1) 550ms forwards;
-    }
-
-    .mark span:last-child {
-      color: var(--signal);
-      animation-delay: 690ms;
-    }
-
-    .scan {
-      position: absolute;
-      z-index: 3;
-      left: 24%;
-      right: 24%;
-      height: 1px;
-      top: 31%;
-      background: linear-gradient(90deg, transparent, var(--signal-bright), transparent);
-      box-shadow: 0 0 12px var(--signal);
-      opacity: 0;
-      animation: scan 3.4s ease-in-out 1.45s infinite;
-    }
-
-    .coordinate {
-      position: absolute;
-      color: #687064;
-      font-family: "SFMono-Regular", Consolas, monospace;
-      font-size: 8px;
-      letter-spacing: 0.16em;
-      opacity: 0;
-      animation: fade-in 500ms ease 1.1s forwards;
-    }
-    .coordinate--tl { top: 11%; left: 7%; }
-    .coordinate--br { right: 7%; bottom: 11%; }
-
-    .eyebrow {
-      margin: 0 0 13px;
-      color: var(--signal);
-      font-family: "SFMono-Regular", Consolas, monospace;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.26em;
-      text-transform: uppercase;
-      opacity: 0;
-      transform: translateY(8px);
-      animation: content-in 700ms cubic-bezier(.22, 1, .36, 1) 1s forwards;
-    }
-
-    h1 {
-      margin: 0;
-      max-width: 760px;
-      font-size: clamp(36px, 6.4vw, 76px);
-      font-weight: 650;
-      line-height: 0.98;
-      letter-spacing: -0.055em;
-      opacity: 0;
-      transform: translateY(14px);
-      animation: content-in 800ms cubic-bezier(.22, 1, .36, 1) 1.12s forwards;
-    }
-
-    h1 em { color: var(--muted); font-style: normal; }
-
-    .subline {
-      margin: 20px 0 0;
-      color: var(--muted);
-      font-size: clamp(13px, 1.5vw, 16px);
-      line-height: 1.6;
-      letter-spacing: 0.015em;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: content-in 700ms cubic-bezier(.22, 1, .36, 1) 1.28s forwards;
-    }
-
-    .corner {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      border-color: rgba(185, 255, 102, 0.3);
-      border-style: solid;
-      pointer-events: none;
-    }
-    .corner--tl { left: 12px; top: 12px; border-width: 1px 0 0 1px; }
-    .corner--tr { right: 12px; top: 12px; border-width: 1px 1px 0 0; }
-    .corner--bl { left: 12px; bottom: 12px; border-width: 0 0 1px 1px; }
-    .corner--br { right: 12px; bottom: 12px; border-width: 0 1px 1px 0; }
-
-    @keyframes fade-in { to { opacity: 1; } }
-    @keyframes pulse { 50% { opacity: .45; box-shadow: 0 0 5px var(--signal); } }
-    @keyframes content-in { to { opacity: 1; transform: translateY(0); } }
-    @keyframes mark-reveal { to { clip-path: inset(0 0 0 0); transform: translateY(0); } }
-    @keyframes orbit-enter { from { opacity: 0; transform: scale(.78) rotate(-16deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
-    @keyframes orbit-turn { to { transform: rotate(360deg); } }
-    @keyframes orbit-turn-reverse { to { transform: rotate(-360deg); } }
-    @keyframes reticle-enter { to { transform: rotate(45deg) scale(1); } }
-    @keyframes scan {
-      0%, 12% { top: 31%; opacity: 0; }
-      20% { opacity: .9; }
-      58% { top: 69%; opacity: .9; }
-      68%, 100% { top: 69%; opacity: 0; }
-    }
-
-    @media (max-width: 600px) {
-      .page { padding: 24px 22px; }
-      .machine { width: min(76vw, 310px); margin-bottom: 24px; }
-      .desktop-only { display: none; }
-      footer { letter-spacing: .1em; }
-      h1 { max-width: 11ch; }
-      .subline { max-width: 32ch; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; }
-      body::before { background-position: center; }
-    }
-  </style>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&amp;family=IBM+Plex+Mono:wght@400;450;500;600&amp;display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+  <title>A1 — Your terminal. Now with initiative.</title>
 </head>
 <body>
-  <div class="corner corner--tl"></div>
-  <div class="corner corner--tr"></div>
-  <div class="corner corner--bl"></div>
-  <div class="corner corner--br"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#" aria-label="Agent Number One home"><span class="brand-mark" aria-hidden="true">A1<span class="brand-dot">.</span></span><span class="brand-name">Agent Number One</span></a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="#product">Product</a><a href="#workflow">Workflow</a><a href="#faq">FAQs</a>
+      </nav>
+      <div class="header-actions"><a class="github-link" href="https://github.com/timurproko/a1">GitHub <span aria-hidden="true">↗</span></a><a class="button button-small" href="#get-started">Get A1 <span aria-hidden="true">↗</span></a></div>
+    </div>
+  </header>
 
-  <div class="page">
-    <header>
-      <div class="wordmark">Agent Number One</div>
-      <div class="status">System online</div>
-    </header>
-
-    <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="machine" aria-label="A1 animated identity">
-          <div class="orbit"></div>
-          <div class="orbit orbit--inner"></div>
-          <div class="reticle"></div>
-          <div class="scan"></div>
-          <span class="coordinate coordinate--tl">01 / 01</span>
-          <span class="coordinate coordinate--br">A1.ACTIVE</span>
-          <div class="mark" aria-hidden="true"><span>A</span><span>1</span></div>
+  <main id="main">
+    <section class="hero container" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> AN AGENT. NOT ANOTHER EDITOR.</p>
+        <h1 id="hero-title">Your terminal.<br><span>Now with initiative.</span></h1>
+        <div class="hero-bottom">
+          <div><p class="hero-description">Meet A1. An open-source AI coding agent that works with your codebase, your models, and your way of building.</p>
+          <div class="hero-actions"><a class="button" href="#get-started">Start building <span aria-hidden="true">↗</span></a><a class="text-link" href="#workflow">See how it works <span aria-hidden="true">↓</span></a></div></div>
+          <p class="hero-aside"><span class="tiny-cross" aria-hidden="true">✳</span> Less switching contexts.<br>More making things.</p>
         </div>
+      </div>
+      <div class="hero-coordinate" aria-hidden="true">A1 / 001<br><span>BUILT TO ACT</span></div>
+    </section>
 
-        <p class="eyebrow">Agent Number One</p>
-        <h1 id="hero-title">Intelligent systems, <em>built to act.</em></h1>
-        <p class="subline">The first agent is initializing. Something capable is coming.</p>
-      </section>
-    </main>
+    <section class="product-stage container" id="workflow" aria-labelledby="demo-heading">
+      <div class="stage-art">
+        <div class="stage-caption"><span id="demo-heading">FROM INTENT TO IMPLEMENTATION</span><span class="example-label">ILLUSTRATIVE SESSION</span></div>
+        <div class="terminal" aria-label="Example A1 coding session">
+          <div class="terminal-titlebar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>~/projects/your-next-idea</span><span class="terminal-title-right">a1</span></div>
+          <div class="terminal-body">
+            <div class="terminal-brand"><span class="terminal-logo">A1<span>.</span></span><span>Agent Number One<br><span class="dim">Let’s make something work.</span></span></div>
+            <div id="demo-content" aria-live="polite" aria-atomic="true">
+              <p class="terminal-prompt"><span aria-hidden="true">❯</span> Find out how authentication works in this project.</p>
+              <div class="tool-line"><span class="tool-dot" aria-hidden="true">●</span><strong>read</strong><span>src/auth/session.ts</span><span class="tool-done">done</span></div>
+              <div class="tool-line"><span class="tool-dot" aria-hidden="true">●</span><strong>bash</strong><span>find src -iname '*auth*'</span><span class="tool-done">done</span></div>
+              <div class="terminal-response"><p>Authentication starts in <span class="code-highlight">src/auth/session.ts</span>.</p><p class="dim">I found the session handler, token validation, and the routes that use them. Here’s how they fit together.</p></div>
+            </div>
+            <div class="terminal-input"><span aria-hidden="true">❯</span><span>What would you like to build?</span><span class="cursor" aria-hidden="true"></span></div>
+            <div class="terminal-status"><span>your-project <span class="dim">/ main</span></span><span class="dim">/model <span class="status-separator">·</span> /settings</span></div>
+          </div>
+        </div>
+        <span class="stage-index" aria-hidden="true">INTELLIGENCE, IN YOUR ELEMENT.</span>
+      </div>
+      <div class="workflow-controls" role="group" aria-label="Choose an example workflow">
+        <button class="workflow-step" type="button" data-step="understand" aria-pressed="true" aria-controls="demo-content"><span class="step-number">01</span><span><strong>Understand the code.</strong><span>Find your bearings in any project.</span></span><span class="step-arrow" aria-hidden="true">↗</span></button>
+        <button class="workflow-step" type="button" data-step="build" aria-pressed="false" aria-controls="demo-content"><span class="step-number">02</span><span><strong>Make the change.</strong><span>Turn a clear intention into a diff.</span></span><span class="step-arrow" aria-hidden="true">↗</span></button>
+        <button class="workflow-step" type="button" data-step="refine" aria-pressed="false" aria-controls="demo-content"><span class="step-number">03</span><span><strong>Keep moving.</strong><span>Test, iterate, and take the next step.</span></span><span class="step-arrow" aria-hidden="true">↗</span></button>
+      </div>
+    </section>
 
-    <footer>
-      <span>Agentnumberone.dev</span>
-      <span class="desktop-only">Independent intelligence / 001</span>
-      <span>Coming soon</span>
-    </footer>
-  </div>
+    <div class="principles container" aria-label="Product principles"><span>A small command.<br><strong>A different way to work.</strong></span><span><span aria-hidden="true">⌘</span> Terminal-native</span><span><span aria-hidden="true">◇</span> Model choice</span><span><span aria-hidden="true">＋</span> Extensible</span><a href="https://github.com/timurproko/a1/blob/develop/LICENSE"><span aria-hidden="true">↗</span> Open source · MIT</a></div>
 
-  <script>
-    const root = document.documentElement;
-    let frame;
+    <section class="product-section container" id="product" aria-labelledby="product-heading">
+      <div class="section-heading"><p class="eyebrow">01 / IN YOUR ELEMENT</p><div><h2 id="product-heading">More capability.<br>Less getting in the way.</h2><p>You already have a place to build. A1 brings an agent to it—without asking you to start over.</p></div></div>
+      <div class="feature-grid">
+        <article class="feature-card"><div class="feature-visual code-visual" aria-hidden="true"><div><span class="dim">~/your-project</span> <span class="green">main</span></div><div><span class="green">❯</span> a1<span class="block-cursor"></span></div><div class="visual-rule"></div><div class="visual-footnote">Same terminal. New possibilities.</div></div><span class="feature-number">01.1</span><h3>Stay where you work.</h3><p>Launch A1 inside your project. Read files, make edits, and run commands in the same terminal as the rest of your workflow.</p></article>
+        <article class="feature-card"><div class="feature-visual model-visual" aria-hidden="true"><div class="mini-menu"><div class="mini-menu-heading">Select model <span>/model</span></div><div><span class="model-glyph">✳</span> Your connected models <span class="green">↵</span></div><div class="model-note">The right model for the task.</div></div></div><span class="feature-number">01.2</span><h3>Your model. Your call.</h3><p>Choose from your configured models with <code>/model</code>. Adjust the thinking level with Ctrl+L to suit the task in front of you.</p></article>
+        <article class="feature-card"><div class="feature-visual extension-visual" aria-hidden="true"><span class="extension-node">MCP</span><span class="connector"></span><span class="extension-core">A1.</span><span class="connector"></span><span class="extension-node">Tools</span><span class="extension-caption">MAKE ROOM FOR YOUR WORKFLOW</span></div><span class="feature-number">01.3</span><h3>Make it your own.</h3><p>Add Pi-compatible extensions from npm, Git, or a local path. Connect external tools through the MCP adapter when you need more reach.</p></article>
+      </div>
+    </section>
 
-    window.addEventListener("pointermove", ({ clientX, clientY }) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        root.style.setProperty("--mx", `${clientX}px`);
-        root.style.setProperty("--my", `${clientY}px`);
-      });
-    }, { passive: true });
-  </script>
+    <section class="flow-section container" aria-labelledby="flow-heading">
+      <div class="flow-copy"><p class="eyebrow">02 / A LITTLE LESS FRICTION</p><h2 id="flow-heading">Keep your train<br>of thought.</h2><p>The small details matter when you’re deep in a problem. Recall a previous prompt. Pick up a suggested next step. Stay with the work.</p><a class="text-link" href="https://github.com/timurproko/a1#prompt-suggestions">Explore the details <span aria-hidden="true">↗</span></a></div>
+      <div class="flow-demo"><div class="flow-demo-label"><span class="status-dot" aria-hidden="true"></span> BUILT FOR THE NEXT THOUGHT</div><div class="suggestion-line"><span aria-hidden="true">❯</span><span>Now add tests for the edge cases</span><kbd>Tab</kbd></div><p class="suggestion-caption">A suggestion. Not a decision. Edit it before you send.</p><div class="shortcut-list"><div><span>Recall recent prompts</span><span><kbd>↑</kbd> <kbd>↓</kbd></span></div><div><span>Adjust thinking level</span><kbd>Ctrl + L</kbd></div><div><span>Make the workspace yours</span><code>/settings</code></div></div><p class="flow-note">Prompt suggestions are optional and use an additional model request.</p></div>
+    </section>
+
+    <section class="get-started" id="get-started" aria-labelledby="start-heading"><div class="container start-grid"><div><p class="eyebrow">03 / YOUR NEXT IDEA STARTS HERE</p><h2 id="start-heading">One install.<br>Then, whatever’s next.</h2><p>A terminal, a project, and something you want to build.</p><a class="text-link" href="https://github.com/timurproko/a1#install">Read the setup guide <span aria-hidden="true">↗</span></a></div><div class="install-panel"><div class="install-heading"><span>GET A1</span><span>npm / stable</span></div><p class="install-label">01 <span>Install from npm</span></p><div class="copy-command"><code id="install-command">npm install --global @timurproko/a1@latest</code><button type="button" id="copy-install" aria-label="Copy install command" title="Copy install command"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg></button></div><p id="copy-status" class="copy-status" role="status"></p><p class="install-label">02 <span>Open your project and launch</span></p><pre class="launch-command"><code><span class="dim">cd your-project</span>
+a1</code></pre><p class="install-requirements">Requires Node.js ≥22.19 and &lt;25, npm, and model-provider access. Provider terms and usage costs apply.</p></div></div></section>
+
+    <section class="faq-section container" id="faq" aria-labelledby="faq-heading"><div><p class="eyebrow">A FEW GOOD QUESTIONS</p><h2 id="faq-heading">Before you<br>get building.</h2></div><div class="faq-list">
+      <details><summary>What is A1?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1—Agent Number One—is an open-source, terminal-native AI coding agent. It brings conversational coding, file tools, and command execution into your project, with configurable models and extensions.</p></div></details>
+      <details><summary>Do I need a new editor?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>No. A1 runs in your terminal. Keep your preferred editor, open a terminal in your project directory, and launch <code>a1</code>.</p></div></details>
+      <details><summary>Is A1 free to use?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1’s source code is available under the MIT license. Model access is separate: your selected provider’s account requirements, terms, and usage charges apply. Optional prompt suggestions make additional model requests.</p></div></details>
+      <details><summary>Can I connect my own tools?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>Yes. Install Pi-compatible extensions from npm, Git, or a local path. For MCP, install the adapter and run <code>/mcp setup</code> inside A1. Extensions use A1’s own profile. See the <a href="https://github.com/timurproko/a1#extensions">extension instructions</a> for commands and configuration.</p></div></details>
+      <details><summary>Where is my data stored?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1 keeps its profile at <code>~/.a1/agent</code>. Persistent prompt history is stored locally as unencrypted text and can be disabled in Settings. This does not mean model inference is local: requests go to your configured provider. Review the <a href="https://github.com/timurproko/a1/blob/develop/docs/features/prompt-history.md">prompt-history documentation</a> for storage and removal details.</p></div></details>
+    </div></section>
+
+    <section class="closing container" aria-labelledby="closing-heading"><div><p class="eyebrow">LESS CEREMONY. MORE CREATION.</p><h2 id="closing-heading">Make your next move.</h2></div><a class="button" href="#get-started">Build with A1 <span aria-hidden="true">↗</span></a></section>
+  </main>
+
+  <footer class="site-footer container"><div class="footer-top"><a class="brand" href="#" aria-label="Agent Number One home"><span class="brand-mark" aria-hidden="true">A1<span class="brand-dot">.</span></span><span class="brand-name">Agent Number One</span></a><p>Intelligent systems, built to act.</p><nav aria-label="Footer navigation"><a href="https://github.com/timurproko/a1">GitHub ↗</a><a href="https://github.com/timurproko/a1#readme">Docs ↗</a><a href="https://www.npmjs.com/package/@timurproko/a1">npm ↗</a></nav></div><div class="footer-bottom"><span>© <span id="year">2026</span> Agent Number One</span><span>INDEPENDENTLY BUILT. OPEN BY DESIGN.</span><a href="https://github.com/timurproko/a1/blob/develop/LICENSE">MIT License</a></div></footer>
 </body>
 </html>
