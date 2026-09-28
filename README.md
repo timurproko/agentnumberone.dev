@@ -33,7 +33,18 @@ Connect to the same Wi-Fi and open `http://<your-computer-ip>:4173`. Run `ipconf
 ## Test
 
 - Check desktop and mobile layouts.
-- Click all three workflow examples below the terminal preview.
+- The tab bar is temporarily hidden for the single illustration; its markup, styling, and event handler are retained. Remove `hidden` from `.workflow-controls` when adding more illustrations. Confirm no tab bar, underline, or reserved gap appears while hidden.
+- Watch each fictional prompt type into the input, pause briefly, then appear in the transcript as the input clears. Reads, red/green diffs, failed tests, fixes, and replies follow continuously.
+- Use Replay repeatedly; it must not duplicate timers or accelerate playback.
+- Use Tab to focus the scrollable output. Scrolling up preserves your position while new output continues. The new-message button or Ctrl+End returns to the latest output.
+- Check that the submitted prompt pins to the top while scrolling through its turn; the next prompt replaces it. Working scrolls with the transcript, while the editor and footer stay fixed. Replies remain above Working; its row stays reserved while the next prompt is typed.
+- Enable reduced motion: a complete, static example should appear immediately.
+- Confirm all terminal text, including the footer and Working status, uses the same monospace size and character-cell spacing.
+- Check the editor uses a separator row, one input row, then another separator row; the status bar follows immediately with no added margin. Block gaps and the space before Working share the same half-row spacing as the editor-rule inset. Working stays bottom-aligned while following output; its gap to the upper editor rule matches the footer’s gap to the lower rule.
+- Confirm the terminal stays the same height throughout playback, including on mobile.
+- Check that playback pauses out of view and in hidden tabs, and that scrollback remains bounded after several loops.
+- This is fictional, authored content—not an actual session. No commands or model requests are executed.
+- Check the install section’s subtle moving iridescent background; reduced motion should keep it static.
 - Copy the install command and paste it into a text editor to verify it.
 - Open and close the FAQs.
 - Check navigation links and use `Tab` to test keyboard navigation.
