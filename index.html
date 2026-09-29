@@ -3,110 +3,186 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111111">
-  <meta name="description" content="A1 brings a coding agent, multi-agent orchestrator, and terminal multiplexer together in one open-source workspace.">
+  <meta name="theme-color" content="#111112">
+  <meta name="description" content="Meet A1: a thoughtfully designed, pi-powered AI coding agent for your terminal. Keep your models and pi extensions. Discover a more intuitive way to build.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="A1 — Your familiar Pi agent, supercharged">
-  <meta property="og:description" content="A coding agent, multi-agent orchestrator, and terminal multiplexer—all in one open-source workspace.">
+  <meta property="og:title" content="A1 — Your familiar pi agent, supercharged">
+  <meta property="og:description" content="The power of pi. A more thoughtful coding experience. An open foundation for a multi-agent future.">
   <meta property="og:url" content="https://agentnumberone.dev/">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://agentnumberone.dev/">
-  <link rel="icon" href="assets/favicon.svg?v=3" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon.svg?v=4" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&amp;family=IBM+Plex+Mono:wght@400;450;500;600&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&amp;family=IBM+Plex+Mono:wght@400;450;500&amp;display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
-  <title>A1 — Your familiar Pi agent, supercharged</title>
+  <title>A1 — Your familiar pi agent, supercharged</title>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#" aria-label="Agent Number One home"><span class="brand-mark" aria-hidden="true">A1</span></a>
-      <nav class="desktop-nav" aria-label="Main navigation">
-        <a href="#workflow">Workflow</a><a href="#product">Product</a><a href="#faq">FAQs</a>
-      </nav>
-      <div class="header-actions"><a class="github-link" href="https://github.com/timurproko/a1">GitHub <span aria-hidden="true">↗</span></a><a class="button button-small" href="#get-started">Get A1</a></div>
+      <a class="brand" href="#" aria-label="A1 — Agent Number One home"><span class="brand-mark" aria-hidden="true">A1</span></a>
+      <nav class="desktop-nav" aria-label="Main navigation"><a href="#experience">Experience</a><a href="#foundation">Built on pi</a><a href="#compare">Compare</a><a href="#vision">The vision</a><a href="#faq">FAQs</a></nav>
+      <a class="button button-small" href="#get-started">Get A1</a>
     </div>
   </header>
 
   <main id="main">
-    <section class="hero container" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <h1 id="hero-title"><span class="hero-title-line">Your familiar Pi agent</span><br><span class="hero-title-line">supercharged</span></h1>
-        <div class="hero-bottom">
-          <div><p class="hero-description">A coding agent, multi-agent orchestrator, and terminal multiplexer—all in one open-source workspace.</p>
-          </div>
-        </div>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-copy">
+        <p class="hero-eyebrow">Agent Number One</p>
+        <h1 id="hero-title">Your pi agent, <span class="gradient-text">supercharged</span></h1>
+        <p class="hero-description">The pi engine you know, with a better terminal experience. Bring your extensions, choose your model, and get on with building.</p>
+        <div class="hero-actions"><a class="button" href="#get-started">Start building</a><a class="text-link" href="https://github.com/timurproko/a1">Explore the source <span aria-hidden="true">↗</span></a></div>
+        <p class="hero-note">Open source. Terminal native. Compatible with pi extensions.</p>
       </div>
-    </section>
 
-    <section class="product-stage container" id="workflow" aria-label="Explore A1 features">
-      <!-- Unhide the tab bar when additional illustrations are available. -->
-      <div class="workflow-controls" role="tablist" aria-label="A1 features" hidden>
-        <button class="workflow-step" id="tab-build" role="tab" type="button" data-step="build" aria-selected="true" aria-controls="feature-preview" tabindex="0">Code with an agent</button>
-      </div>
-      <div id="feature-preview" role="tabpanel" aria-labelledby="tab-build" tabindex="0">
-      <div class="stage-art">
-        <div class="demo-controls"><button class="replay-button" id="replay-demo" type="button"><span aria-hidden="true">↻</span> Replay</button></div>
-        <div class="terminal" aria-label="Illustrative A1 coding session">
-          <div class="terminal-titlebar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Terminal</span><span class="terminal-title-right" aria-hidden="true"></span></div>
+      <div class="product-stage container" id="workflow">
+        <div class="stage-aura" aria-hidden="true"></div>
+        <div class="terminal">
+          <div class="terminal-titlebar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>a1 <span class="title-separator">/</span> orbit</span><button id="replay-demo" type="button" aria-label="Replay illustrative session">Replay</button></div>
           <div class="terminal-body">
-            <div class="terminal-output-wrap">
-              <div id="demo-content" tabindex="0" role="region" aria-label="Fictional terminal output">
-                <div id="demo-transcript">
-              <div class="terminal-turn">
-                <div class="terminal-prompt"><span aria-hidden="true">❯</span><p>Handle empty config files</p><time>15:19</time></div>
-                <p class="terminal-thought">Checking the loader and its tests</p>
-                <div class="terminal-tool"><strong>read</strong> <span class="tool-path">src/config/load.ts</span><span class="tool-range">:10-24</span><pre class="terminal-output">12 const source = await readFile(path, "utf8");
-13 return JSON.parse(source);</pre></div>
-                <div class="terminal-tool"><strong>edit</strong> <span class="tool-path">src/config/load.ts</span><pre class="terminal-diff"><span class="diff-removed">-13 return JSON.parse(source);</span>
-<span class="diff-added">+13 const text = source.trim();</span>
-<span class="diff-added">+14 return text ? JSON.parse(text) : {};</span></pre></div>
-                <div class="terminal-tool is-success"><p class="terminal-command">$ npx vitest run test/config.test.ts</p><pre class="terminal-output">✓ test/config.test.ts (8 tests)
-Tests  8 passed</pre><p class="tool-hint terminal-runtime">Took 1.2s</p></div>
-                <p class="terminal-response">Empty files now return {}. All 8 config tests pass.</p>
-              </div>
-                </div>
-                <div class="terminal-activity"><span class="terminal-spinner" aria-hidden="true"></span><span id="demo-activity"></span></div>
-              </div>
-              <button id="demo-latest" class="terminal-latest" type="button" aria-controls="demo-content" hidden>Jump to bottom (Ctrl+End) ↓</button>
+            <div class="demo-panel" id="panel-build" role="tabpanel" aria-labelledby="tab-build" tabindex="0">
+              <div class="terminal-prompt demo-line"><span aria-hidden="true">❯</span><p>Handle empty config files without breaking existing behavior.</p></div>
+              <p class="terminal-thought demo-line">I’ll check the loader, make a focused change, and run the tests.</p>
+              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">read</span><span>src/config/load.ts</span></div><p class="tool-note">The loader parses every file, including empty ones.</p></div>
+              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">edit</span><span>src/config/load.ts</span><span class="tool-meta">+2 −1</span></div><pre class="terminal-diff"><span class="diff-removed">− return JSON.parse(source);</span>
+<span class="diff-added">+ const text = source.trim();</span>
+<span class="diff-added">+ return text ? JSON.parse(text) : {};</span></pre></div>
+              <div class="terminal-result demo-line"><span class="check" aria-hidden="true">✓</span><span>8 tests passed</span><span class="result-detail">Existing behavior preserved.</span></div>
+              <p class="terminal-response demo-line">Empty files now return an empty config. Ready for your review.</p>
             </div>
-            <div class="terminal-editor">
-              <div class="terminal-input"><span aria-hidden="true">❯</span><span class="terminal-entry" aria-hidden="true"><span id="demo-input-text"></span><span class="cursor"></span></span></div>
+            <div class="demo-panel" id="panel-review" role="tabpanel" aria-labelledby="tab-review" tabindex="0" hidden>
+              <div class="terminal-prompt demo-line"><span aria-hidden="true">❯</span><p>Review the changes. Look for edge cases, not just style.</p></div>
+              <p class="terminal-thought demo-line">I’ll read the diff and check the tests against the original behavior.</p>
+              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">bash</span><span>git diff --check &amp;&amp; git diff</span></div><p class="tool-note">1 file changed · no whitespace errors</p></div>
+              <div class="review-checks demo-line"><p><span class="check">✓</span> Empty and whitespace-only files return {}</p><p><span class="check">✓</span> Valid JSON still parses as before</p><p><span class="check">✓</span> Invalid JSON still throws an error</p></div>
+              <div class="terminal-result demo-line"><span class="check" aria-hidden="true">✓</span><span>No issues found in this example</span></div>
+              <p class="terminal-response demo-line">The change is focused and covered by tests. Nothing has been committed.</p>
             </div>
-            <div class="terminal-status"><span class="terminal-project">~/projects/demo-app (main)</span><span>↑12.4k ↓2.1k 6.2%/272k</span><span class="terminal-model">gpt-5.6-sol · <span class="terminal-thinking">high</span></span></div>
+            <div class="demo-panel" id="panel-extend" role="tabpanel" aria-labelledby="tab-extend" tabindex="0" hidden>
+              <div class="terminal-prompt demo-line"><span aria-hidden="true">$</span><p>a1 install npm:pi-mcp-adapter</p></div>
+              <p class="terminal-thought demo-line">Your pi ecosystem. A1’s own profile.</p>
+              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">package</span><span>pi-mcp-adapter</span></div><p class="tool-note">Install extensions from npm, Git, or a local path.</p></div>
+              <div class="extension-tree demo-line"><p><span>~/.a1/agent/</span></p><p>├── extensions/ <span>Your tools</span></p><p>├── skills/ <span>Your expertise</span></p><p>└── settings.json <span>Your preferences</span></p></div>
+              <div class="terminal-result demo-line"><span class="check" aria-hidden="true">↳</span><span>Next: launch a1, then run /mcp setup</span></div>
+              <p class="terminal-response demo-line">Build on the ecosystem you know. Keep your pi profile separate.</p>
+            </div>
+            <div class="terminal-editor" aria-hidden="true"><span>❯</span><span class="editor-placeholder">What would you like to build?</span><span class="editor-key">↵</span></div>
+            <div class="terminal-status"><span><span class="status-dot" aria-hidden="true"></span> ~/projects/orbit <span class="branch">main</span></span><span>pi engine <span class="status-divider">·</span> your model</span></div>
           </div>
         </div>
-      </div>
-      </div>
-      <p class="demo-disclaimer">Illustrative session</p>
-      <p class="sr-only" id="demo-announcement" role="status"></p>
-      <noscript><p class="demo-disclaimer">Enable JavaScript to play the terminal example.</p></noscript>
-    </section>
-
-    <section class="product-section container" id="product" aria-labelledby="product-heading">
-      <div class="section-heading"><h2 id="product-heading">More capability with less hassle</h2></div>
-      <div class="feature-grid">
-        <article class="feature-card"><div class="feature-visual"><img class="feature-art" src="assets/feature-tools.svg" alt="" width="480" height="480" loading="lazy"></div><h3>Your familiar Pi experience with everything you need</h3><p>A1 is built on Pi, so Pi extensions work here too. Install from npm, Git, or a local path, and bring your existing tools and workflows with you.</p></article>
-        <article class="feature-card"><div class="feature-visual"><img class="feature-art" src="assets/feature-ux.svg" alt="" width="480" height="480" loading="lazy"></div><h3>The power of Pi with a better UX</h3><p>Keep the Pi foundation you know, with A1’s prompt history, next-step suggestions, and focused terminal controls. Less retyping, more building.</p></article>
-        <article class="feature-card"><div class="feature-visual"><img class="feature-art" src="assets/feature-workspace.svg" alt="" width="480" height="480" loading="lazy"></div><h3>Run multiple agents in one workspace</h3><p>Run several agents side by side. Give each a focused task and keep your multi-agent workflow together in one terminal.</p></article>
+        <div class="demo-tabs" role="tablist" aria-label="Explore an A1 session">
+          <button id="tab-build" role="tab" aria-selected="true" aria-controls="panel-build" tabindex="0" type="button" data-demo="build"><span aria-hidden="true">⌘</span> Build</button>
+          <button id="tab-review" role="tab" aria-selected="false" aria-controls="panel-review" tabindex="-1" type="button" data-demo="review"><span aria-hidden="true">◇</span> Review</button>
+          <button id="tab-extend" role="tab" aria-selected="false" aria-controls="panel-extend" tabindex="-1" type="button" data-demo="extend"><span aria-hidden="true">＋</span> Extend</button>
+        </div>
+        <p class="sr-only" id="demo-announcement" role="status"></p>
       </div>
     </section>
 
-    <section class="get-started" id="get-started" aria-labelledby="start-heading"><div class="container start-grid"><div><h2 id="start-heading">One install for whatever comes next</h2><p>Install A1, then run <code>a1</code> from your project directory.</p></div><div class="install-panel"><div class="install-heading"><span>Install from npm</span><span>stable</span></div><div class="copy-command"><span class="copy-sheen" aria-hidden="true"></span><code id="install-command">npx -y @timurproko/a1-install</code><button type="button" id="copy-install" aria-label="Copy install command" title="Copy install command"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg></button></div><p id="copy-status" class="copy-status" role="status"></p><p class="install-requirements">Requires Node.js ≥22.19 and &lt;25, npm, and model-provider access. Provider terms and usage costs apply.</p></div></div></section>
+    <section class="experience-section section-space" id="experience" aria-labelledby="experience-heading">
+      <div class="container">
+        <div class="section-heading"><h2 id="experience-heading">Better day-to-day coding</h2><p>Recall a prompt. Keep your place in a long response. Get a suggestion when you’re ready to move on. Small improvements that make a difference all day.</p></div>
+        <div class="experience-grid">
+          <article class="experience-card">
+            <div class="feature-visual"><img src="assets/prompt-history.svg" alt="" width="480" height="320" loading="lazy"></div>
+            <div class="card-copy"><h3>Less retyping</h3><p>Recall recent prompts across sessions and projects. Less retyping, less searching, and no need to start from a blank line every time.</p><a class="inline-link" href="https://github.com/timurproko/a1/blob/develop/docs/features/prompt-history.md">Explore prompt history <span aria-hidden="true">↗</span></a></div>
+          </article>
+          <article class="experience-card">
+            <div class="feature-visual"><img src="assets/next-step.svg" alt="" width="480" height="320" loading="lazy"></div>
+            <div class="card-copy"><h3>A helpful next step</h3><p>Optional, model-powered suggestions offer a next step. Accept it, edit it, or take another direction. You decide what gets sent.</p><a class="inline-link" href="https://github.com/timurproko/a1/blob/develop/docs/architecture/prompt-suggestions.md">How suggestions work <span aria-hidden="true">↗</span></a></div>
+          </article>
+          <article class="experience-card">
+            <div class="feature-visual"><img src="assets/stay-focused.svg" alt="" width="480" height="320" loading="lazy"></div>
+            <div class="card-copy"><h3>Keep your place</h3><p>A focused terminal interface for prompts, tool output, and responses. Read, scroll, and steer the session without changing your editor.</p><a class="inline-link" href="#workflow">Explore the experience</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    <section class="faq-section container" id="faq" aria-labelledby="faq-heading"><div><h2 id="faq-heading">Before you get building</h2></div><div class="faq-list">
-      <details><summary><span class="faq-question">What is A1?</span><span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1—Agent Number One—is an open-source, terminal-native AI coding agent. It brings conversational coding, file tools, and command execution into your project, with configurable models and extensions.</p></div></details>
-      <details><summary><span class="faq-question">Do I need a new editor?</span><span aria-hidden="true">+</span></summary><div class="faq-answer"><p>No. A1 runs in your terminal. Keep your preferred editor, open a terminal in your project directory, and launch <code>a1</code>.</p></div></details>
-      <details><summary><span class="faq-question">Is A1 free to use?</span><span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1’s source code is available under the MIT license. Model access is separate: your selected provider’s account requirements, terms, and usage charges apply. Optional prompt suggestions make additional model requests.</p></div></details>
-      <details><summary><span class="faq-question">Can I connect my own tools?</span><span aria-hidden="true">+</span></summary><div class="faq-answer"><p>Yes. Install Pi-compatible extensions from npm, Git, or a local path. For MCP, install the adapter and run <code>/mcp setup</code> inside A1. Extensions use A1’s own profile. See the <a href="https://github.com/timurproko/a1#extensions">extension instructions</a> for commands and configuration.</p></div></details>
-      <details><summary><span class="faq-question">Where is my data stored?</span><span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1 keeps its profile at <code>~/.a1/agent</code>. Persistent prompt history is stored locally as unencrypted text and can be disabled in Settings. This does not mean model inference is local: requests go to your configured provider. Review the <a href="https://github.com/timurproko/a1/blob/develop/docs/features/prompt-history.md">prompt-history documentation</a> for storage and removal details.</p></div></details>
+    <section class="foundation-section container section-space" id="foundation" aria-labelledby="foundation-heading">
+      <div class="foundation-copy"><h2 id="foundation-heading">Bring your pi extensions</h2><p class="section-description">A better interface shouldn’t mean giving up the tools you already use.</p><p>pi handles the models, tools, and sessions. A1 builds the experience around it, while keeping pi extension compatibility. Install your favorite packages and keep working the way you like.</p><a class="text-link" href="https://github.com/timurproko/a1#extensions">Explore extensions <span aria-hidden="true">↗</span></a></div>
+      <div class="foundation-diagram" aria-label="A1's experience layer is built on the pi coding engine and its extension ecosystem">
+        <div class="architecture-layer experience-layer"><span class="architecture-logo">A1</span><div><h3>The experience layer</h3><p>Interface · prompt history · suggestions</p></div><span class="layer-label">A1</span></div>
+        <div class="architecture-connector" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="architecture-layer engine-layer"><span class="pi-mark" aria-hidden="true">π</span><div><h3>The coding engine</h3><p>Models · sessions · tools</p></div><span class="layer-label">PI</span></div>
+        <div class="architecture-connector" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="ecosystem-layer"><span>Extensions</span><span>Skills</span><span>Prompt templates</span><span>Themes</span></div>
+        <p class="diagram-caption">pi underneath. A1 around it. Your extensions alongside.</p>
+      </div>
+      <div class="foundation-details"><div><h3>Use your existing extensions</h3><p>Install pi-compatible packages from npm, Git, or local paths. Connect MCP tools through an adapter.</p></div><div><h3>Keep your pi setup separate</h3><p>A1 uses its own profile at <code>~/.a1/agent</code>. Your existing pi settings and sessions aren’t automatically imported or changed.</p></div><div><h3>Open source</h3><p>MIT-licensed source, inspectable code, and no A1-only model requirement. Provider terms and usage costs still apply.</p></div></div>
+    </section>
+
+    <section class="comparison-section" id="compare" aria-labelledby="comparison-heading">
+      <div class="container">
+        <div class="center-heading"><h2 id="comparison-heading">How A1 builds on pi</h2><p>A1 builds on pi, rather than replacing it. Here’s what comes from pi and what A1 adds.</p></div>
+        <div class="comparison-wrap">
+          <table class="comparison-table" aria-describedby="comparison-note">
+            <caption class="sr-only">pi and A1: shared foundations, built-in experience, and multi-agent direction</caption>
+            <thead><tr><th scope="col">A closer look</th><th scope="col"><span class="column-title">pi</span><span class="column-description">The extensible foundation</span></th><th scope="col"><span class="column-title">A1</span><span class="column-description">pi, with the A1 experience</span></th></tr></thead>
+            <tbody>
+              <tr><th scope="row">AI coding tools</th><td><span class="table-check" aria-hidden="true">✓</span> Read, edit, and run commands</td><td><span class="table-check" aria-hidden="true">✓</span> Powered by the pi engine</td></tr>
+              <tr><th scope="row">Model choice</th><td><span class="table-check" aria-hidden="true">✓</span> Multiple model providers</td><td><span class="table-check" aria-hidden="true">✓</span> Model choice through pi</td></tr>
+              <tr><th scope="row">Extensions &amp; reusable workflows</th><td><span class="table-check" aria-hidden="true">✓</span> Extensions, skills, templates, and themes</td><td><span class="table-check" aria-hidden="true">✓</span> pi-compatible ecosystem</td></tr>
+              <tr><th scope="row">Open-source license</th><td><span class="table-check" aria-hidden="true">✓</span> MIT</td><td><span class="table-check" aria-hidden="true">✓</span> MIT</td></tr>
+            </tbody>
+            <tbody>
+              <tr><th scope="row">Terminal interface</th><td>pi’s own extensible interface</td><td>A1-designed session interface<span class="table-note">Focused reading, scrolling, and input controls</span></td></tr>
+              <tr><th scope="row">Prompt recall</th><td>Current-session input history</td><td>Persistent history across sessions and projects<span class="table-note">Within the same A1 profile</span></td></tr>
+              <tr><th scope="row">Next-step suggestions</th><td>Customizable through extensions</td><td>Built-in, optional model suggestions<span class="table-note">Tab to accept. Enter to send.</span></td></tr>
+              <tr><th scope="row">Profile &amp; settings</th><td><code>~/.pi/agent</code></td><td><code>~/.a1/agent</code><span class="table-note">Separate by default. No automatic import.</span></td></tr>
+            </tbody>
+            <tbody>
+              <tr><th scope="row">Multi-agent workspace</th><td>Build or install custom agent workflows</td><td><span class="roadmap-tag">Vision</span> A coordinated A1 workspace<span class="table-note">Not available today. Development on hold.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comparison-footnote" id="comparison-note">This compares the pi foundation used by A1 with A1’s documented experience—not every community extension or future pi release. pi is intentionally extensible; custom packages can add overlapping capabilities. Features may vary by release. <a href="https://pi.dev">Explore pi</a> · <a href="https://github.com/timurproko/a1">Explore A1</a></p>
+      </div>
+    </section>
+
+    <section class="vision-section" id="vision" aria-labelledby="vision-heading">
+      <div class="vision-glow" aria-hidden="true"></div>
+      <div class="container vision-content"><div class="vision-heading"><p class="vision-status">Where we want to take A1</p><h2 id="vision-heading">A <span class="gradient-text">multi-agent</span> workspace</h2><p>Ask one agent to investigate, another to build, and a third to review. We want to bring that workflow into A1, so you can work with a team of agents without juggling separate terminals.</p></div>
+        <div class="orchestration" aria-label="Concept: one shared goal coordinated across research, implementation, and review agents">
+          <div class="goal-node"><span class="goal-symbol" aria-hidden="true">A1</span><div><span>Your task</span><p>Add password reset to this app.</p></div><span class="concept-label">CONCEPT</span></div>
+          <div class="agent-connectors" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="agent-grid"><div class="agent-card"><div class="agent-card-top"><span class="agent-icon" aria-hidden="true">⌕</span></div><h3>Investigate</h3><p>Read the existing<br>authentication flow.</p><div class="agent-role"><span></span> Research agent</div></div><div class="agent-card"><div class="agent-card-top"><span class="agent-icon" aria-hidden="true">⌘</span></div><h3>Build</h3><p>Implement the reset flow<br>and add tests.</p><div class="agent-role"><span></span> Implementation agent</div></div><div class="agent-card"><div class="agent-card-top"><span class="agent-icon" aria-hidden="true">◇</span></div><h3>Review</h3><p>Check the changes<br>and security edge cases.</p><div class="agent-role"><span></span> Review agent</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="get-started section-space" id="get-started" aria-labelledby="start-heading">
+      <div class="container start-grid"><div class="start-copy"><h2 id="start-heading">Try A1 in your terminal</h2><p>Install A1, open your project, and run <code>a1</code>.<br>Your editor can stay right where it is.</p><a class="text-link" href="https://github.com/timurproko/a1">Read the documentation <span aria-hidden="true">↗</span></a></div><div class="install-panel"><div class="install-heading"><span>Install A1</span><span>npm</span></div><div class="copy-command"><code id="install-command">npx -y @timurproko/a1-install</code><button type="button" id="copy-install" aria-label="Copy install command" title="Copy install command"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg></button></div><p id="copy-status" class="copy-status" role="status"></p><div class="launch-instruction"><span>Then launch from your project directory</span><code><span aria-hidden="true">$</span> a1</code></div><p class="install-requirements">Requires Node.js ≥22.19 and &lt;25, npm, and access to a model provider. Model usage is billed separately by your provider.</p></div></div>
+    </section>
+
+    <section class="faq-section container" id="faq" aria-labelledby="faq-heading">
+      <div class="faq-heading"><h2 id="faq-heading">Frequently asked questions</h2></div>
+      <div class="faq-tools"><button id="faq-toggle-all" type="button" aria-controls="faq-list" hidden><span data-faq-label>Expand all</span><span aria-hidden="true">+</span></button></div>
+      <div class="faq-list" id="faq-list">
+      <details><summary>What exactly is A1?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1—Agent Number One—is an open-source, terminal-native AI coding agent built on pi. It adds an A1-owned interface, persistent prompt history, and optional next-step suggestions around pi’s coding engine. A multi-agent workspace is the longer-term vision, not a currently available capability.</p></div></details>
+      <details><summary>How is A1 different from pi?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>pi supplies the underlying coding engine and extension ecosystem. A1 focuses on the experience around that engine: how you interact with a session, recall prompts, read output, and decide what to do next. It is a separate project built on pi, not a replacement for its ecosystem.</p></div></details>
+      <details><summary>Will my pi extensions work?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1 preserves pi extension compatibility. Install packages from npm, Git, or a local path into A1’s own profile. Your existing pi profile is not automatically imported. For MCP tools, install an adapter such as <code>pi-mcp-adapter</code>, then run <code>/mcp setup</code> inside A1. See the <a href="https://github.com/timurproko/a1#extensions">extension instructions</a>.</p></div></details>
+      <details><summary>Do I need to change my editor?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>No. A1 runs in your terminal, alongside the editor and development tools you already use. Open a terminal in your project directory and launch <code>a1</code>. It works with your project files; you do not need to move your code into a new hosted workspace.</p></div></details>
+      <details><summary>How do I install A1 and get started?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>Install Node.js ≥22.19 and &lt;25 with npm available, then run:</p><pre>npx -y @timurproko/a1-install</pre><p>Open your project directory and run <code>a1</code>. Use <code>/login</code> to configure provider access and <code>/model</code> to choose an available model. Start with a small task, such as explaining a module or reviewing a change. See the <a href="https://github.com/timurproko/a1#install">installation guide</a>.</p></div></details>
+      <details><summary>Which models can I use?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1 connects to models through the pi engine. Available choices depend on the providers supported by your installed release and the credentials or subscriptions you configure. A1 does not require an A1-exclusive model. Use the model selector to see your available options; provider terms and limits still apply.</p></div></details>
+      <details><summary>Is A1 free to use?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1’s source code is available under the MIT license. Model access is separate: you bring a supported provider account, subscription, or API credentials, and that provider’s pricing and terms apply. Optional prompt suggestions make additional model requests. Open-source software does not mean unlimited or free model usage.</p></div></details>
+      <details><summary>Is the multi-agent workspace available?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>Not yet. Multi-agent development is currently on hold, and the workspace concept on this page illustrates the direction rather than a released feature. Today, A1 focuses on the pi-powered coding experience. Follow the <a href="https://github.com/timurproko/a1">repository</a> for development updates.</p></div></details>
+      <details><summary>Will A1 change my existing pi setup?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1 keeps its profile at <code>~/.a1/agent</code>, separate from pi’s ordinary <code>~/.pi/agent</code> profile. It does not automatically copy, merge, or import your pi settings, credentials, extensions, or sessions. Configure A1’s provider access and install your preferred extensions independently. Both tools can still edit the project files you give them access to.</p></div></details>
+      <details><summary>Can I connect MCP servers and my own tools?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>Yes, through compatible extensions. For example, install the MCP adapter with:</p><pre>a1 install npm:pi-mcp-adapter</pre><p>Then launch A1 and run <code>/mcp setup</code>. MCP connectivity comes from the adapter, not a separate built-in A1 MCP service. Only install extensions and connect servers you trust; they can execute code or access data using the permissions you provide.</p></div></details>
+      <details><summary>Do suggestions run actions automatically?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>No. A next-step suggestion is proposed text, not approval or a submitted prompt. Pressing Tab accepts it into the editor; you still press Enter separately to send it. You can edit or ignore it, and turn suggestions off in Settings. Once you submit a task, the coding agent can use its enabled tools—suggestion controls are not a sandbox or an approval gate for every tool call.</p></div></details>
+      <details><summary>Where does my data go?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1 uses <code>~/.a1/agent</code> for its profile. Persistent prompt history is stored locally as unencrypted text in a separate database and can be disabled in Settings; disabling it does not delete saved entries. Model requests go to your configured provider—terminal-native does not mean local inference. Read the <a href="https://github.com/timurproko/a1/blob/develop/docs/features/prompt-history.md">history and storage documentation</a> for details.</p></div></details>
+      <details><summary>Does A1 run entirely on my machine?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>The terminal application and its file tools run on your machine. Model inference happens wherever your configured provider runs it. With a remote provider, requests containing task context are sent to that provider. A local-model setup depends on a compatible endpoint and configuration; A1 is not an offline model bundled with the installer.</p></div></details>
+      <details><summary>Can I return to an earlier session?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>For a persisted A1 session, use the resume command printed when you leave it, or run <code>a1 --session &lt;id&gt;</code> from the original project directory. Persistent prompt history is different: it recalls what you typed, not the full conversation or an agent’s memory. See the <a href="https://github.com/timurproko/a1/blob/develop/docs/features/launch-profiles.md#resume-a-session">session documentation</a> for current behavior and storage options.</p></div></details>
+      <details><summary>How do I update A1?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>Run <code>a1 update</code> to install the release channel. Run <code>a1 update --extensions</code> to update installed packages, or <code>a1 update --models</code> to refresh model catalogs. Development previews are available with <code>a1 update --develop</code>; these can differ from a stable release. Check the <a href="https://github.com/timurproko/a1">repository</a> for release instructions and changes.</p></div></details>
+      <details><summary>What should I know before letting an agent change code?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>Treat generated code and commands as work to review, not guaranteed-correct output. Use version control, inspect diffs, run tests, and keep secrets out of prompts. The agent’s tools can read, change, and execute files with the permissions of the process. For untrusted code or unattended work, use an appropriate container or sandbox. A polished interface is not a security boundary.</p></div></details>
+      <details><summary>Where can I follow progress or report a problem?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>A1 is developed in the open on <a href="https://github.com/timurproko/a1">GitHub</a>. You can inspect the source, follow releases, and report reproducible issues. Include your A1 version, operating system, terminal, and a minimal example. Remove private prompts, credentials, and project data before sharing logs or screenshots.</p></div></details>
     </div></section>
-
   </main>
 
-  <footer class="site-footer container"><div class="footer-top"><div class="footer-identity"><a href="#">Agent Number One</a><span aria-hidden="true">·</span><a href="https://github.com/timurproko/a1/blob/HEAD/LICENSE">MIT License</a></div><nav aria-label="Footer navigation"><a href="https://github.com/timurproko/a1">GitHub ↗</a><a href="https://www.npmjs.com/package/@timurproko/a1">npm ↗</a></nav></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><p>A coding agent built on pi.</p><nav aria-label="Footer navigation"><a href="https://github.com/timurproko/a1">GitHub ↗</a><a href="https://www.npmjs.com/package/@timurproko/a1">npm ↗</a><a href="#faq">FAQs</a><a href="https://github.com/timurproko/a1/blob/HEAD/LICENSE">MIT License ↗</a></nav></div></footer>
 </body>
 </html>

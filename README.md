@@ -1,50 +1,61 @@
-# Launch and test
+# Agent Number One website
 
-## Launch
+English-language, static product site for A1. HTML, CSS, and vanilla JavaScript; no runtime dependencies, build step, analytics, or model calls.
 
-Requires Node.js (already installed on this machine). No Python, `npm install`, or build step needed.
+## Preview
 
 ```sh
-cd D:/Git/agentnumberone.dev
 npm run dev
 ```
 
-Keep the terminal open and visit <http://localhost:4173>. After editing files, refresh the browser; no server restart is needed.
+Open <http://localhost:4173>. Refresh after editing; no server restart is needed. Stop with `Ctrl+C`. Use `PORT=4174 npm run dev` in Bash for a different port.
 
-## Stop / restart
+The preview listens on all network interfaces. Use it on a trusted network only. To preview on another device on the same network, use `http://<your-computer-ip>:4173` and allow Node.js through your private-network firewall if necessary.
 
-Press `Ctrl+C` in the server terminal to stop it. Run `npm run dev` again to restart.
+If port 4173 is occupied, use the existing preview or verify which process owns it before stopping anything.
 
-If port 4173 is occupied by the earlier background preview, stop that preview once in PowerShell, then start the new server:
+## Structure
 
-```powershell
-Get-NetTCPConnection -LocalPort 4173 -State Listen |
-  Select-Object -ExpandProperty OwningProcess -Unique |
-  ForEach-Object { Stop-Process -Id $_ }
-npm run dev
+- `index.html`: product narrative, illustrative terminal sessions, experience features, pi architecture, comparison table, multi-agent vision, installation, and 17 FAQs.
+- `styles.css`: responsive dark design system, restrained rainbow accents, a contrasting light installation section, accessibility and reduced-motion styles.
+- `script.js`: accessible demonstration tabs, bounded replay, clipboard fallback, and FAQ Expand all / Collapse all.
+- `assets/aurora.svg`: original decorative light-ribbon artwork. The older illustration assets remain available but are not used by this design.
+- `server.cjs`: local static preview server. Production remains a static site.
+
+Fonts load from Google Fonts, with system fallbacks. The demo uses authored local examples; it never executes commands, reads project files, or calls a model. Replay is user-triggered, finite, and canceled when the terminal leaves view, the tab is hidden, or reduced motion changes.
+
+## Content and claims
+
+The core positioning is **pi's coding engine, an A1-designed experience, and a multi-agent direction**. Keep copy concrete and conversational: explain actual benefits rather than adding numbered categories, abstract slogans, or invented metrics. The comparison is additive, not a claim that pi extensions cannot offer similar capabilities.
+
+Current copy was checked against the A1 checkout's:
+
+- `README.md`: installer, extension management, and update commands.
+- `docs/features/launch-profiles.md`: profile separation and session resume.
+- `docs/features/prompt-history.md`: persistent recall, storage, and privacy.
+- `docs/architecture/prompt-suggestions.md`: optional suggestions and separate Tab/Enter actions.
+- `docs/architecture/boundaries.md`: the multi-agent workspace is on hold and not available today.
+
+The table compares the pi foundation used by A1, not every upstream release or community package. Features can differ between stable and development releases. Recheck these documents before changing availability claims. Do not describe A1 as a shipping multi-agent orchestrator or terminal multiplexer until the implementation is available. Model costs, remote inference, separate profiles, and unencrypted local prompt history are disclosed explicitly.
+
+## Checks
+
+Quick syntax check:
+
+```sh
+node --check script.js
 ```
 
-Only use this command when port 4173 belongs to the preview you want to stop.
+Browser checklist:
 
-## Test on another device
+- Check widths 320, 390, 600, 768, 1024, 1440, and 1920px for overflow, clipping, and readable content.
+- Switch Build / Review / Extend with pointer and keyboard. Left/Right wrap; Home/End select the first/last tab. Only the active panel is visible.
+- Replay repeatedly. Playback must not stack timers, alter layout, or execute commands. Switching tabs or hiding the page should reveal the complete static example.
+- Enable reduced motion: no reveal or replay animations, and no smooth scrolling.
+- Copy the install command and paste it into a text editor. When clipboard permission is unavailable, the command is selected for manual copying.
+- Open and close individual FAQs. Expand all / Collapse all should work after mixed individual states; the label should also track manual changes.
+- Without JavaScript, the default Build transcript, comparison, installation command, and native FAQ accordions remain readable and usable. The bulk FAQ control stays hidden.
+- Check internal anchors, external documentation links, focus indicators, skip link, and table headers.
+- Run an accessibility audit on desktop and mobile, including expanded FAQs and alternate demo panels.
 
-Connect to the same Wi-Fi and open `http://<your-computer-ip>:4173`. Run `ipconfig` to find the Wi-Fi IPv4 address (currently `192.168.0.215`; it can change). Allow Node.js through Windows Firewall on private networks if prompted. The preview listens on all network interfaces, so use it only on a trusted network.
-
-## Test
-
-- Check desktop and mobile layouts.
-- The tab bar is temporarily hidden for the single illustration; its markup, styling, and event handler are retained. Remove `hidden` from `.workflow-controls` when adding more illustrations. Confirm no tab bar, underline, or reserved gap appears while hidden.
-- Watch each fictional prompt type into the input, pause briefly, then appear in the transcript as the input clears. Reads, red/green diffs, failed tests, fixes, and replies follow continuously.
-- Use Replay repeatedly; it must not duplicate timers or accelerate playback.
-- Use Tab to focus the scrollable output. Scrolling up preserves your position while new output continues. The new-message button or Ctrl+End returns to the latest output.
-- Check that the submitted prompt pins to the top while scrolling through its turn; the next prompt replaces it. Working scrolls with the transcript, while the editor and footer stay fixed. Replies remain above Working; its row stays reserved while the next prompt is typed.
-- Enable reduced motion: a complete, static example should appear immediately.
-- Confirm all terminal text, including the footer and Working status, uses the same monospace size and character-cell spacing.
-- Check the editor uses a separator row, one input row, then another separator row; the status bar follows immediately with no added margin. Block gaps and the space before Working share the same half-row spacing as the editor-rule inset. Working stays bottom-aligned while following output; its gap to the upper editor rule matches the footer’s gap to the lower rule.
-- Confirm the terminal stays the same height throughout playback, including on mobile.
-- Check that playback pauses out of view and in hidden tabs, and that scrollback remains bounded after several loops.
-- This is fictional, authored content—not an actual session. No commands or model requests are executed.
-- Check the install section’s subtle moving iridescent background; reduced motion should keep it static.
-- Copy the install command and paste it into a text editor to verify it.
-- Open and close the FAQs.
-- Check navigation links and use `Tab` to test keyboard navigation.
+Implementation verification used Playwright/Chromium and axe-core from an external temporary directory, without adding dependencies to this repository.

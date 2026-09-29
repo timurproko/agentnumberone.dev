@@ -1,0 +1,6 @@
+
+> dev
+> node server.cjs
+
+Preview: http://localhost:4173
+Press Ctrl+C to stop. Refresh the browser after editing files.
