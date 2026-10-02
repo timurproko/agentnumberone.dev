@@ -32,11 +32,11 @@ code { font-size: .9em; overflow-wrap: anywhere; }
 .brand-mark { font-size: 30px; font-weight: 650; letter-spacing: -2px; line-height: 1; color: #c5b9e9; }
 .brand-name { font-size: 12px; font-weight: 550; letter-spacing: -.15px; }
 .desktop-nav { display: flex; align-items: center; gap: 30px; }
-.desktop-nav a { font-size: 13px; color: var(--muted); transition: color .2s; }
+.desktop-nav a { font-size: 14px; color: var(--muted); transition: color .2s; }
 .desktop-nav a:hover { color: var(--ink); }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 28px; min-height: 48px; padding: 12px 25px; border: 1px solid #eeedf3; border-radius: 100px; background: #eeedf3; color: #202026; font-size: 14px; font-weight: 500; transition: background .2s, box-shadow .2s, transform .2s; }
 .button:hover { background: white; border-color: white; box-shadow: -8px 0 26px #96caff22, 8px 0 26px #eeadcf25; transform: translateY(-1px); }
-.button-small { min-height: 38px; padding: 7px 18px; gap: 22px; font-size: 12px; }
+.button-small { min-height: 38px; padding: 7px 18px; gap: 22px; font-size: 14px; }
 /* Header CTA: a rainbow sweep runs around the edge every few seconds */
 .header-cta { --cta-fill: #eeedf3; padding-inline: 30px; border: 2px solid transparent; background: linear-gradient(var(--cta-fill), var(--cta-fill)) padding-box, linear-gradient(100deg, var(--cta-fill) 34%, #8fc3ec 41%, #a99bf0 46%, #f0a3d0 51%, #f3c58f 56%, #9fdcb4 61%, var(--cta-fill) 68%) border-box; background-size: 100% 100%, 300% 100%; background-position: 0 0, 100% 0; animation: cta-shine 7s ease-in-out 1.5s infinite; }
 .header-cta:hover { --cta-fill: #fff; background: linear-gradient(var(--cta-fill), var(--cta-fill)) padding-box, linear-gradient(100deg, #8fc3ec, #a99bf0, #f0a3d0, #f3c58f, #9fdcb4) border-box; border-color: transparent; animation-play-state: paused; }
@@ -328,7 +328,7 @@ h3 { font-size: 23px; font-weight: 500; letter-spacing: -.6px; line-height: 1.25
   .brand-name { display: inline; font-size: 10px; }
   .brand { gap: 11px; }
   .desktop-nav { display: none; }
-  .button-small { min-height: 36px; padding: 6px 15px; gap: 16px; }
+  .button-small { min-height: 36px; padding: 6px 15px; gap: 16px; font-size: 12px; }
   .header-cta { padding-inline: 22px; }
   .hero-copy { padding-block: 57px 38px; }
   .hero-eyebrow { font-size: 12px; margin-bottom: 24px; }
