@@ -345,7 +345,6 @@ if (faqToggle) {
     }
 
     redraw();
-    field.classList.add('is-live');
     if (document.fonts?.ready) document.fonts.ready.then(redraw);
     if ('ResizeObserver' in window) new ResizeObserver(redraw).observe(field);
     else window.addEventListener('resize', redraw);
