@@ -209,6 +209,33 @@ if (faqToggle) {
       },
     },
 
+    // Sea: an undulating surface line with textured water filling the space beneath it.
+    waves: {
+      ramp: ' .·:;~=+*%#@',
+      staticTime() { return 1.2; },
+      draw(s, t) {
+        const rows = s.rows, cols = s.cols;
+        for (let c = 0; c < cols; c += 1) {
+          const x = (c + 0.5) / cols;
+          const swell = Math.sin(x * 22 + t * 0.5) * 0.55 + Math.sin(x * 41 - t * 0.8) * 0.3 + Math.sin(x * 9 + t * 0.3) * 0.15;
+          const surface = rows * 0.4 + swell * rows * 0.2;
+          const inner = rows * 0.76 + (Math.sin(x * 18 - t * 0.45 + 2) * 0.6 + Math.sin(x * 35 + t * 0.7) * 0.4) * rows * 0.1;
+          for (let r = 0; r < rows; r += 1) {
+            const y = r + 0.5;
+            const d = y - surface;
+            if (d < -0.5) continue;
+            if (d < 0.5) { s.glyph(c, r, '~', 8); continue; }
+            if (Math.abs(y - inner) < 0.5) { s.glyph(c, r, '~', 5); continue; }
+            // Water body: gentle moving bands that follow the surface, denser with depth.
+            const depth = d / Math.max(1, rows - surface);
+            const band = 0.5 + 0.5 * Math.sin(d * 1.4 - t * 1.1 + x * 7);
+            const value = 0.1 + depth * 0.22 + band * 0.18;
+            s.plot(c, r, value, 1 + Math.round(depth * 3));
+          }
+        }
+      },
+    },
+
     // The classic spinning torus, shaded by a fixed light.
     torus: {
       staticTime() { return 1.6; },
@@ -263,9 +290,10 @@ if (faqToggle) {
       ctx.fillStyle = colors[Math.max(0, Math.min(8, level))];
       ctx.fillText(ch, s.offsetX + (c + 0.5) * s.cell, s.offsetY + (r + 0.5) * s.cell);
     };
+    const ramp = scene.ramp || RAMP;
     s.plot = (c, r, value, level) => {
-      const index = Math.min(RAMP.length - 1, Math.floor(value * RAMP.length));
-      if (index > 0) s.glyph(c, r, RAMP[index], level);
+      const index = Math.min(ramp.length - 1, Math.floor(value * ramp.length));
+      if (index > 0) s.glyph(c, r, ramp[index], level);
     };
 
     let raf = 0, last = 0, startedAt = 0, visible = true;
