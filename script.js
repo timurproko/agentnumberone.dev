@@ -70,7 +70,7 @@ const copyCommand = document.querySelector('.copy-command');
 let copyReset;
 const stopCopyAnimation = () => copyCommand.classList.remove('is-copied');
 copyCommand.addEventListener('animationend', event => {
-  if (event.animationName === 'copy-rainbow') stopCopyAnimation();
+  if (event.animationName === 'copy-flash') stopCopyAnimation();
 });
 reducedMotion.addEventListener('change', stopCopyAnimation);
 copyButton.addEventListener('click', async () => {
