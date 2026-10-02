@@ -2,7 +2,6 @@
 
 // Authored local illustrations only: no commands, model calls, or user data.
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const tabs = [...document.querySelectorAll('[data-demo]')];
 const panels = [...document.querySelectorAll('.demo-panel')];
 const announcement = document.querySelector('#demo-announcement');
 let replayTimer;
@@ -11,31 +10,6 @@ function stopReplay() {
   clearTimeout(replayTimer);
   panels.forEach(panel => panel.classList.remove('is-replaying'));
 }
-
-function selectDemo(tab) {
-  stopReplay();
-  tabs.forEach(item => {
-    const selected = item === tab;
-    item.setAttribute('aria-selected', String(selected));
-    item.tabIndex = selected ? 0 : -1;
-    document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
-  });
-}
-
-tabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => selectDemo(tab));
-  tab.addEventListener('keydown', event => {
-    let next;
-    if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
-    if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
-    if (event.key === 'Home') next = 0;
-    if (event.key === 'End') next = tabs.length - 1;
-    if (next === undefined) return;
-    event.preventDefault();
-    selectDemo(tabs[next]);
-    tabs[next].focus();
-  });
-});
 
 panels.forEach(panel => {
   panel.querySelectorAll('.demo-line').forEach((line, index) => {
@@ -119,3 +93,287 @@ if (faqToggle) {
   questions.forEach(question => question.addEventListener('toggle', syncFaqToggle));
   syncFaqToggle();
 }
+
+// ASCII fields: decorative canvases driven by [data-ascii] scenes. No data involved.
+(function asciiFields() {
+  const RAMP = ' .·:;-=+*%#@';
+  const FPS = 24;
+  const MONO = '"JetBrains Mono", "SFMono-Regular", Consolas, monospace';
+
+  // Deterministic per-cell noise so dissolve and dot patterns are stable between frames.
+  function hash(x, y) {
+    const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+    return n - Math.floor(n);
+  }
+  const smooth = (edge0, edge1, x) => {
+    const k = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
+    return k * k * (3 - 2 * k);
+  };
+
+  // Sparse background of faint, slowly blinking dots behind every scene.
+  function dots(s, t) {
+    for (let r = 0; r < s.rows; r += 1) {
+      for (let c = 0; c < s.cols; c += 1) {
+        const d = hash(c * 0.37, r * 0.91);
+        if (d > 0.84 && Math.sin(d * 40 + t * 0.9) > -0.2) s.glyph(c, r, '·', 0);
+      }
+    }
+  }
+
+  const scenes = {
+    // The pi symbol dissolves into the a1 mark and back.
+    morph: {
+      hold: 2.6, span: 1.9,
+      setup(s) {
+        const sample = (text, weight, size) => {
+          const off = document.createElement('canvas');
+          off.width = s.cols; off.height = s.rows;
+          const o = off.getContext('2d');
+          o.fillStyle = '#fff';
+          o.textAlign = 'center';
+          o.textBaseline = 'middle';
+          if ('letterSpacing' in o) o.letterSpacing = text.length > 1 ? '-0.08em' : '0px';
+          o.font = `${weight} ${Math.round(size)}px ${MONO}`;
+          o.fillText(text, s.cols / 2, s.rows / 2 + s.rows * 0.04);
+          const data = o.getImageData(0, 0, s.cols, s.rows).data;
+          const out = new Float32Array(s.cols * s.rows);
+          for (let i = 0; i < out.length; i += 1) out[i] = data[i * 4 + 3] / 255;
+          return out;
+        };
+        s.shapeA = sample('π', 700, Math.min(s.rows * 1.42, s.cols * 1.3));
+        s.shapeB = sample('a1', 600, Math.min(s.rows * 1.02, s.cols * 0.76));
+        s.noise = new Float32Array(s.cols * s.rows);
+        for (let r = 0; r < s.rows; r += 1) for (let c = 0; c < s.cols; c += 1) s.noise[r * s.cols + c] = hash(c, r);
+      },
+      staticTime() { return this.hold + this.span * 0.5; },
+      draw(s, t) {
+        const cycle = (this.hold + this.span) * 2;
+        const local = ((t % cycle) + cycle) % cycle;
+        let p, forward;
+        if (local < this.hold) { p = 0; forward = true; }
+        else if (local < this.hold + this.span) { p = (local - this.hold) / this.span; forward = true; }
+        else if (local < this.hold * 2 + this.span) { p = 1; forward = false; }
+        else { p = 1 - (local - this.hold * 2 - this.span) / this.span; forward = false; }
+        const morphing = p > 0 && p < 1;
+        for (let r = 0; r < s.rows; r += 1) {
+          for (let c = 0; c < s.cols; c += 1) {
+            const i = r * s.cols + c;
+            const a = s.shapeA[i], b = s.shapeB[i];
+            const sweep = forward ? c / s.cols : 1 - c / s.cols;
+            const threshold = sweep * 0.55 + s.noise[i] * 0.45;
+            const mix = smooth(threshold - 0.18, threshold + 0.18, p);
+            let value = a + (b - a) * mix;
+            value *= 0.78 + 0.22 * Math.sin(c * 0.55 + t * 1.1) * Math.cos(r * 0.6 - t * 0.9);
+            if (morphing && mix > 0.08 && mix < 0.92 && s.noise[i] > 0.35 && (a > 0.05 || b > 0.05)) {
+              const scramble = hash(c + Math.floor(t * 18), r);
+              s.glyph(c, r, RAMP[1 + Math.floor(scramble * (RAMP.length - 1))], 8);
+            } else if (value * RAMP.length >= 1) {
+              s.plot(c, r, value, 2 + Math.round(value * 6));
+            } else {
+              const d = hash(c * 0.37, r * 0.91);
+              if (d > 0.84 && Math.sin(d * 40 + t * 0.9) > -0.2) s.glyph(c, r, '·', 0);
+            }
+          }
+        }
+      },
+    },
+
+    // A slowly turning wireframe sphere with a light sweeping across it.
+    sphere: {
+      staticTime() { return 2.4; },
+      draw(s, t) {
+        dots(s, t);
+        const cx = s.cols / 2, cy = s.rows / 2;
+        const radius = Math.min(s.cols, s.rows) * 0.42;
+        const tilt = 0.42, spin = t * 0.3;
+        const ct = Math.cos(tilt), st = Math.sin(tilt);
+        const cs = Math.cos(spin), ss = Math.sin(spin);
+        for (let r = 0; r < s.rows; r += 1) {
+          for (let c = 0; c < s.cols; c += 1) {
+            const x = c - cx + 0.5, y = r - cy + 0.5;
+            if (Math.hypot(x, y) >= radius) continue;
+            const nx = x / radius, ny = y / radius;
+            const nz = Math.sqrt(Math.max(0, 1 - nx * nx - ny * ny));
+            const py = ny * ct - nz * st, pz = ny * st + nz * ct;
+            const qx = nx * cs + pz * ss, qz = pz * cs - nx * ss;
+            const lat = Math.asin(Math.max(-1, Math.min(1, py)));
+            const lon = Math.atan2(qx, qz);
+            const meridians = Math.pow(Math.abs(Math.sin(lon * 4)), 18);
+            const parallels = Math.pow(Math.abs(Math.sin(lat * 4)), 18);
+            const light = Math.max(0, -nx * 0.35 - ny * 0.45 + nz * 0.8);
+            const band = 0.5 + 0.5 * Math.sin(lat * 3 + lon * 2 - t * 1.3);
+            const value = 0.05 + light * (0.5 + 0.5 * band) * 0.62 + Math.max(meridians, parallels) * 0.45;
+            if (value * RAMP.length >= 1) s.plot(c, r, value, 2 + Math.round(nz * 6));
+          }
+        }
+      },
+    },
+
+    // The classic spinning torus, shaded by a fixed light.
+    torus: {
+      staticTime() { return 1.6; },
+      setup(s) { s.depth = new Float32Array(s.cols * s.rows); s.lum = new Float32Array(s.cols * s.rows); },
+      draw(s, t) {
+        dots(s, t);
+        s.depth.fill(0); s.lum.fill(0);
+        const A = 1.1 + t * 0.55, B = 0.5 + t * 0.28;
+        const cA = Math.cos(A), sA = Math.sin(A), cB = Math.cos(B), sB = Math.sin(B);
+        const R1 = 1, R2 = 2, K2 = 5;
+        const K1 = Math.min(s.cols, s.rows) * K2 / (2 * (R1 + R2)) * 0.92;
+        const cx = s.cols / 2, cy = s.rows / 2;
+        for (let theta = 0; theta < 6.28; theta += 0.07) {
+          const ct = Math.cos(theta), st = Math.sin(theta);
+          for (let phi = 0; phi < 6.28; phi += 0.02) {
+            const cp = Math.cos(phi), sp = Math.sin(phi);
+            const circleX = R2 + R1 * ct, circleY = R1 * st;
+            const x = circleX * (cB * cp + sA * sB * sp) - circleY * cA * sB;
+            const y = circleX * (sB * cp - sA * cB * sp) + circleY * cA * cB;
+            const z = K2 + cA * circleX * sp + circleY * sA;
+            const ooz = 1 / z;
+            const xp = Math.floor(cx + K1 * ooz * x);
+            const yp = Math.floor(cy - K1 * ooz * y);
+            if (xp < 0 || xp >= s.cols || yp < 0 || yp >= s.rows) continue;
+            const L = cp * ct * sB - cA * ct * sp - sA * st + cB * (cA * st - ct * sA * sp);
+            const i = yp * s.cols + xp;
+            if (ooz > s.depth[i]) { s.depth[i] = ooz; s.lum[i] = Math.max(0.08, L / 1.5); }
+          }
+        }
+        for (let r = 0; r < s.rows; r += 1) {
+          for (let c = 0; c < s.cols; c += 1) {
+            const i = r * s.cols + c;
+            if (s.depth[i] > 0) s.plot(c, r, Math.min(1, s.lum[i]), 2 + Math.round(Math.min(1, s.lum[i]) * 6));
+          }
+        }
+      },
+    },
+  };
+
+  function mount(field) {
+    const scene = scenes[field.dataset.ascii];
+    const canvas = field.querySelector('canvas');
+    const ctx = canvas?.getContext('2d', { alpha: true });
+    if (!scene || !canvas || !ctx) return;
+
+    const rgb = (getComputedStyle(field).getPropertyValue('--ascii-rgb').trim() || '255,255,255');
+    const colors = [];
+    for (let i = 0; i <= 8; i += 1) colors.push(`rgba(${rgb},${(0.14 + (i / 8) * 0.86).toFixed(3)})`);
+
+    const s = { cols: 0, rows: 0, cell: 12, width: 0, height: 0, offsetX: 0, offsetY: 0 };
+    s.glyph = (c, r, ch, level) => {
+      ctx.fillStyle = colors[Math.max(0, Math.min(8, level))];
+      ctx.fillText(ch, s.offsetX + (c + 0.5) * s.cell, s.offsetY + (r + 0.5) * s.cell);
+    };
+    s.plot = (c, r, value, level) => {
+      const index = Math.min(RAMP.length - 1, Math.floor(value * RAMP.length));
+      if (index > 0) s.glyph(c, r, RAMP[index], level);
+    };
+
+    let raf = 0, last = 0, startedAt = 0, visible = true;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      s.width = Math.max(field.clientWidth, 1);
+      s.height = Math.max(field.clientHeight, 1);
+      s.cell = s.width >= 480 ? 11 : s.width >= 320 ? 9 : 8;
+      s.cols = Math.floor(s.width / s.cell);
+      s.rows = Math.floor(s.height / s.cell);
+      s.offsetX = (s.width - s.cols * s.cell) / 2;
+      s.offsetY = (s.height - s.rows * s.cell) / 2;
+      canvas.width = Math.round(s.width * dpr);
+      canvas.height = Math.round(s.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = `500 ${Math.round(s.cell * 0.98)}px ${MONO}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      scene.setup?.(s);
+    }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, s.width, s.height);
+      scene.draw(s, t);
+    }
+
+    const currentTime = () => (performance.now() - (startedAt || performance.now())) / 1000;
+
+    function frame(now) {
+      raf = 0;
+      if (!visible || document.hidden || reducedMotion.matches) return;
+      if (now - last >= 1000 / FPS) {
+        last = now;
+        draw((now - startedAt) / 1000);
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    function play() {
+      if (raf || reducedMotion.matches) return;
+      if (!startedAt) startedAt = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+    function pause() { cancelAnimationFrame(raf); raf = 0; }
+    function redraw() { resize(); draw(reducedMotion.matches ? scene.staticTime() : currentTime()); }
+    function sync() {
+      if (reducedMotion.matches) { pause(); draw(scene.staticTime()); return; }
+      if (visible && !document.hidden) play(); else pause();
+    }
+
+    redraw();
+    field.classList.add('is-live');
+    if (document.fonts?.ready) document.fonts.ready.then(redraw);
+    if ('ResizeObserver' in window) new ResizeObserver(redraw).observe(field);
+    else window.addEventListener('resize', redraw);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => { visible = entries.some(entry => entry.isIntersecting); sync(); }, { rootMargin: '120px 0px' }).observe(field);
+    }
+    document.addEventListener('visibilitychange', sync);
+    reducedMotion.addEventListener('change', sync);
+    sync();
+  }
+
+  document.querySelectorAll('[data-ascii]').forEach(mount);
+})();
+
+// Header nav: sliding underline that follows the section in view.
+(function navIndicator() {
+  const nav = document.querySelector('.site-nav');
+  if (!nav) return;
+  const links = [...nav.querySelectorAll('a[href^="#"]')];
+  const targets = links.map(link => document.querySelector(link.getAttribute('href')));
+  if (!links.length || targets.some(target => !target)) return;
+  const indicator = document.createElement('span');
+  indicator.className = 'nav-indicator';
+  indicator.setAttribute('aria-hidden', 'true');
+  nav.appendChild(indicator);
+
+  let active = null;
+  let lockUntil = 0;
+
+  function move(link) {
+    active = link;
+    links.forEach(item => item.classList.toggle('is-active', item === link));
+    if (!link) { indicator.style.opacity = '0'; return; }
+    indicator.style.opacity = '1';
+    indicator.style.width = link.offsetWidth + 'px';
+    indicator.style.transform = 'translateX(' + link.offsetLeft + 'px)';
+  }
+
+  function spy() {
+    if (performance.now() < lockUntil) return;
+    const headerHeight = document.querySelector('.site-header')?.offsetHeight || 72;
+    const line = headerHeight + 2;
+    let current = null;
+    targets.forEach((target, index) => {
+      if (target.getBoundingClientRect().top <= line) current = links[index];
+    });
+    if (current !== active) move(current);
+  }
+
+  links.forEach(link => link.addEventListener('click', () => {
+    // Hold the clicked item while the smooth scroll travels past other sections.
+    lockUntil = performance.now() + 900;
+    move(link);
+  }));
+  window.addEventListener('scroll', spy, { passive: true });
+  window.addEventListener('resize', () => { if (active) move(active); spy(); });
+  if (document.fonts?.ready) document.fonts.ready.then(() => { if (active) move(active); });
+  spy();
+})();

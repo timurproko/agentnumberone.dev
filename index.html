@@ -14,7 +14,7 @@
   <link rel="icon" href="assets/favicon.svg?v=5" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
   <title>a1 — A terminal coding agent built on pi</title>
@@ -23,7 +23,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#" aria-label="a1 — Agent Number One, home"><span class="brand-mark" aria-hidden="true">a1</span><span class="brand-name" aria-hidden="true">Agent Number One</span></a>
+      <a class="brand" href="#" aria-label="a1, home"><span class="brand-mark" aria-hidden="true">a1</span></a>
       <nav class="site-nav" aria-label="Main navigation"><a href="#experience">Experience</a><a href="#foundation">Architecture</a><a href="#compare">Compare</a><a href="#vision">Roadmap</a><a href="#faq">FAQ</a></nav>
       <div class="header-actions"><a class="header-link" href="https://github.com/timurproko/a1">GitHub <span aria-hidden="true">↗</span></a><a class="button button-small" href="#get-started">Install</a></div>
     </div>
@@ -32,12 +32,15 @@
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-grid" aria-hidden="true"></div>
-      <div class="container hero-copy">
-        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Open source · Terminal native · Built on pi</p>
-        <h1 id="hero-title">A coding agent for your terminal,<br class="desktop-break"> built on pi.</h1>
+      <div class="container hero-intro">
+      <div class="hero-copy">
+        <h1 id="hero-title"><span>A coding agent</span> <span>for your terminal,</span> <span class="hero-title-accent">built on pi</span></h1>
         <p class="hero-description">a1 keeps pi’s engine, models, and extensions, and rebuilds the experience around them: persistent prompt history, next-step suggestions, and an interface made for long sessions.</p>
-        <div class="hero-actions"><a class="button" href="#get-started">Install a1</a><a class="button button-secondary" href="https://github.com/timurproko/a1">View source <span aria-hidden="true">↗</span></a></div>
-        <ul class="hero-facts" aria-label="Key facts"><li><span class="fact-key">license</span><span>MIT</span></li><li><span class="fact-key">runtime</span><span>Node.js 22</span></li><li><span class="fact-key">engine</span><span>pi</span></li><li><span class="fact-key">extensions</span><span>pi-compatible</span></li></ul>
+        <div class="hero-actions"><a class="button" href="#get-started">Install</a><a class="button button-secondary" href="https://github.com/timurproko/a1">GitHub <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="ascii-field" data-ascii="morph"><canvas width="520" height="520"></canvas><img class="ascii-fallback" src="assets/a1-signal.svg" alt="" width="520" height="520"></div>
+      </div>
       </div>
 
       <div class="product-stage container" id="workflow">
@@ -47,40 +50,38 @@
             <span class="terminal-title">a1 <span class="title-separator">—</span> ~/projects/orbit</span>
             <button id="replay-demo" type="button" aria-label="Replay illustrative session"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Replay</button>
           </div>
-          <div class="terminal-tabs" role="tablist" aria-label="Explore an a1 session">
-            <button id="tab-build" role="tab" aria-selected="true" aria-controls="panel-build" tabindex="0" type="button" data-demo="build">build</button>
-            <button id="tab-review" role="tab" aria-selected="false" aria-controls="panel-review" tabindex="-1" type="button" data-demo="review">review</button>
-            <button id="tab-extend" role="tab" aria-selected="false" aria-controls="panel-extend" tabindex="-1" type="button" data-demo="extend">extend</button>
-            <span class="terminal-tabs-note" aria-hidden="true">illustrative session</span>
-          </div>
           <div class="terminal-body">
-            <div class="demo-panel" id="panel-build" role="tabpanel" aria-labelledby="tab-build" tabindex="0">
-              <div class="terminal-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">❯</span><p>Handle empty config files without breaking existing behavior.</p></div>
-              <p class="terminal-thought demo-line">I’ll check the loader, make a focused change, and run the tests.</p>
-              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">read</span><span class="tool-target">src/config/load.ts</span></div><p class="tool-note">The loader parses every file, including empty ones.</p></div>
-              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">edit</span><span class="tool-target">src/config/load.ts</span><span class="tool-meta"><span class="diff-added">+2</span> <span class="diff-removed">−1</span></span></div><pre class="terminal-diff"><span class="diff-removed">- return JSON.parse(source);</span>
+            <div class="demo-panel" id="panel-build">
+              <div class="tui-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">❯</span><span class="tui-prompt-text">Handle empty config files without breaking existing behavior.</span><span class="tui-time">14:02</span></div>
+              <p class="tui-thought demo-line">Checking how the loader reads config files</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ sed -n 1,12p src/config/load.ts</p>
+                <pre class="tui-out">export function loadConfig(source: string) {
+  return JSON.parse(source);
+}</pre>
+                <p class="tui-took">Took 0.1s</p>
+              </div>
+              <p class="tui-thought demo-line">Guarding empty and whitespace-only files, then running the tests</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">edit src/config/load.ts <span class="tui-meta">(+2 −1)</span></p>
+                <pre class="tui-out"><span class="diff-removed">- return JSON.parse(source);</span>
 <span class="diff-added">+ const text = source.trim();</span>
-<span class="diff-added">+ return text ? JSON.parse(text) : {};</span></pre></div>
-              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">bash</span><span class="tool-target">npm test</span><span class="tool-meta">1.8s</span></div><p class="tool-note"><span class="check" aria-hidden="true">✓</span> 8 passed · 0 failed</p></div>
-              <p class="terminal-response demo-line">Empty files now return an empty config. Existing behavior is preserved and covered by tests. Ready for your review.</p>
+<span class="diff-added">+ return text ? JSON.parse(text) : {};</span></pre>
+                <p class="tui-took">Took 0.2s</p>
+              </div>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ npm test <span class="tui-meta">(timeout 120s)</span></p>
+                <pre class="tui-out">Tests     8 passed (8)
+Duration  1.8s</pre>
+                <p class="tui-took">Took 1.8s</p>
+              </div>
+              <p class="tui-response demo-line">Empty files now return an empty config. Existing behavior is preserved and covered by tests. Nothing has been committed.</p>
             </div>
-            <div class="demo-panel" id="panel-review" role="tabpanel" aria-labelledby="tab-review" tabindex="0" hidden>
-              <div class="terminal-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">❯</span><p>Review the changes. Look for edge cases, not just style.</p></div>
-              <p class="terminal-thought demo-line">I’ll read the diff and check the tests against the original behavior.</p>
-              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">bash</span><span class="tool-target">git diff --check &amp;&amp; git diff</span></div><p class="tool-note">1 file changed · no whitespace errors</p></div>
-              <div class="review-checks demo-line"><p><span class="check" aria-hidden="true">✓</span>Empty and whitespace-only files return <code>{}</code></p><p><span class="check" aria-hidden="true">✓</span>Valid JSON still parses as before</p><p><span class="check" aria-hidden="true">✓</span>Invalid JSON still throws</p><p><span class="warn" aria-hidden="true">△</span>No test for a file containing only a BOM</p></div>
-              <p class="terminal-response demo-line">The change is focused and covered by tests. One gap worth a test: a BOM-only file. Nothing has been committed.</p>
+            <div class="terminal-editor" aria-hidden="true"><span class="prompt-glyph">❯</span><span class="tui-cursor"></span></div>
+            <div class="terminal-status" aria-hidden="true">
+              <span class="status-path">~/projects/orbit (main)</span>
+              <span class="status-row"><span>↑14k ↓2.1k R38k 7.4%/200k (auto)</span><span class="status-model">your model <span class="status-divider">•</span> <span class="status-level">high</span></span></span>
             </div>
-            <div class="demo-panel" id="panel-extend" role="tabpanel" aria-labelledby="tab-extend" tabindex="0" hidden>
-              <div class="terminal-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">$</span><p>a1 install npm:pi-mcp-adapter</p></div>
-              <p class="terminal-thought demo-line">Installing into a1’s own profile. Your pi profile is untouched.</p>
-              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">package</span><span class="tool-target">pi-mcp-adapter</span><span class="tool-meta">npm</span></div><p class="tool-note">Sources: npm, Git, or a local path.</p></div>
-              <div class="extension-tree demo-line"><p>~/.a1/agent/</p><p>├── extensions/ <span>tools and integrations</span></p><p>├── skills/ <span>reusable expertise</span></p><p>├── sessions/ <span>resumable conversations</span></p><p>└── settings.json <span>your preferences</span></p></div>
-              <div class="terminal-tool demo-line"><div class="tool-label"><span class="tool-type">next</span><span class="tool-target">a1 → /mcp setup</span></div><p class="tool-note">Connect the MCP servers you trust.</p></div>
-              <p class="terminal-response demo-line">Build on the ecosystem you already use. Keep your pi setup separate.</p>
-            </div>
-            <div class="terminal-editor" aria-hidden="true"><span class="prompt-glyph">❯</span><span class="editor-placeholder">What would you like to build?</span><span class="editor-key">↵</span></div>
-            <div class="terminal-status"><span><span class="status-dot" aria-hidden="true"></span>~/projects/orbit <span class="branch">main</span></span><span class="status-right">pi engine <span class="status-divider">·</span> your model <span class="status-divider">·</span> a1 profile</span></div>
           </div>
         </div>
         <p class="sr-only" id="demo-announcement" role="status"></p>
@@ -89,7 +90,7 @@
 
     <section class="section" id="experience" aria-labelledby="experience-heading">
       <div class="container">
-        <div class="section-head"><p class="eyebrow"><span class="eyebrow-index">01</span>Experience</p><h2 id="experience-heading">Built for the long session</h2><p class="lead">Recall a prompt from last week. Accept a suggested next step, or ignore it. Read a long response without losing your place. Small, deliberate improvements that add up over a working day.</p></div>
+        <div class="section-head"><p class="eyebrow">Experience</p><h2 id="experience-heading">Built for the long session</h2><p class="lead">Recall a prompt from last week. Accept a suggested next step, or ignore it. Read a long response without losing your place. Small, deliberate improvements that add up over a working day.</p></div>
         <div class="feature-grid">
           <article class="feature-card">
             <div class="feature-visual" aria-hidden="true">
@@ -146,8 +147,8 @@
     <section class="section section-alt" id="foundation" aria-labelledby="foundation-heading">
       <div class="container foundation-grid">
         <div class="foundation-copy">
-          <p class="eyebrow"><span class="eyebrow-index">02</span>Architecture</p>
-          <h2 id="foundation-heading">pi underneath. a1 around it.</h2>
+          <p class="eyebrow">Architecture</p>
+          <h2 id="foundation-heading">Built on pi, wrapped in the a1 experience</h2>
           <p class="lead">A better interface shouldn’t cost you the tools you already have.</p>
           <p class="body-copy">pi handles models, sessions, and tool execution. a1 owns the layer you interact with and stays compatible with pi extensions. Install the packages you already use and keep working the way you like.</p>
           <dl class="foundation-details">
@@ -156,20 +157,23 @@
             <div><dt>License</dt><dd>MIT-licensed, inspectable source. No a1-only model requirement. Provider terms and usage costs still apply.</dd></div>
           </dl>
         </div>
+        <div class="stack-side">
         <figure class="stack-diagram" aria-label="Architecture: the a1 experience layer runs on the pi coding engine, which loads the pi extension ecosystem">
-          <div class="stack-layer stack-a1"><span class="stack-tag">a1</span><div class="stack-body"><h3>Experience layer</h3><p>interface · prompt history · suggestions · profile</p></div><span class="stack-meta">~/.a1/agent</span></div>
+          <div class="stack-layer stack-a1"><span class="stack-tag">a1</span><div class="stack-body"><h3>Experience layer</h3><p>interface · prompt history · suggestions · profile</p></div></div>
           <div class="stack-bus" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="stack-layer stack-pi"><span class="stack-tag">pi</span><div class="stack-body"><h3>Coding engine</h3><p>models · sessions · tool execution</p></div><span class="stack-meta">pi.dev</span></div>
+          <div class="stack-layer stack-pi"><span class="stack-tag">pi</span><div class="stack-body"><h3>Coding engine</h3><p>models · sessions · tool execution</p></div></div>
           <div class="stack-bus" aria-hidden="true"><span></span><span></span><span></span></div>
-          <ul class="stack-ecosystem"><li>extensions</li><li>skills</li><li>prompt templates</li><li>themes</li><li>MCP adapter</li><li>your model provider</li></ul>
+          <ul class="stack-ecosystem"><li>extensions</li><li>skills</li><li>prompt templates</li><li>themes</li><li>MCP adapter</li><li>model provider</li></ul>
           <figcaption>Models, tools, and sessions come from pi. The interface, history, and suggestions come from a1.</figcaption>
         </figure>
+        <div class="ascii-field ascii-field-section" data-ascii="torus" aria-hidden="true"><canvas></canvas></div>
+        </div>
       </div>
     </section>
 
     <section class="section" id="compare" aria-labelledby="comparison-heading">
       <div class="container">
-        <div class="section-head section-head-center"><p class="eyebrow"><span class="eyebrow-index">03</span>For pi users</p><h2 id="comparison-heading">Already on pi? Nothing to give up.</h2><p class="lead">a1 is pi with a different front. Your models, extensions, and workflow carry over. What changes is the layer you spend all day looking at.</p></div>
+        <div class="section-head section-head-center"><p class="eyebrow">For pi users</p><h2 id="comparison-heading">Everything from pi, nothing to give up</h2><p class="lead">a1 is pi with a different front. Your models, extensions, and workflow carry over. What changes is the layer you spend all day looking at.</p></div>
         <div class="why-grid">
           <div class="why-item"><span class="stack-tag">keep</span><h3>Everything pi gives you</h3><p>The same engine, the same providers, the same extension packages. a1 runs pi underneath and does not fork its tool behavior.</p></div>
           <div class="why-item"><span class="stack-tag">gain</span><h3>The experience layer</h3><p>Persistent prompt history, next-step suggestions, a redesigned transcript, mouse selection and copy, and a profile that is yours.</p></div>
@@ -180,21 +184,18 @@
             <caption class="sr-only">pi and a1: shared foundation, a1 experience, and planned direction</caption>
             <thead><tr><th scope="col"><span class="sr-only">Capability</span></th><th scope="col"><span class="column-title">pi</span><span class="column-description">the extensible foundation</span></th><th scope="col"><span class="column-title">a1</span><span class="column-description">pi, with the a1 experience</span></th></tr></thead>
             <tbody>
-              <tr class="group-row"><th scope="rowgroup" colspan="3">Shared foundation</th></tr>
               <tr><th scope="row">Coding tools</th><td><span class="status status-yes">✓</span>Read, edit, run commands</td><td><span class="status status-yes">✓</span>Powered by the pi engine</td></tr>
               <tr><th scope="row">Model choice</th><td><span class="status status-yes">✓</span>Multiple providers</td><td><span class="status status-yes">✓</span>Same providers, through pi</td></tr>
               <tr><th scope="row">Extensions &amp; workflows</th><td><span class="status status-yes">✓</span>Extensions, skills, templates, themes</td><td><span class="status status-yes">✓</span>pi-compatible ecosystem</td></tr>
               <tr><th scope="row">License</th><td><span class="status status-yes">✓</span>MIT</td><td><span class="status status-yes">✓</span>MIT</td></tr>
             </tbody>
             <tbody>
-              <tr class="group-row"><th scope="rowgroup" colspan="3">a1 experience</th></tr>
               <tr><th scope="row">Terminal interface</th><td>pi’s interface</td><td><span class="status status-yes">✓</span>Redesigned interface</td></tr>
               <tr><th scope="row">Prompt recall</th><td>Current session only</td><td><span class="status status-yes">✓</span>Persistent, across sessions and projects</td></tr>
               <tr><th scope="row">Next-step suggestions</th><td>Via extensions</td><td><span class="status status-yes">✓</span>Built in, optional</td></tr>
               <tr><th scope="row">Profile &amp; settings</th><td><code>~/.pi/agent</code></td><td><code>~/.a1/agent</code></td></tr>
             </tbody>
             <tbody>
-              <tr class="group-row"><th scope="rowgroup" colspan="3">Direction</th></tr>
               <tr><th scope="row">Multi-agent workspace</th><td>Build or install custom workflows</td><td><span class="status status-planned">planned</span>Not available yet</td></tr>
             </tbody>
           </table>
@@ -205,10 +206,10 @@
 
     <section class="section section-alt" id="vision" aria-labelledby="vision-heading">
       <div class="container">
-        <div class="section-head section-head-center"><p class="eyebrow"><span class="eyebrow-index">04</span>Roadmap<span class="status status-planned eyebrow-status">concept</span></p><h2 id="vision-heading">One task, a team of agents</h2><p class="lead">Ask one agent to investigate, another to build, and a third to review, from a single a1 session. This is the direction we are designing toward. It is not available today.</p></div>
+        <div class="section-head section-head-center"><p class="eyebrow">Roadmap</p><h2 id="vision-heading">One task, a team of agents</h2><p class="lead">Ask one agent to investigate, another to build, and a third to review, from a single a1 session. This is the direction we are designing toward. It is not available today.</p></div>
         <figure class="orchestration" aria-label="Concept: one task is coordinated across research, implementation, and review agents">
           <div class="goal-node"><span class="stack-tag">task</span><div><p>Add password reset to this app.</p><span class="goal-meta">~/projects/orbit · main</span></div></div>
-          <svg class="agent-connectors" viewBox="0 0 600 64" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M300 0v24M100 64V40q0-16 16-16h368q16 0 16 16v24M300 24v40" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="300" cy="24" r="2.5" fill="currentColor"/></svg>
+          <svg class="agent-connectors" viewBox="0 0 860 96" aria-hidden="true" focusable="false"><path class="agent-line" d="M430 0v96M143.33 96V60q0-12 12-12h549.34q12 0 12 12v36" fill="none" stroke="currentColor" stroke-width="1"/><path class="agent-pulse" d="M430 0V48H155.33q-12 0-12 12V96" fill="none"/><path class="agent-pulse" d="M430 0v96" fill="none"/><path class="agent-pulse" d="M430 0V48H704.67q12 0 12 12V96" fill="none"/></svg>
           <div class="agent-grid">
             <div class="agent-card"><div class="agent-card-top"><span class="stack-tag">agent 1</span><span class="agent-role">research</span></div><h3>Investigate</h3><p>Read the existing authentication flow and report what the reset path must touch.</p></div>
             <div class="agent-card"><div class="agent-card-top"><span class="stack-tag">agent 2</span><span class="agent-role">implement</span></div><h3>Build</h3><p>Implement the reset flow, add tests, and summarize the diff.</p></div>
@@ -222,7 +223,7 @@
     <section class="section" id="get-started" aria-labelledby="start-heading">
       <div class="container start-grid">
         <div class="start-copy">
-          <p class="eyebrow"><span class="eyebrow-index">05</span>Install</p>
+          <p class="eyebrow">Install</p>
           <h2 id="start-heading">Up and running in a minute</h2>
           <p class="lead">Install a1, open a project, and start with a small task. Bring your pi extensions and the model provider you already use.</p>
           <ol class="start-steps">
@@ -231,6 +232,7 @@
             <li><span class="step-index">3</span><div><strong>Connect a model</strong><p>Use <code>/login</code> for provider access and <code>/model</code> to choose a model. Usage is billed by your provider.</p></div></li>
           </ol>
         </div>
+        <div class="start-side">
         <div class="install-panel">
           <div class="install-titlebar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>install</span><span class="install-source">npm</span></div>
           <div class="install-body">
@@ -240,12 +242,14 @@
             <dl class="install-meta"><div><dt>updates</dt><dd><code>a1 update</code></dd></div><div><dt>extensions</dt><dd><code>a1 install npm:&lt;package&gt;</code></dd></div><div><dt>source</dt><dd><a href="https://github.com/timurproko/a1">github.com/timurproko/a1</a></dd></div></dl>
           </div>
         </div>
+        <div class="ascii-field ascii-field-section" data-ascii="sphere" aria-hidden="true"><canvas></canvas></div>
+        </div>
       </div>
     </section>
 
     <section class="section section-alt" id="faq" aria-labelledby="faq-heading">
       <div class="container faq-inner">
-        <div class="section-head"><p class="eyebrow"><span class="eyebrow-index">06</span>FAQ</p><h2 id="faq-heading">Questions, answered plainly</h2></div>
+        <div class="section-head"><p class="eyebrow">FAQ</p><h2 id="faq-heading">Questions, answered plainly</h2></div>
         <div class="faq-tools"><button id="faq-toggle-all" type="button" aria-controls="faq-list" hidden><span data-faq-label>Expand all</span><span aria-hidden="true">+</span></button></div>
         <div class="faq-list" id="faq-list">
           <details><summary>What exactly is a1?<span aria-hidden="true">+</span></summary><div class="faq-answer"><p>a1, Agent Number One, is an open-source, terminal-native AI coding agent built on pi. It adds an a1-owned interface, persistent prompt history, and optional next-step suggestions around pi’s coding engine. A multi-agent workspace is the longer-term direction, not a currently available capability.</p></div></details>
@@ -272,7 +276,7 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div class="footer-brand"><span class="brand-mark" aria-hidden="true">a1</span><p>Agent Number One. A terminal coding agent built on pi.</p></div>
+      <div class="footer-brand"><span class="brand-mark" aria-hidden="true">a1</span></div>
       <nav aria-label="Footer navigation"><a href="https://github.com/timurproko/a1">GitHub ↗</a><a href="https://www.npmjs.com/package/@timurproko/a1">npm ↗</a><a href="https://pi.dev">pi ↗</a><a href="https://github.com/timurproko/a1/blob/HEAD/LICENSE">MIT License ↗</a></nav>
     </div>
   </footer>
