@@ -1,6 +1,6 @@
 # Agent Number One website
 
-English-language, static product site for A1. HTML, CSS, and vanilla JavaScript; no runtime dependencies, build step, analytics, or model calls.
+English-language, static product site for a1. HTML, CSS, and vanilla JavaScript; no runtime dependencies, build step, analytics, or model calls.
 
 ## Preview
 
@@ -26,9 +26,9 @@ Fonts load from Google Fonts, with system fallbacks. The demo uses authored loca
 
 ## Content and claims
 
-The core positioning is **pi's coding engine, an A1-designed experience, and a multi-agent direction**. Keep copy concrete and conversational: explain actual benefits rather than adding numbered categories, abstract slogans, or invented metrics. The comparison is additive, not a claim that pi extensions cannot offer similar capabilities.
+The core positioning is **pi's coding engine, an a1-designed experience, and a multi-agent direction**. Keep copy concrete and conversational: explain actual benefits rather than adding numbered categories, abstract slogans, or invented metrics. The comparison is additive, not a claim that pi extensions cannot offer similar capabilities.
 
-Current copy was checked against the A1 checkout's:
+Current copy was checked against the a1 checkout's:
 
 - `README.md`: installer, extension management, and update commands.
 - `docs/features/launch-profiles.md`: profile separation and session resume.
@@ -36,7 +36,7 @@ Current copy was checked against the A1 checkout's:
 - `docs/architecture/prompt-suggestions.md`: optional suggestions and separate Tab/Enter actions.
 - `docs/architecture/boundaries.md`: the multi-agent workspace is on hold and not available today.
 
-The table compares the pi foundation used by A1, not every upstream release or community package. Features can differ between stable and development releases. Recheck these documents before changing availability claims. Do not describe A1 as a shipping multi-agent orchestrator or terminal multiplexer until the implementation is available. Model costs, remote inference, separate profiles, and unencrypted local prompt history are disclosed explicitly.
+The table compares the pi foundation used by a1, not every upstream release or community package. Features can differ between stable and development releases. Recheck these documents before changing availability claims. Do not describe a1 as a shipping multi-agent orchestrator or terminal multiplexer until the implementation is available. Model costs, remote inference, separate profiles, and unencrypted local prompt history are disclosed explicitly.
 
 ## Checks
 

@@ -4,7 +4,7 @@
     <linearGradient id="glass" x1="55" y1="232" x2="425" y2="395" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#f0f2fb"/></linearGradient>
     <mask id="a1-cutout" maskUnits="userSpaceOnUse" x="0" y="0" width="480" height="480" style="mask-type: luminance">
       <rect width="480" height="480" fill="#fff"/>
-      <text x="238" y="108" text-anchor="middle" fill="#000" font-family="'DM Sans', Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="-3.5">A1</text>
+      <text x="238" y="108" text-anchor="middle" fill="#000" font-family="'DM Sans', Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="-3.5">a1</text>
     </mask>
     <filter id="shadow" x="-40%" y="-40%" width="180%" height="190%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#265a64" flood-opacity=".2"/></filter>
   </defs>

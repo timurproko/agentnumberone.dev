@@ -80,7 +80,7 @@ copyButton.addEventListener('click', async () => {
   try {
     if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(command.textContent);
-    copyStatus.textContent = 'Copied. Paste it into your terminal to install A1.';
+    copyStatus.textContent = 'Copied. Paste it into your terminal to install a1.';
     copyButton.setAttribute('aria-label', 'Install command copied');
     if (!reducedMotion.matches) {
       // Restart the one-shot sweep on every successful copy.

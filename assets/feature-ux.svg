@@ -9,13 +9,13 @@
     <linearGradient id="panel" x1="65" y1="54" x2="400" y2="370" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#f0f2fb"/></linearGradient>
     <mask id="a1-cutout" maskUnits="userSpaceOnUse" x="0" y="0" width="480" height="480" style="mask-type: luminance">
       <rect width="480" height="480" fill="#fff"/>
-      <text x="238" y="108" text-anchor="middle" fill="#000" font-family="'DM Sans', Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="-3.5">A1</text>
+      <text x="238" y="108" text-anchor="middle" fill="#000" font-family="'DM Sans', Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="-3.5">a1</text>
     </mask>
     <filter id="shadow" x="-40%" y="-40%" width="180%" height="200%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#474e7b" flood-opacity=".22"/></filter>
   </defs>
   <g mask="url(#a1-cutout)">
 
-  <!-- A flat, simplified A1 session with real input and tool-block conventions. -->
+  <!-- A flat, simplified a1 session with real input and tool-block conventions. -->
   <g filter="url(#shadow)">
     <rect x="55" y="54" width="370" height="336" rx="4" fill="url(#panel)" fill-opacity=".9" stroke="#fff" stroke-opacity=".85"/>
 
