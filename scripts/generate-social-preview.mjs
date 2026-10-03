@@ -84,16 +84,18 @@ function injectSocialMeta(html, block) {
   return html.replace(markerPattern, block);
 }
 
-function buildCardHtml({ headline, description, url }) {
+// Only the mark and the headline: LinkedIn often shows this image as a ~160px
+// thumbnail, where anything smaller than the headline becomes unreadable.
+function buildCardHtml({ headline }) {
   const title = headline
     .map(({ text, accent }) => `<span${accent ? ' class="accent"' : ''}>${escapeHtml(text)}</span>`)
-    .join(' ');
+    .join('');
 
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400&family=Inter:wght@400&family=JetBrains+Mono:wght@500;700&display=block">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400&family=JetBrains+Mono:wght@700&display=block">
   <style>
     * { box-sizing: border-box; }
     body {
@@ -104,7 +106,6 @@ function buildCardHtml({ headline, description, url }) {
       position: relative;
       background: #0a0a0b;
       color: #ededf0;
-      font-family: Inter, 'Segoe UI', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
     /* One accent glow and a faint grid, matching the hero. */
@@ -125,64 +126,31 @@ function buildCardHtml({ headline, description, url }) {
       flex-direction: column;
       justify-content: space-between;
     }
-    .top { display: flex; align-items: center; justify-content: space-between; }
     .mark {
       display: grid;
       place-items: center;
-      width: 72px;
-      height: 72px;
+      width: 104px;
+      height: 104px;
       background: #121f9e;
       color: #fff;
-      font: 700 46px/1 'JetBrains Mono', Consolas, monospace;
+      font: 700 66px/1 'JetBrains Mono', Consolas, monospace;
       letter-spacing: -.08em;
       padding-right: .08em;
     }
-    .tag {
-      height: 34px;
-      display: inline-flex;
-      align-items: center;
-      padding: 0 14px;
-      border: 1px solid #4a60ff66;
-      background: #4a60ff1f;
-      border-radius: 6px;
-      color: #5a6dff;
-      font: 500 17px/1 'JetBrains Mono', Consolas, monospace;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
     h1 {
       margin: 0;
-      max-width: 1000px;
-      font: 400 100px/.94 'Barlow Condensed', 'Arial Narrow', sans-serif;
+      font: 400 136px/.92 'Barlow Condensed', 'Arial Narrow', sans-serif;
       letter-spacing: -.025em;
       text-transform: uppercase;
     }
+    h1 span { display: block; }
     h1 .accent { color: #c3ccff; }
-    p {
-      margin: 24px 0 0;
-      max-width: 900px;
-      color: #b9b9c1;
-      font-size: 26px;
-      line-height: 1.35;
-    }
-    .url {
-      color: #80808a;
-      font: 500 22px/1 'JetBrains Mono', Consolas, monospace;
-    }
-    .url span { color: #4a60ff; }
   </style>
 </head>
 <body>
   <main>
-    <div class="top">
-      <div class="mark">a1</div>
-      <div class="tag">Open source · Built on pi</div>
-    </div>
-    <section>
-      <h1>${title}</h1>
-      <p>${escapeHtml(description)}</p>
-    </section>
-    <div class="url"><span>❯</span> ${escapeHtml(url.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</div>
+    <div class="mark">a1</div>
+    <h1>${title}</h1>
   </main>
 </body>
 </html>`;
@@ -219,7 +187,7 @@ async function main() {
   if (nextHtml !== html) await fs.writeFile(indexPath, nextHtml);
 
   await fs.mkdir(socialDir, { recursive: true });
-  await renderPreview(buildCardHtml({ headline: getHeadline(html), description, url: siteUrl }));
+  await renderPreview(buildCardHtml({ headline: getHeadline(html) }));
 
   console.log(`Generated ${path.relative(rootDir, imagePath)}`);
 }
