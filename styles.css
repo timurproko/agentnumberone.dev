@@ -494,7 +494,8 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   .start-grid { gap: 0; }
   .start-copy { display: contents; }
   .start-side { order: 1; min-height: 660px; margin-top: 28px; }
-  .start-steps { order: 2; }
+  .start-steps { order: 2; border-top: 0; }
+  .start-steps li:last-child { border-bottom: 0; }
   .container { width: calc(100% - 32px); }
   .header-inner { height: 56px; gap: 12px; }
   .section-menu { display: block; }
