@@ -453,6 +453,16 @@ if (faqToggle) {
   // The logo scrolls home: keep the current label until the page reaches the top.
   document.querySelector('.brand')?.addEventListener('click', () => { hold(); setMenu(false); });
   homeLink?.addEventListener('click', () => { hold(); move(null); setMenu(false); });
+  // Mobile: Install jumps to the install panel itself, past the section intro.
+  const installPanel = document.querySelector('.install-panel');
+  document.querySelectorAll('a[href="#get-started"]').forEach(link => link.addEventListener('click', event => {
+    if (!installPanel || !window.matchMedia('(max-width: 600px)').matches) return;
+    event.preventDefault();
+    hold();
+    setMenu(false);
+    installPanel.scrollIntoView({ block: 'start' });
+    history.pushState(null, '', '#get-started');
+  }));
   window.addEventListener('scroll', spy, { passive: true });
   window.addEventListener('resize', () => { if (active) move(active); spy(); });
   if (document.fonts?.ready) document.fonts.ready.then(() => { if (active) move(active); });

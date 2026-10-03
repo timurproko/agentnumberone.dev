@@ -372,6 +372,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 @media (max-width: 600px) {
   html { scroll-padding-top: 56px; }
   .faq-tools { top: 56px; }
+  .install-panel { scroll-margin-top: 16px; }
   .container { width: calc(100% - 32px); }
   .header-inner { height: 56px; gap: 12px; }
   .section-menu { display: block; }
