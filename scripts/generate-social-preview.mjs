@@ -136,7 +136,7 @@ function buildCardHtml({ headline, description, url }) {
       place-items: center;
       width: 80px;
       height: 80px;
-      background: #121f9e;
+      background: #2638d2; /* matches assets/favicon.svg */
       color: #fff;
       font: 700 50px/1 'JetBrains Mono', Consolas, monospace;
       letter-spacing: -.08em;
