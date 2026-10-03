@@ -246,7 +246,8 @@ if (faqToggle) {
         const A = 1.1 + t * 0.55, B = 0.5 + t * 0.28;
         const cA = Math.cos(A), sA = Math.sin(A), cB = Math.cos(B), sB = Math.sin(B);
         const R1 = 1, R2 = 2, K2 = 5;
-        const K1 = Math.min(s.cols, s.rows) * K2 / (2 * (R1 + R2)) * 0.92;
+        // Scaled so the spinning outline reaches the same radius as the sphere (0.42).
+        const K1 = Math.min(s.cols, s.rows) * K2 / (2 * (R1 + R2)) * 0.69;
         const cx = s.cols / 2, cy = s.rows / 2;
         for (let theta = 0; theta < 6.28; theta += 0.07) {
           const ct = Math.cos(theta), st = Math.sin(theta);
@@ -372,11 +373,50 @@ if (faqToggle) {
   nav.appendChild(indicator);
 
   let active = null;
-  let lockUntil = 0;
+  let locked = false;
+  let unlockTimer = 0;
+  let lockStarted = 0;
+
+  // Release the hold once the smooth scroll has been idle briefly (or after 3s at most).
+  function scheduleUnlock() {
+    clearTimeout(unlockTimer);
+    const wait = performance.now() - lockStarted > 3000 ? 0 : 150;
+    unlockTimer = setTimeout(() => { locked = false; spy(); }, wait);
+  }
+
+  // Freeze the current label while a smooth scroll travels past other sections.
+  function hold() {
+    locked = true;
+    lockStarted = performance.now();
+    scheduleUnlock();
+  }
+
+  // Mobile: a toggle naming the current section that opens a list of all sections.
+  const menu = document.querySelector('.section-menu');
+  const toggle = menu?.querySelector('.section-menu-toggle');
+  const label = menu?.querySelector('.section-menu-label');
+  const list = menu?.querySelector('.section-menu-list');
+  const menuLinks = list ? links.map(link => list.appendChild(link.cloneNode(true))) : [];
+
+  function setMenu(open) {
+    if (!toggle) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    list.hidden = !open;
+  }
+
+  if (toggle) {
+    toggle.addEventListener('click', () => setMenu(list.hidden));
+    document.addEventListener('click', event => { if (!menu.contains(event.target)) setMenu(false); });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !list.hidden) { setMenu(false); toggle.focus(); }
+    });
+  }
 
   function move(link) {
     active = link;
     links.forEach(item => item.classList.toggle('is-active', item === link));
+    menuLinks.forEach((item, index) => item.classList.toggle('is-active', links[index] === link));
+    if (label) label.textContent = link ? link.textContent : 'Menu';
     if (!link) { indicator.style.opacity = '0'; return; }
     indicator.style.opacity = '1';
     indicator.style.width = link.offsetWidth + 'px';
@@ -384,7 +424,7 @@ if (faqToggle) {
   }
 
   function spy() {
-    if (performance.now() < lockUntil) return;
+    if (locked) { scheduleUnlock(); return; }
     const headerHeight = document.querySelector('.site-header')?.offsetHeight || 72;
     const line = headerHeight + 2;
     let current = null;
@@ -394,11 +434,17 @@ if (faqToggle) {
     if (current !== active) move(current);
   }
 
-  links.forEach(link => link.addEventListener('click', () => {
-    // Hold the clicked item while the smooth scroll travels past other sections.
-    lockUntil = performance.now() + 900;
-    move(link);
-  }));
+  links.forEach((link, index) => {
+    const select = () => {
+      hold();
+      move(link);
+      setMenu(false);
+    };
+    link.addEventListener('click', select);
+    menuLinks[index]?.addEventListener('click', select);
+  });
+  // The logo scrolls home: keep the current label until the page reaches the top.
+  document.querySelector('.brand')?.addEventListener('click', () => { hold(); setMenu(false); });
   window.addEventListener('scroll', spy, { passive: true });
   window.addEventListener('resize', () => { if (active) move(active); spy(); });
   if (document.fonts?.ready) document.fonts.ready.then(() => { if (active) move(active); });
