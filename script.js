@@ -187,6 +187,112 @@ if ('IntersectionObserver' in window) {
   observer.observe(document.querySelector('.terminal'));
 }
 
+// Prompt history card: on hover, walk the selection up to the oldest prompt
+// and back down, flashing ↑ or ↓ for each step and recalling each prompt into
+// the editor at its own length.
+const history = document.querySelector('.mini-history');
+if (history) {
+  const card = history.closest('.feature-card');
+  const rows = [...history.querySelectorAll('.mini-row')];
+  const recalled = card.querySelector('.mini-skel-recalled');
+  const keys = Object.fromEntries([...card.querySelectorAll('kbd[data-key]')].map(kbd => [kbd.dataset.key, kbd]));
+  const resting = rows.findIndex(row => row.classList.contains('is-active'));
+  let walk = 0;
+  let release = 0;
+  const select = index => {
+    rows.forEach((row, n) => row.classList.toggle('is-active', n === index));
+    recalled.style.setProperty('--w', rows[index].querySelector('.mini-skel').style.getPropertyValue('--w'));
+  };
+  const press = key => {
+    clearTimeout(release);
+    keys[key].classList.add('is-pressed');
+    release = setTimeout(() => keys[key].classList.remove('is-pressed'), 220);
+  };
+  card.addEventListener('mouseenter', () => {
+    if (reducedMotion.matches) return;
+    let index = resting;
+    let step = -1;
+    walk = setInterval(() => {
+      if (index + step < 0 || index + step >= rows.length) step = -step;
+      index += step;
+      press(step < 0 ? 'up' : 'down');
+      select(index);
+    }, 700);
+  });
+  card.addEventListener('mouseleave', () => {
+    clearInterval(walk);
+    clearTimeout(release);
+    Object.values(keys).forEach(kbd => kbd.classList.remove('is-pressed'));
+    select(resting);
+  });
+}
+
+// Suggestion card: on hover, loop accept (Tab) → send (Enter) → the agent
+// streams a reply → a fresh suggestion, like a short a1 session.
+const suggest = document.querySelector('.mini-suggest');
+if (suggest) {
+  const card = suggest.closest('.feature-card');
+  const chat = card.querySelector('.mini-chat');
+  const ghost = suggest.querySelector('.mini-skel-suggested');
+  const keys = Object.fromEntries([...suggest.querySelectorAll('kbd')].map(kbd => [kbd.dataset.key, kbd]));
+  const restingChat = chat.innerHTML;
+  const restingWidth = ghost.style.getPropertyValue('--w');
+  let run = 0;
+  let timer = 0;
+  const pause = ms => new Promise(resolve => { timer = setTimeout(resolve, ms); });
+  const width = (min, max) => `${Math.round(min + Math.random() * (max - min))}%`;
+  const bar = w => Object.assign(document.createElement('span'), { className: 'mini-skel', style: `--w: ${w}` });
+  async function press(key) {
+    keys[key].classList.add('is-pressed');
+    await pause(220);
+    keys[key].classList.remove('is-pressed');
+  }
+  async function loop(id) {
+    const live = () => id === run;
+    while (live()) {
+      await pause(1100);
+      if (!live()) return;
+      await press('tab');
+      if (!live()) return;
+      suggest.classList.add('is-accepted');
+      await pause(900);
+      if (!live()) return;
+      await press('enter');
+      if (!live()) return;
+      // The accepted prompt moves into the transcript and the editor empties
+      const prompt = document.createElement('div');
+      prompt.className = 'mini-chat-prompt';
+      prompt.innerHTML = '<span class="prompt-glyph">❯</span>';
+      prompt.append(bar(ghost.style.getPropertyValue('--w')));
+      chat.append(prompt);
+      suggest.classList.remove('is-accepted');
+      suggest.classList.add('is-empty');
+      for (let line = 0, lines = 6 + Math.floor(Math.random() * 7); line < lines; line++) {
+        await pause(180);
+        if (!live()) return;
+        chat.append(bar(line === lines - 1 ? width(30, 55) : width(70, 92)));
+      }
+      while (chat.children.length > 24) chat.firstElementChild.remove();
+      await pause(500);
+      if (!live()) return;
+      ghost.style.setProperty('--w', width(40, 64));
+      suggest.classList.remove('is-empty');
+    }
+  }
+  card.addEventListener('mouseenter', () => {
+    if (reducedMotion.matches) return;
+    loop(++run);
+  });
+  card.addEventListener('mouseleave', () => {
+    run += 1;
+    clearTimeout(timer);
+    Object.values(keys).forEach(kbd => kbd.classList.remove('is-pressed'));
+    suggest.classList.remove('is-accepted', 'is-empty');
+    ghost.style.setProperty('--w', restingWidth);
+    chat.innerHTML = restingChat;
+  });
+}
+
 const copyButton = document.querySelector('#copy-install');
 const copyStatus = document.querySelector('#copy-status');
 const copyCommand = document.querySelector('.copy-command');

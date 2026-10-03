@@ -236,13 +236,14 @@ Duration  1.9s</pre>
           <article class="feature-card">
             <div class="feature-visual" aria-hidden="true">
               <div class="mini-ui">
-                <div class="mini-ui-bar"><span>history</span><span class="mini-ui-keys"><kbd>↑</kbd><kbd>↓</kbd></span></div>
-                <div class="mini-ui-list">
-                  <div class="mini-row"><span class="prompt-glyph">❯</span><span class="mini-text">Add tests for expired tokens</span><span class="mini-tag">orbit · 2d</span></div>
-                  <div class="mini-row"><span class="prompt-glyph">❯</span><span class="mini-text">Explain the retry policy in src/net</span><span class="mini-tag">relay · 5d</span></div>
-                  <div class="mini-row is-active"><span class="prompt-glyph">❯</span><span class="mini-text">Handle empty config files without breaking…</span><span class="mini-tag">orbit · now</span></div>
-                  <div class="mini-row"><span class="prompt-glyph">❯</span><span class="mini-text">Migrate the logger to structured output</span><span class="mini-tag">relay · 1w</span></div>
+                <div class="mini-ui-bar"><span>prompt history</span></div>
+                <div class="mini-ui-list mini-history">
+                  <div class="mini-row"><span class="prompt-glyph">❯</span><span class="mini-skel" style="--w: 46%"></span><span class="mini-tag"><span class="mini-when">1w</span></span></div>
+                  <div class="mini-row"><span class="prompt-glyph">❯</span><span class="mini-skel" style="--w: 60%"></span><span class="mini-tag"><span class="mini-when">3d</span></span></div>
+                  <div class="mini-row"><span class="prompt-glyph">❯</span><span class="mini-skel" style="--w: 54%"></span><span class="mini-tag"><span class="mini-when">1d</span></span></div>
+                  <div class="mini-row is-active"><span class="prompt-glyph">❯</span><span class="mini-skel" style="--w: 40%"></span><span class="mini-tag"><span class="mini-when">2h</span></span></div>
                 </div>
+                <div class="mini-ui-input is-pinned"><span class="prompt-glyph">❯</span><span class="mini-sg-caret is-before"><span class="mini-caret"></span></span><span class="mini-skel mini-skel-recalled" style="--w: 40%"></span><span class="mini-tag mini-ui-keys"><kbd data-key="up">↑</kbd><kbd data-key="down">↓</kbd></span></div>
               </div>
             </div>
             <div class="card-copy"><h3>Persistent prompt history</h3><p>Recall what you typed across sessions and projects, not just the current one. Stored locally. Can be turned off in Settings.</p></div>
@@ -250,10 +251,9 @@ Duration  1.9s</pre>
           <article class="feature-card">
             <div class="feature-visual" aria-hidden="true">
               <div class="mini-ui">
-                <div class="mini-ui-bar"><span>suggestion</span><span class="mini-tag">optional</span></div>
-                <div class="mini-ui-response"><span class="check">✓</span> 8 tests passed. Empty files now return an empty config.</div>
-                <div class="mini-ui-input"><span class="prompt-glyph">❯</span><span class="mini-ghost">Review the diff for edge cases<span class="mini-caret"></span></span></div>
-                <div class="mini-ui-hints"><span><kbd>Tab</kbd> accept into editor</span><span><kbd>Enter</kbd> send</span><span><kbd>Esc</kbd> dismiss</span></div>
+                <div class="mini-ui-bar"><span>next step</span></div>
+                <div class="mini-ui-stream mini-chat"><span class="mini-skel" style="--w: 86%"></span><span class="mini-skel" style="--w: 62%"></span><div class="mini-chat-prompt"><span class="prompt-glyph">❯</span><span class="mini-skel" style="--w: 44%"></span></div><span class="mini-skel" style="--w: 82%"></span><span class="mini-skel" style="--w: 90%"></span><span class="mini-skel" style="--w: 48%"></span></div>
+                <div class="mini-ui-input is-pinned mini-suggest"><span class="prompt-glyph">❯</span><span class="mini-sg-caret is-before"><span class="mini-caret"></span></span><span class="mini-skel mini-skel-suggested" style="--w: 58%"></span><span class="mini-sg-caret is-after"><span class="mini-caret"></span></span><span class="mini-tag"><kbd data-key="tab">Tab</kbd><kbd data-key="enter">↵</kbd></span></div>
               </div>
             </div>
             <div class="card-copy"><h3>Next-step suggestions</h3><p>After a response, a1 can propose a next prompt. Accepting only places it in the editor. Nothing is sent until you press Enter.</p></div>
@@ -261,14 +261,18 @@ Duration  1.9s</pre>
           <article class="feature-card">
             <div class="feature-visual" aria-hidden="true">
               <div class="mini-ui mini-ui-scroll">
-                <div class="mini-ui-bar"><span>response</span><span class="mini-tag">↑ 24 lines above</span></div>
+                <div class="mini-ui-bar"><span>response</span></div>
                 <div class="mini-ui-stream">
+                  <div class="mini-scroll-content">
+                  <div class="mini-skel" style="--w: 66%"></div><div class="mini-skel" style="--w: 90%"></div><div class="mini-skel mini-skel-code" style="--w: 58%"></div><div class="mini-skel mini-skel-code" style="--w: 76%"></div>
                   <div class="mini-skel" style="--w: 78%"></div><div class="mini-skel" style="--w: 92%"></div><div class="mini-skel" style="--w: 64%"></div>
                   <div class="mini-skel mini-skel-code" style="--w: 70%"></div><div class="mini-skel mini-skel-code" style="--w: 84%"></div><div class="mini-skel mini-skel-code" style="--w: 52%"></div>
                   <div class="mini-skel" style="--w: 88%"></div><div class="mini-skel" style="--w: 40%"></div>
+                  <div class="mini-skel" style="--w: 74%"></div><div class="mini-skel mini-skel-code" style="--w: 62%"></div><div class="mini-skel mini-skel-code" style="--w: 80%"></div><div class="mini-skel" style="--w: 56%"></div>
+                  </div>
                   <span class="mini-scrollbar"><i></i></span>
                 </div>
-                <div class="mini-ui-input is-pinned"><span class="prompt-glyph">❯</span><span class="mini-text">pinned editor stays in reach</span><span class="mini-tag">↵</span></div>
+                <div class="mini-ui-input is-pinned"><span class="prompt-glyph">❯</span><span class="mini-text">pinned editor stays in reach</span><span class="mini-sg-caret"><span class="mini-caret"></span></span></div>
               </div>
             </div>
             <div class="card-copy"><h3>An interface that keeps its place</h3><p>Prompts, tool output, and responses are laid out to be read. Scroll back through a long answer, then return to the editor without losing context.</p></div>

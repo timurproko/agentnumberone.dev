@@ -206,21 +206,74 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .mini-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .mini-tag { margin-left: auto; flex-shrink: 0; color: var(--muted); font-size: 10.5px; }
 .mini-row.is-active { background: var(--accent-dim); border-left-color: var(--accent); color: var(--ink); }
+/* Fixed-width age column so the separators line up */
+.mini-when { display: inline-block; width: 3ch; }
 .mini-row.is-active .mini-tag { color: var(--accent-text); }
-.mini-ui-response { padding: 12px 12px 10px; color: var(--muted); }
-.mini-ui-response .check { margin-right: 4px; }
 .mini-ui-input { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); }
 .mini-ui-input.is-pinned { margin-top: auto; background: var(--surface-2); color: var(--ink); }
-.mini-ghost { color: var(--muted); font-style: italic; }
-.mini-caret { display: inline-block; width: 1px; height: 12px; margin-left: 1px; background: var(--accent); vertical-align: -2px; animation: caret-blink 1.1s steps(1) infinite; }
+.mini-caret { display: inline-block; width: 1px; height: 12px; margin-left: 1px; background: var(--accent); vertical-align: -2px; }
+/* The illustrations come alive only while their card is hovered */
+.feature-card:hover .mini-caret { animation: caret-blink 1.1s steps(1) infinite; }
 @keyframes caret-blink { 50% { opacity: 0; } }
-.mini-ui-hints { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 10px 12px; color: var(--muted); font-size: 10.5px; }
-.mini-ui-hints kbd { margin-right: 4px; }
 .mini-ui-stream { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 14px 22px 14px 12px; }
 .mini-skel { height: 7px; width: var(--w); border-radius: 3px; background: var(--line-2); }
 .mini-skel-code { background: #4a60ff2e; }
+/* Placeholder text inside a row: the bar takes its width from the row */
+.mini-row .mini-skel, .mini-ui-input .mini-skel { flex: 0 1 auto; min-width: 0; }
+.mini-row.is-active .mini-skel { background: var(--muted); }
+/* Prompt history: older entries fade toward the top; the highlighted one is
+   recalled into the editor below (script.js walks it up and back down on hover,
+   flashing the arrow key for each step) */
+.mini-history .mini-row { padding-block: 6px; }
+.mini-history .mini-row:nth-child(1) { opacity: 0.45; }
+.mini-history .mini-row:nth-child(2) { opacity: 0.7; }
+.mini-skel-recalled { background: var(--ink-2); }
+/* A suggestion waits as grey ghost text after the caret. On hover script.js
+   runs the loop: Tab accepts it (white, caret to its end), Enter sends it into
+   the transcript, the agent streams a reply, and a new suggestion appears. */
+.mini-chat { flex: 1; min-height: 0; overflow: hidden; justify-content: flex-end; }
+.mini-chat > * { flex-shrink: 0; animation: chat-in 0.25s both; }
+@keyframes chat-in { from { opacity: 0; transform: translateY(3px); } }
+.mini-chat-prompt { display: flex; align-items: center; gap: 8px; margin-block: 2px; }
+.mini-chat-prompt .mini-skel { flex: 0 1 auto; background: #b9b9c18c; }
+.mini-skel-suggested { background: #80808a59; transition: background 0.2s; }
+.mini-suggest.is-accepted .mini-skel-suggested { background: var(--ink-2); }
+.mini-suggest.is-empty .mini-skel-suggested { visibility: hidden; }
+.mini-sg-caret { display: inline-flex; width: 1px; margin-inline: -4px; }
+.mini-sg-caret .mini-caret { flex-shrink: 0; margin-left: 0; }
+.mini-sg-caret.is-before { margin-inline: -2px -6px; }
+.mini-sg-caret.is-after, .mini-suggest.is-accepted .is-before { opacity: 0; }
+.mini-suggest.is-accepted .is-after { opacity: 1; }
+.mini-suggest .mini-tag { display: flex; gap: 4px; }
+.mini-ui kbd { transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.15s; }
+.mini-ui kbd.is-pressed { border-color: var(--accent); background: var(--accent-dim); color: var(--ink); transform: translateY(1px); }
 .mini-scrollbar { position: absolute; right: 8px; top: 12px; bottom: 12px; width: 3px; border-radius: 2px; background: var(--line); }
 .mini-scrollbar i { position: absolute; left: 0; right: 0; top: 38%; height: 32%; border-radius: 2px; background: var(--muted); }
+/* Long response: the window clips a taller body (four lines sit above it).
+   On hover it scrolls in quick flicks with pauses, up and back, then down and
+   back, like someone scrolling, while the thumb tracks it */
+.mini-ui-scroll .mini-ui-stream { flex: 1; min-height: 0; padding-top: 0; overflow: hidden; }
+.mini-scroll-content { display: flex; flex-direction: column; gap: 8px; margin-top: -52px; }
+@media (prefers-reduced-motion: no-preference) {
+  .feature-card:hover .mini-scroll-content { animation: scroll-body 5.6s infinite; }
+  .feature-card:hover .mini-scrollbar i { animation: scroll-thumb 5.6s infinite; }
+}
+@keyframes scroll-body {
+  0%, 6% { transform: none; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  11%, 24% { transform: translateY(45px); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  29%, 40% { transform: none; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  45%, 58% { transform: translateY(-30px); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  63%, 76% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  82%, 100% { transform: none; }
+}
+@keyframes scroll-thumb {
+  0%, 6% { top: 38%; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  11%, 24% { top: 14%; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  29%, 40% { top: 38%; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  45%, 58% { top: 53%; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  63%, 76% { top: 68%; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }
+  82%, 100% { top: 38%; }
+}
 .card-copy { padding: 22px 24px 26px; }
 .card-copy h3 { margin-bottom: 8px; }
 .card-copy p { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
