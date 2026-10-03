@@ -1,40 +1,182 @@
 'use strict';
 
 // Authored local illustrations only: no commands, model calls, or user data.
+// Replay re-reveals the transcript as if it were streaming; the full transcript
+// stays the default (no JavaScript, reduced motion, hidden tab).
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const panels = [...document.querySelectorAll('.demo-panel')];
 const announcement = document.querySelector('#demo-announcement');
-let replayTimer;
+const SPINNER = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏';
+const demoPanel = document.querySelector('.demo-panel');
+const demoLines = [...demoPanel.querySelectorAll('.demo-line')];
+const editorText = document.querySelector('.tui-editor-text');
+const working = document.querySelector('.terminal-working');
+const spinner = working.querySelector('.tui-spinner');
+const elapsed = working.querySelector('.tui-elapsed');
+const workingLabel = working.querySelector('.tui-working-label');
+const demoTurns = [...demoPanel.querySelectorAll('.demo-turn')];
 
-function stopReplay() {
-  clearTimeout(replayTimer);
-  panels.forEach(panel => panel.classList.remove('is-replaying'));
+// Every text node with its full text, so a replay can blank and refill it.
+const demoTexts = [];
+const walker = document.createTreeWalker(demoPanel, NodeFilter.SHOW_TEXT);
+while (walker.nextNode()) demoTexts.push({ node: walker.currentNode, full: walker.currentNode.textContent });
+
+let replayRun = 0;
+let replayTimer = 0;
+let workingTicker = 0;
+const wait = ms => new Promise(resolve => { replayTimer = setTimeout(resolve, ms); });
+
+// Keep the window on the latest lines, like a terminal following its output.
+function follow(smooth) {
+  const top = demoPanel.scrollHeight - demoPanel.clientHeight;
+  // A prompt whose own row has scrolled away is pinned in a1's quiet style.
+  demoTurns.forEach(turn => turn.firstElementChild.classList.toggle('is-pinned', turn.offsetTop < top));
+  demoPanel.scrollTo({ top, behavior: smooth && !reducedMotion.matches ? 'smooth' : 'auto' });
 }
 
-panels.forEach(panel => {
-  panel.querySelectorAll('.demo-line').forEach((line, index) => {
-    line.style.setProperty('--line-index', index);
-  });
-});
+// a1's working shimmer: a two-letter highlight sweeps the label one letter
+// every three spinner frames, then rests for a pass; the ellipsis stays muted.
+function paintWorkingLabel(phase) {
+  const label = 'Working';
+  const step = Math.floor(phase / 3) % (label.length * 2);
+  if (step >= label.length) {
+    workingLabel.textContent = `${label}…`;
+    return;
+  }
+  const lit = document.createElement('span');
+  lit.className = 'tui-shimmer';
+  lit.textContent = label.slice(step, step + 2);
+  workingLabel.replaceChildren(label.slice(0, step), lit, `${label.slice(step + 2)}…`);
+}
+
+function setWorking(on) {
+  clearInterval(workingTicker);
+  working.classList.toggle('is-on', on);
+  if (!on) return;
+  elapsed.textContent = '0s';
+  const startedAt = performance.now();
+  let frame = 0;
+  let phase = 0;
+  paintWorkingLabel(phase);
+  workingTicker = setInterval(() => {
+    frame = (frame + 1) % SPINNER.length;
+    spinner.textContent = SPINNER[frame];
+    paintWorkingLabel(++phase);
+    elapsed.textContent = `${Math.floor((performance.now() - startedAt) / 1000)}s`;
+  }, 80);
+}
+
+// Refill an element's text nodes in chunks: characters, words, or lines.
+async function stream(el, chunk, delay, id) {
+  const parts = demoTexts.filter(part => el.contains(part.node));
+  parts.forEach(part => { part.node.textContent = ''; });
+  const pattern = { char: /[\s\S]/g, word: /\s*\S+/g, line: /[^\n]*\n?/g }[chunk];
+  for (const part of parts) {
+    for (const [piece] of part.full.matchAll(pattern)) {
+      if (!piece) continue;
+      part.node.textContent += piece;
+      follow(false);
+      await wait(delay);
+      if (id !== replayRun) return;
+    }
+  }
+}
+
+function show(el) {
+  el.classList.remove('is-pending');
+  follow(true);
+}
+
+function stopReplay() {
+  replayRun += 1;
+  clearTimeout(replayTimer);
+  setWorking(false);
+  editorText.textContent = '';
+  demoTexts.forEach(part => { part.node.textContent = part.full; });
+  demoPanel.classList.remove('is-replaying');
+  demoPanel.querySelectorAll('.is-pending').forEach(el => el.classList.remove('is-pending'));
+  follow(false);
+}
+
+async function replay() {
+  stopReplay();
+  if (reducedMotion.matches) return;
+  const id = replayRun;
+  const live = () => id === replayRun;
+  demoPanel.classList.add('is-replaying');
+  demoLines.forEach(line => line.classList.add('is-pending'));
+  demoPanel.querySelectorAll('.tui-out, .tui-took').forEach(el => el.classList.add('is-pending'));
+  follow(false);
+
+  for (const line of demoLines) {
+    if (line.classList.contains('tui-prompt')) {
+      // Finish the previous turn, then type the next prompt into the editor
+      // and submit it; it pins to the top while its turn streams below.
+      if (line !== demoLines[0]) {
+        setWorking(false);
+        await wait(900);
+        if (!live()) return;
+      }
+      for (const char of line.querySelector('.tui-prompt-text').textContent) {
+        editorText.textContent += char;
+        await wait(28);
+        if (!live()) return;
+      }
+      await wait(380);
+      if (!live()) return;
+      editorText.textContent = '';
+      show(line);
+      setWorking(true);
+    } else if (line.classList.contains('tui-thought')) {
+      await wait(650);
+      if (!live()) return;
+      show(line);
+      await stream(line, 'word', 60, id);
+    } else if (line.classList.contains('tui-tool')) {
+      const cmd = line.querySelector('.tui-cmd');
+      const out = line.querySelector('.tui-out');
+      const took = line.querySelector('.tui-took');
+      await wait(320);
+      if (!live()) return;
+      show(line);
+      await stream(cmd, 'char', 14, id);
+      if (!live()) return;
+      // Pretend the command runs; the test run takes longest.
+      await wait(cmd.textContent.includes('npm test') ? 1700 : 550);
+      if (!live()) return;
+      show(out);
+      await stream(out, 'line', 170, id);
+      if (!live()) return;
+      show(took);
+    } else {
+      await wait(600);
+      if (!live()) return;
+      show(line);
+      await stream(line, 'word', 65, id);
+    }
+    if (!live()) return;
+  }
+  setWorking(false);
+  demoPanel.classList.remove('is-replaying');
+}
 
 document.querySelector('#replay-demo').addEventListener('click', () => {
-  stopReplay();
-  const panel = panels.find(item => !item.hidden);
   announcement.textContent = 'Illustrative session. No commands are executed.';
-  if (reducedMotion.matches) return;
-  // Restart one bounded animation even when Replay is clicked repeatedly.
-  void panel.offsetWidth;
-  panel.classList.add('is-replaying');
-  replayTimer = setTimeout(stopReplay, 3200);
+  replay();
 });
 reducedMotion.addEventListener('change', stopReplay);
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) stopReplay();
 });
+window.addEventListener('resize', () => follow(false));
+document.fonts?.ready.then(() => follow(false));
+follow(false);
+// Play the session once when it first scrolls into view.
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {
-    if (!entries.some(entry => entry.isIntersecting)) stopReplay();
-  });
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    observer.disconnect();
+    replay();
+  }, { threshold: 0.4 });
   observer.observe(document.querySelector('.terminal'));
 }
 

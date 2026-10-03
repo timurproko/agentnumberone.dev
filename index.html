@@ -75,12 +75,13 @@
         <div class="terminal">
           <div class="terminal-titlebar">
             <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="terminal-title">a1 <span class="title-separator">—</span> ~/projects/orbit</span>
+            <span class="terminal-title">a1</span>
             <button id="replay-demo" type="button" aria-label="Replay illustrative session"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Replay</button>
           </div>
           <div class="terminal-body">
             <div class="demo-panel" id="panel-build">
-              <div class="tui-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">❯</span><span class="tui-prompt-text">Handle empty config files without breaking existing behavior.</span><span class="tui-time">14:02</span></div>
+              <div class="demo-turn">
+              <div class="tui-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">❯</span><span class="tui-prompt-text">Handle empty config files without breaking existing behavior</span><span class="tui-time">14:02</span></div>
               <p class="tui-thought demo-line">Checking how the loader reads config files</p>
               <div class="tui-tool demo-line">
                 <p class="tui-cmd">$ sed -n 1,12p src/config/load.ts</p>
@@ -104,8 +105,119 @@ Duration  1.8s</pre>
                 <p class="tui-took">Took 1.8s</p>
               </div>
               <p class="tui-response demo-line">Empty files now return an empty config. Existing behavior is preserved and covered by tests. Nothing has been committed.</p>
+              </div>
+              <div class="demo-turn">
+              <div class="tui-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">❯</span><span class="tui-prompt-text">Also warn when a config file is empty, so it doesn’t fail silently</span><span class="tui-time">14:05</span></div>
+              <p class="tui-thought demo-line">Looking for the project’s existing warning helper</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ rg -n "export function warn" src</p>
+                <pre class="tui-out">src/log.ts:8:export function warn(message: string) {</pre>
+                <p class="tui-took">Took 0.1s</p>
+              </div>
+              <p class="tui-thought demo-line">Warning on the empty branch and adding a test for it</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">edit src/config/load.ts <span class="tui-meta">(+6 −1)</span></p>
+                <pre class="tui-out"><span class="diff-added">+ import { warn } from '../log';</span>
+<span class="diff-removed">- return text ? JSON.parse(text) : {};</span>
+<span class="diff-added">+ if (!text) {</span>
+<span class="diff-added">+   warn('Config file is empty; using defaults');</span>
+<span class="diff-added">+   return {};</span>
+<span class="diff-added">+ }</span>
+<span class="diff-added">+ return JSON.parse(text);</span></pre>
+                <p class="tui-took">Took 0.2s</p>
+              </div>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">edit test/config/load.test.ts <span class="tui-meta">(+4)</span></p>
+                <pre class="tui-out"><span class="diff-added">+ it('warns on an empty file', () => {</span>
+<span class="diff-added">+   loadConfig('  ');</span>
+<span class="diff-added">+   expect(warn).toHaveBeenCalledOnce();</span>
+<span class="diff-added">+ });</span></pre>
+                <p class="tui-took">Took 0.2s</p>
+              </div>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ npm test <span class="tui-meta">(timeout 120s)</span></p>
+                <pre class="tui-out">Tests     9 passed (9)
+Duration  1.9s</pre>
+                <p class="tui-took">Took 1.9s</p>
+              </div>
+              <p class="tui-response demo-line">Empty config files now log a warning and fall back to defaults. A new test covers it, and all 9 tests pass. Nothing has been committed.</p>
+              </div>
+              <div class="demo-turn">
+              <div class="tui-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">❯</span><span class="tui-prompt-text">Add a --config flag so I can load a different file</span><span class="tui-time">14:09</span></div>
+              <p class="tui-thought demo-line">Checking how the CLI parses its arguments</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ sed -n 1,9p src/cli.ts</p>
+                <pre class="tui-out">import { readFileSync } from 'node:fs';
+import { parseArgs } from 'node:util';
+import { loadConfig } from './config/load';
+
+const { values } = parseArgs({
+  options: { verbose: { type: 'boolean' } },
+});
+const source = readFileSync('orbit.json', 'utf8');</pre>
+                <p class="tui-took">Took 0.1s</p>
+              </div>
+              <p class="tui-thought demo-line">Adding the flag, with orbit.json as its default</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">edit src/cli.ts <span class="tui-meta">(+2 −2)</span></p>
+                <pre class="tui-out"><span class="diff-removed">-   options: { verbose: { type: 'boolean' } },</span>
+<span class="diff-added">+   options: { verbose: { type: 'boolean' }, config: { type: 'string', default: 'orbit.json' } },</span>
+<span class="diff-removed">- const source = readFileSync('orbit.json', 'utf8');</span>
+<span class="diff-added">+ const source = readFileSync(values.config, 'utf8');</span></pre>
+                <p class="tui-took">Took 0.2s</p>
+              </div>
+              <p class="tui-thought demo-line">Trying the flag against an empty fixture</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ npx tsx src/cli.ts --config fixtures/empty.json</p>
+                <pre class="tui-out">warn: Config file is empty; using defaults
+orbit ready (0 services)</pre>
+                <p class="tui-took">Took 0.6s</p>
+              </div>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ npm test <span class="tui-meta">(timeout 120s)</span></p>
+                <pre class="tui-out">Tests     9 passed (9)
+Duration  1.9s</pre>
+                <p class="tui-took">Took 1.9s</p>
+              </div>
+              <p class="tui-response demo-line">orbit now accepts <span class="tui-nowrap">--config &lt;path&gt;</span> and still defaults to orbit.json. It works with the empty fixture, and all 9 tests pass. Nothing has been committed.</p>
+              </div>
+              <div class="demo-turn">
+              <div class="tui-prompt demo-line"><span class="prompt-glyph" aria-hidden="true">❯</span><span class="tui-prompt-text">Document the flag in the README, then commit everything</span><span class="tui-time">14:12</span></div>
+              <p class="tui-thought demo-line">Finding the usage section in the README</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ rg -n "## Usage" README.md</p>
+                <pre class="tui-out">42:## Usage</pre>
+                <p class="tui-took">Took 0.1s</p>
+              </div>
+              <p class="tui-thought demo-line">Adding an options list under Usage</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">edit README.md <span class="tui-meta">(+4)</span></p>
+                <pre class="tui-out"><span class="diff-added">+ ### Options</span>
+<span class="diff-added">+</span>
+<span class="diff-added">+ - `--config &lt;path&gt;`: config file to load (default `orbit.json`)</span>
+<span class="diff-added">+ - `--verbose`: print detailed logs</span></pre>
+                <p class="tui-took">Took 0.2s</p>
+              </div>
+              <p class="tui-thought demo-line">Reviewing the changes before committing</p>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ git status --short</p>
+                <pre class="tui-out"> M README.md
+ M src/cli.ts
+ M src/config/load.ts
+ M test/config/load.test.ts</pre>
+                <p class="tui-took">Took 0.1s</p>
+              </div>
+              <div class="tui-tool demo-line">
+                <p class="tui-cmd">$ git commit -am "Warn on empty config and add --config flag"</p>
+                <pre class="tui-out">[main 3f9c2ab] Warn on empty config and add --config flag
+ 4 files changed, 18 insertions(+), 4 deletions(-)</pre>
+                <p class="tui-took">Took 0.2s</p>
+              </div>
+              <p class="tui-response demo-line">Committed as 3f9c2ab on main. The README now documents <span class="tui-nowrap">--config</span> and <span class="tui-nowrap">--verbose</span>. Nothing has been pushed.</p>
+              </div>
             </div>
-            <div class="terminal-editor" aria-hidden="true"><span class="prompt-glyph">❯</span><span class="tui-cursor"></span></div>
+            <div class="terminal-working" aria-hidden="true"><span class="tui-spinner">⠋</span> <span class="tui-working-label">Working…</span> <span class="tui-elapsed">0s</span></div>
+            <div class="terminal-editor" aria-hidden="true"><span class="prompt-glyph">❯</span><span class="tui-input"><span class="tui-editor-text"></span><span class="tui-cursor"></span></span></div>
             <div class="terminal-status" aria-hidden="true">
               <span class="status-path">~/projects/orbit (main)</span>
               <span class="status-row"><span>↑14k ↓2.1k R38k 7.4%/200k (auto)</span><span class="status-model">your model <span class="status-divider">•</span> <span class="status-level">high</span></span></span>
