@@ -820,8 +820,8 @@ npmVersion('next').catch(() => {});
     entry.navLink?.addEventListener('click', event => select(entry, event));
     entry.menuLink?.addEventListener('click', event => select(entry, event));
   });
-  const installEntry = entries.find(entry => entry.href === '#get-started');
-  if (installEntry) document.querySelectorAll('a[href="#get-started"]').forEach(link => {
+  const installEntry = entries.find(entry => entry.href === '#install');
+  if (installEntry) document.querySelectorAll('a[href="#install"]').forEach(link => {
     if (link !== installEntry.menuLink && link !== installEntry.navLink) link.addEventListener('click', event => select(installEntry, event));
   });
   homeLink?.addEventListener('click', () => select(null));

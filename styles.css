@@ -189,8 +189,8 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .section { --section-pad: 112px; position: relative; overflow-x: clip; padding-block: var(--section-pad); scroll-margin-top: calc(48px - var(--section-pad)); }
 .section-alt { background: var(--surface); border-block: 1px solid var(--line); }
 #experience { padding-top: 48px; scroll-margin-top: 0; }
-#foundation { background: radial-gradient(ellipse at 85% 50%, #121f9e1a, transparent 65%), var(--surface); }
-#get-started { border-top: 1px solid var(--line); }
+#architecture { background: radial-gradient(ellipse at 85% 50%, #121f9e1a, transparent 65%), var(--surface); }
+#install { border-top: 1px solid var(--line); }
 .section-alt + .section-alt { border-top: 0; }
 .section-head { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; max-width: 720px; margin-bottom: 56px; }
 .section-head-center { align-items: center; text-align: center; margin-inline: auto; }
