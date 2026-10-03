@@ -208,9 +208,9 @@ npmVersion('next').catch(() => {});
   }
 
   const scenes = {
-    // The pi symbol dissolves into the a1 mark and back.
+    // The a1 mark dissolves in from nothing, then into the pi symbol and back.
     morph: {
-      hold: 2.6, span: 1.9,
+      intro: 1.9, hold: 2.6, span: 1.9,
       setup(s) {
         const sample = (text, weight, size) => {
           const off = document.createElement('canvas');
@@ -229,23 +229,28 @@ npmVersion('next').catch(() => {});
         };
         s.shapeA = sample('π', 700, Math.min(s.rows * 1.42, s.cols * 1.3));
         s.shapeB = sample('a1', 600, Math.min(s.rows * 1.02, s.cols * 0.76));
+        s.empty = new Float32Array(s.cols * s.rows);
         s.noise = new Float32Array(s.cols * s.rows);
         for (let r = 0; r < s.rows; r += 1) for (let c = 0; c < s.cols; c += 1) s.noise[r * s.cols + c] = hash(c, r);
       },
-      staticTime() { return this.hold + this.span * 0.5; },
+      staticTime() { return this.intro + this.hold + this.span * 0.5; },
       draw(s, t) {
-        const cycle = (this.hold + this.span) * 2;
-        const local = ((t % cycle) + cycle) % cycle;
-        let p, forward;
-        if (local < this.hold) { p = 0; forward = true; }
-        else if (local < this.hold + this.span) { p = (local - this.hold) / this.span; forward = true; }
-        else if (local < this.hold * 2 + this.span) { p = 1; forward = false; }
-        else { p = 1 - (local - this.hold * 2 - this.span) / this.span; forward = false; }
+        let from = s.shapeA, to = s.shapeB, p, forward;
+        if (t < this.intro) { from = s.empty; to = s.shapeB; p = Math.max(0, t / this.intro); forward = true; }
+        else {
+          // Pick the loop up at the a1 hold, so the mark settles before it turns into pi.
+          const cycle = (this.hold + this.span) * 2;
+          const local = (t - this.intro + this.hold + this.span) % cycle;
+          if (local < this.hold) { p = 0; forward = true; }
+          else if (local < this.hold + this.span) { p = (local - this.hold) / this.span; forward = true; }
+          else if (local < this.hold * 2 + this.span) { p = 1; forward = false; }
+          else { p = 1 - (local - this.hold * 2 - this.span) / this.span; forward = false; }
+        }
         const morphing = p > 0 && p < 1;
         for (let r = 0; r < s.rows; r += 1) {
           for (let c = 0; c < s.cols; c += 1) {
             const i = r * s.cols + c;
-            const a = s.shapeA[i], b = s.shapeB[i];
+            const a = from[i], b = to[i];
             const sweep = forward ? c / s.cols : 1 - c / s.cols;
             const threshold = sweep * 0.55 + s.noise[i] * 0.45;
             const mix = smooth(threshold - 0.18, threshold + 0.18, p);
@@ -384,7 +389,9 @@ npmVersion('next').catch(() => {});
       if (index > 0) s.glyph(c, r, ramp[index], level);
     };
 
-    let raf = 0, last = 0, startedAt = 0, visible = true;
+    // Scenes with an intro start once the hero is revealed, so the art builds in alongside the copy.
+    let raf = 0, last = 0, startedAt = 0, visible = true, held = Boolean(scene.intro);
+    if (held) (window.heroReady || Promise.resolve()).then(() => { held = false; sync(); });
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -421,7 +428,7 @@ npmVersion('next').catch(() => {});
       raf = requestAnimationFrame(frame);
     }
     function play() {
-      if (raf || reducedMotion.matches) return;
+      if (raf || held || reducedMotion.matches) return;
       if (!startedAt) startedAt = performance.now();
       raf = requestAnimationFrame(frame);
     }

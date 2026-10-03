@@ -26,6 +26,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    // Hold the hero until its fonts are ready, so it never renders (and reflows) in the fallback fonts.
+    (() => {
+      const root = document.documentElement;
+      let ready;
+      window.heroReady = new Promise(resolve => { ready = resolve; });
+      if (!document.fonts?.load) { ready(); return; }
+      root.classList.add('fonts-pending');
+      const reveal = () => { root.classList.remove('fonts-pending'); ready(); };
+      setTimeout(reveal, 1500);
+      document.addEventListener('DOMContentLoaded', () => Promise.all([
+        document.fonts.load('400 1em "Barlow Condensed"', 'A'),
+        document.fonts.load('400 1em Inter', 'a'),
+        document.fonts.load('400 1em "JetBrains Mono"', 'a'),
+      ]).then(reveal, reveal));
+    })();
+  </script>
   <script src="script.js" defer></script>
   <title>A terminal coding agent built on pi</title>
 </head>
