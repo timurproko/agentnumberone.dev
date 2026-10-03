@@ -19,8 +19,22 @@ If port 4173 is occupied, use the existing preview or verify which process owns 
 - `index.html`: hero with an illustrative terminal session (build / review / extend tabs), experience features and secondary capabilities, architecture stack diagram, "for pi users" comparison, multi-agent roadmap concept, installation, and 17 FAQs.
 - `styles.css`: the design system. One blue accent, neutral dark surfaces, Inter for copy and JetBrains Mono for anything "system" (eyebrows, tags, terminal, metadata). Sections share the same primitives: `.eyebrow` + `h2` + `.lead`, `.stack-tag`, `.status`, 1px `--line` borders. Responsive, reduced-motion, and forced-colors styles are at the end.
 - `script.js`: accessible demonstration tabs, bounded replay, clipboard fallback, and FAQ Expand all / Collapse all.
-- `assets/favicon.svg`: the only image asset. Feature visuals are HTML/CSS mini-UIs inside the page, so they stay consistent with the terminal and need no separate artwork.
+- `assets/favicon.svg`: the site icon. Feature visuals are HTML/CSS mini-UIs inside the page, so they stay consistent with the terminal and need no separate artwork.
+- `assets/social/home.png`: the 1200×630 link preview (LinkedIn, X, Slack, etc.), generated, not hand-drawn. See [Social preview](#social-preview).
+- `scripts/generate-social-preview.mjs`: renders that image with Playwright from the hero headline and `og:description`, and rewrites the meta tags between `<!-- social-preview:start -->` and `<!-- social-preview:end -->` in `index.html`.
 - `server.cjs`: local static preview server. Production remains a static site.
+
+## Social preview
+
+After changing `og:title`, `og:description`, or the hero headline, regenerate and commit the image:
+
+```sh
+npm install
+npx playwright install chromium   # first time only
+npm run social:build
+```
+
+LinkedIn caches previews; use the [Post Inspector](https://www.linkedin.com/post-inspector/) to refresh it after deploying.
 
 Fonts load from Google Fonts, with system fallbacks. The demo uses authored local examples; it never executes commands, reads project files, or calls a model. Replay is user-triggered, finite, and canceled when the terminal leaves view, the tab is hidden, or reduced motion changes.
 

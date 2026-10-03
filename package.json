@@ -2,6 +2,10 @@
   "name": "agentnumberone-site",
   "private": true,
   "scripts": {
-    "dev": "node server.cjs"
+    "dev": "node server.cjs",
+    "social:build": "node scripts/generate-social-preview.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
   }
 }
