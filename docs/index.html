@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0b">
+  <meta name="description" content="Documentation for a1, the terminal coding agent built on pi: installation, sessions, models, extensions, and a1 capabilities such as paste chips, persistent prompt history, and next-step suggestions.">
+  <link rel="canonical" href="https://agentnumberone.dev/docs/">
+  <link rel="icon" href="../assets/favicon.svg?v=13" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>document.documentElement.classList.add('docs-js');</script>
+  <script src="docs.js" defer></script>
+  <title>a1 docs</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header docs-header">
+    <div class="container header-inner">
+      <div class="docs-brand"><a class="brand" href="../" aria-label="a1, home"><span class="brand-mark" aria-hidden="true">a1</span></a><span class="docs-crumb">docs</span></div>
+      <span></span>
+      <div class="header-actions"><a class="header-link" href="../">Home</a><a class="button button-small" href="#install">Install</a></div>
+    </div>
+  </header>
+
+  <div class="container docs-layout">
+    <aside class="docs-sidebar" aria-label="Documentation">
+      <button class="docs-menu-toggle" type="button" aria-expanded="false" aria-controls="docs-nav-panel"><span>Overview</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="docs-nav-panel" id="docs-nav-panel">
+        <input class="docs-filter" type="search" placeholder="Filter pages" aria-label="Filter documentation pages">
+        <nav>
+          <div class="docs-group">
+            <p class="docs-group-title">Basics</p>
+            <ul>
+              <li><a href="#overview" data-keywords="intro about pi">Overview</a></li>
+              <li><a href="#install" data-keywords="npm node installer requirements">Installation</a></li>
+              <li><a href="#quickstart" data-keywords="first run login provider trust">Quickstart</a></li>
+              <li><a href="#models" data-keywords="thinking provider login models scope cycle">Models &amp; thinking</a></li>
+              <li><a href="#sessions" data-keywords="resume fork tree export share compact">Sessions</a></li>
+              <li><a href="#commands" data-keywords="slash bash @ files">Slash commands</a></li>
+              <li><a href="#shortcuts" data-keywords="keys hotkeys keybindings">Keyboard shortcuts</a></li>
+              <li><a href="#extensions" data-keywords="packages npm git mcp install remove">Extensions &amp; packages</a></li>
+              <li><a href="#skills" data-keywords="prompt templates prompts">Skills &amp; templates</a></li>
+              <li><a href="#settings" data-keywords="config files paths profile json">Settings &amp; files</a></li>
+              <li><a href="#updates" data-keywords="update develop version upgrade">Updates</a></li>
+              <li><a href="#cli" data-keywords="flags arguments commands reference">CLI reference</a></li>
+            </ul>
+          </div>
+          <div class="docs-group">
+            <p class="docs-group-title">Capabilities</p>
+            <ul>
+              <li><a href="#interface" data-keywords="viewport scrollbar footer transcript ui quit">Interface</a></li>
+              <li><a href="#paste-chips" data-keywords="paste chips images screenshot url file">Paste chips</a></li>
+              <li><a href="#prompt-history" data-keywords="history recall sqlite privacy">Prompt history</a></li>
+              <li><a href="#suggestions" data-keywords="next step ghost tab suggestions">Next-step suggestions</a></li>
+              <li><a href="#copy" data-keywords="select mouse clipboard copy">Selection &amp; copy</a></li>
+              <li><a href="#profiles" data-keywords="profile pi agent separate">Profiles</a></li>
+            </ul>
+          </div>
+        </nav>
+        <p class="docs-empty" hidden>No pages match.</p>
+      </div>
+    </aside>
+
+    <main id="main">
+
+      <!-- BASICS -->
+
+      <article class="doc" data-page="overview">
+        <p class="eyebrow">Basics</p>
+        <h1>Overview</h1>
+        <p class="doc-lead">a1 is an open-source coding agent for the terminal. It runs the pi coding engine underneath and puts its own interface around it: a fullscreen transcript, paste chips, persistent prompt history, and optional next-step suggestions.</p>
+        <h2 id="overview-how">How a1 relates to pi</h2>
+        <p>a1 pins a tested release of pi and uses it for everything the agent does: reading and editing files, running commands, talking to model providers, sessions, extensions, and skills. What a1 adds is the layer you look at all day. If you already use pi, your knowledge carries over; most of the Basics pages describe pi behavior as it appears inside a1.</p>
+        <p>a1 keeps its own profile in <code>~/.a1/agent</code>. It never reads or changes your pi profile in <code>~/.pi/agent</code>.</p>
+        <h2 id="overview-start">Where to start</h2>
+        <div class="doc-cards">
+          <a href="#install"><strong>Installation</strong><span>One command, Node.js 22.19 or newer.</span></a>
+          <a href="#quickstart"><strong>Quickstart</strong><span>Open a project, connect a model, send a first task.</span></a>
+          <a href="#shortcuts"><strong>Keyboard shortcuts</strong><span>The keys you will use every day.</span></a>
+          <a href="#interface"><strong>a1 capabilities</strong><span>What a1 adds on top of pi.</span></a>
+        </div>
+        <h2 id="overview-map">Find what you need</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>I want to…</th><th>Read</th></tr></thead>
+          <tbody>
+            <tr><td>Pick a model or thinking level</td><td><a href="#models">Models &amp; thinking</a></td></tr>
+            <tr><td>Return to an earlier conversation</td><td><a href="#sessions">Sessions</a></td></tr>
+            <tr><td>Add MCP servers or other tools</td><td><a href="#extensions">Extensions &amp; packages</a></td></tr>
+            <tr><td>Paste a screenshot or a long log</td><td><a href="#paste-chips">Paste chips</a></td></tr>
+            <tr><td>Reuse a prompt from yesterday</td><td><a href="#prompt-history">Prompt history</a></td></tr>
+            <tr><td>Turn off suggestions or the update check</td><td><a href="#settings">Settings &amp; files</a></td></tr>
+          </tbody>
+        </table></div>
+      </article>
+
+      <article class="doc" data-page="install">
+        <p class="eyebrow">Basics</p>
+        <h1>Installation</h1>
+        <p class="doc-lead">a1 installs from npm with a small installer that sets up the <code>a1</code> command and checks that your shell finds it.</p>
+        <h2 id="install-requirements">Requirements</h2>
+        <ul>
+          <li>Node.js <strong>22.19 or newer, below 25</strong>, with npm.</li>
+          <li>A terminal. a1 is tested on Windows, macOS, and Linux.</li>
+          <li>An account or API key for a model provider. Usage is billed by that provider.</li>
+        </ul>
+        <h2 id="install-run">Install</h2>
+        <div class="doc-code"><pre><code><span class="prompt-glyph">$ </span>npm x -y -- @timurproko/a1-install</code></pre></div>
+        <p>The installer installs <code>@timurproko/a1</code> globally, activates it, and verifies that <code>a1</code> on your <code>PATH</code> points at the new install. When everything checks out it prints <code>a1 successfully installed</code>. Running it again when a1 is already installed performs an update instead.</p>
+        <h2 id="install-develop">Development previews</h2>
+        <p>Preview builds come from the develop channel. They get new features first and can differ from the stable release.</p>
+        <div class="doc-code"><pre><code><span class="prompt-glyph">$ </span>npm x -y -- @timurproko/a1-install --develop</code></pre></div>
+        <p>Add a preview number or exact version to pin one, for example <code>--develop 0.2.4-dev.663</code>.</p>
+        <h2 id="install-troubleshooting">If installation fails</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Message</th><th>What to do</th></tr></thead>
+          <tbody>
+            <tr><td>another command takes precedence</td><td>A different <code>a1</code> comes first on your <code>PATH</code>. Remove it or reorder <code>PATH</code>.</td></tr>
+            <tr><td>not active in this shell</td><td>Open a new terminal so it picks up the updated <code>PATH</code>.</td></tr>
+            <tr><td>permission was denied</td><td>Your npm global prefix is not writable. Fix the prefix permissions or use a Node version manager.</td></tr>
+            <tr><td>Node.js 22.19.0 or newer is required</td><td>Upgrade Node.js to a supported version.</td></tr>
+          </tbody>
+        </table></div>
+        <p>Add <code>--verbose</code> to the installer command to print more detail about a failure.</p>
+      </article>
+
+      <article class="doc" data-page="quickstart">
+        <p class="eyebrow">Basics</p>
+        <h1>Quickstart</h1>
+        <p class="doc-lead">From a fresh install to a reviewed change in a few minutes.</p>
+        <h2 id="quickstart-open">1. Open a project</h2>
+        <div class="doc-code"><pre><code><span class="prompt-glyph">$ </span>cd your-project
+<span class="prompt-glyph">$ </span>a1</code></pre></div>
+        <p>The first launch creates the profile in <code>~/.a1/agent</code>. Nothing is copied from pi. In a new project, pi asks whether to trust it; you can change that decision later with <code>/trust</code>.</p>
+        <h2 id="quickstart-login">2. Connect a model</h2>
+        <p>Run <code>/login</code> to authenticate with a provider, then <code>/models</code> to choose a model. Provider credentials from environment variables also work.</p>
+        <h2 id="quickstart-task">3. Send a small task</h2>
+        <p>Describe what you want and press <kbd>Enter</kbd>. Reference files with <code>@</code> to search and add them to the prompt. Start with something you can verify quickly, such as explaining a module or adding a test.</p>
+        <div class="doc-code"><pre><code>Explain how @src/auth/session.ts refreshes tokens, then add a test for the expiry path.</code></pre></div>
+        <h2 id="quickstart-review">4. Review the result</h2>
+        <p>The agent edits files and runs commands with your permissions. Inspect the diff and run your tests before you commit. Press <kbd>Esc</kbd> to stop a response that is going the wrong way.</p>
+        <div class="doc-note is-warning"><span class="doc-note-title">Before you rely on it</span><p>Use version control, keep secrets out of prompts, and run untrusted code in a container or sandbox. The interface is not a security boundary.</p></div>
+        <h2 id="quickstart-leave">5. Leave and come back</h2>
+        <p>Quit with <code>/quit</code>, <kbd>Ctrl</kbd>+<kbd>D</kbd> on an empty editor, or <kbd>Ctrl</kbd>+<kbd>C</kbd> twice. a1 prints a resume command; run it from the same directory to continue. See <a href="#sessions">Sessions</a>.</p>
+      </article>
+
+      <article class="doc" data-page="models">
+        <p class="eyebrow">Basics</p>
+        <h1>Models &amp; thinking</h1>
+        <p class="doc-lead">a1 works with the providers pi supports. You choose the model and how much it thinks.</p>
+        <h2 id="models-login">Providers</h2>
+        <p><code>/login</code> configures provider authentication and <code>/logout</code> removes it. Credentials are stored in <code>~/.a1/agent/auth.json</code>, separate from pi.</p>
+        <h2 id="models-select">Choosing a model</h2>
+        <p><code>/models</code> opens the model dialog. It switches the active model and manages the scoped list you cycle through.</p>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Key</th><th>In the models dialog</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>Space</kbd></td><td>Add or remove the selected model from the cycling scope</td></tr>
+            <tr><td><kbd>Tab</kbd></td><td>Switch between all models and the scoped list</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>Save the scope</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd> / <kbd>Ctrl</kbd>+<kbd>X</kbd></td><td>Scope all listed models / clear the scope</td></tr>
+            <tr><td><kbd>Alt</kbd>+<kbd>↑</kbd> / <kbd>Alt</kbd>+<kbd>↓</kbd></td><td>Reorder</td></tr>
+          </tbody>
+        </table></div>
+        <p>Outside the dialog, <kbd>Ctrl</kbd>+<kbd>P</kbd> cycles forward through the scoped models. Cycle backward with <kbd>Alt</kbd>+<kbd>P</kbd> on Windows and WSL, or <kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>P</kbd> elsewhere.</p>
+        <h2 id="models-thinking">Thinking level</h2>
+        <p><code>/thinking</code> opens a selector. Levels range from <code>off</code> through <code>minimal</code>, <code>low</code>, <code>medium</code>, <code>high</code>, <code>xhigh</code>, and <code>max</code>, depending on what the model supports. <kbd>Ctrl</kbd>+<kbd>L</kbd> cycles levels without opening the selector, and <kbd>Ctrl</kbd>+<kbd>T</kbd> shows or hides thinking blocks in the transcript.</p>
+        <p>The current model and thinking level are always visible in the footer.</p>
+      </article>
+
+      <article class="doc" data-page="sessions">
+        <p class="eyebrow">Basics</p>
+        <h1>Sessions</h1>
+        <p class="doc-lead">Every conversation is saved as a session you can resume, branch, export, or share.</p>
+        <h2 id="sessions-resume">Resume a session</h2>
+        <p>When you quit, a1 prints the command to come back. Run it from the original project directory.</p>
+        <div class="doc-code"><pre><code><span class="prompt-glyph">$ </span>a1 --session &lt;id&gt;</code></pre></div>
+        <p><code>--session</code> also accepts a path to a session <code>.jsonl</code> file. If the sessions live somewhere other than the default, add <code>--session-dir &lt;dir&gt;</code>. Inside a1, <code>/resume</code> opens a picker.</p>
+        <p>An ID is looked up in the current project first. If it belongs to another project, a1 asks before creating a fork here. A missing session is an error, never a silent empty start.</p>
+        <h2 id="sessions-commands">Session commands</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>/new</code></td><td>Start a fresh session</td></tr>
+            <tr><td><code>/resume</code></td><td>Pick a previous session</td></tr>
+            <tr><td><code>/tree</code></td><td>Browse the session tree and jump between branches</td></tr>
+            <tr><td><code>/fork</code></td><td>Start a new branch from an earlier message</td></tr>
+            <tr><td><code>/clone</code></td><td>Duplicate the current session</td></tr>
+            <tr><td><code>/name</code></td><td>Name the session; the name shows in the footer</td></tr>
+            <tr><td><code>/session</code></td><td>Session info and usage stats</td></tr>
+            <tr><td><code>/compact</code></td><td>Summarize earlier context to free up the window</td></tr>
+            <tr><td><code>/export</code></td><td>Export to HTML (default) or <code>.jsonl</code></td></tr>
+            <tr><td><code>/import</code></td><td>Import a session file</td></tr>
+            <tr><td><code>/share</code></td><td>Share as a secret GitHub gist</td></tr>
+          </tbody>
+        </table></div>
+        <p>Pressing <kbd>Esc</kbd> twice on an empty editor opens the tree or a fork, depending on the <strong>Double-escape action</strong> setting.</p>
+        <h2 id="sessions-storage">Where sessions live</h2>
+        <p>Sessions are stored under <code>~/.a1/agent/sessions/</code>. The <code>PI_CODING_AGENT_SESSION_DIR</code> environment variable or <code>--session-dir</code> changes the location.</p>
+      </article>
+
+      <article class="doc" data-page="commands">
+        <p class="eyebrow">Basics</p>
+        <h1>Slash commands</h1>
+        <p class="doc-lead">Type <code>/</code> in the editor to open the command menu above the prompt. It filters as you type and shows a count of matches.</p>
+        <h2 id="commands-builtin">Built-in commands</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>/settings</code></td><td>Open settings</td></tr>
+            <tr><td><code>/models</code></td><td>Switch models and manage the cycling scope</td></tr>
+            <tr><td><code>/thinking</code></td><td>Choose a thinking level</td></tr>
+            <tr><td><code>/skills</code></td><td>Browse, search, and apply a skill</td></tr>
+            <tr><td><code>/copy</code></td><td>Copy the last agent message</td></tr>
+            <tr><td><code>/hotkeys</code></td><td>Full-screen keyboard shortcut reference</td></tr>
+            <tr><td><code>/changelog</code></td><td>Read a1 release notes</td></tr>
+            <tr><td><code>/login</code>, <code>/logout</code></td><td>Manage provider authentication</td></tr>
+            <tr><td><code>/trust</code></td><td>Change the trust decision for this project</td></tr>
+            <tr><td><code>/reload</code></td><td>Reload settings, extensions, and resources after editing files</td></tr>
+            <tr><td><code>/quit</code></td><td>Exit a1</td></tr>
+          </tbody>
+        </table></div>
+        <p>Session commands such as <code>/new</code>, <code>/resume</code>, <code>/tree</code>, and <code>/export</code> are listed on the <a href="#sessions">Sessions</a> page. Extensions, prompt templates, and skills add their own commands to the same menu.</p>
+        <h2 id="commands-files">Referencing files</h2>
+        <p>Type <code>@</code> to search the project and add a file to your prompt. <kbd>Tab</kbd> completes paths.</p>
+        <h2 id="commands-bash">Running shell commands</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Prefix</th><th>Behavior</th></tr></thead>
+          <tbody>
+            <tr><td><code>!git status</code></td><td>Run the command and add its output to the conversation</td></tr>
+            <tr><td><code>!!npm test</code></td><td>Run the command without adding it to the context</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+
+      <article class="doc" data-page="shortcuts">
+        <p class="eyebrow">Basics</p>
+        <h1>Keyboard shortcuts</h1>
+        <p class="doc-lead">The defaults below are what a1 ships with. Run <code>/hotkeys</code> to see the effective list, including your own bindings.</p>
+        <h2 id="shortcuts-prompt">Prompt</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>Enter</kbd></td><td>Send</td></tr>
+            <tr><td><kbd>Esc</kbd></td><td>Close autocomplete, or stop the current response</td></tr>
+            <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Move the cursor; at the edges, browse <a href="#prompt-history">prompt history</a></td></tr>
+            <tr><td><kbd>Tab</kbd></td><td>Accept autocomplete or a <a href="#suggestions">suggestion</a></td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>V</kbd></td><td>Paste text or an image (<kbd>Alt</kbd>+<kbd>V</kbd> also pastes images on Windows)</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd></td><td>Undo / redo</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Select all prompt text</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>Backspace</kbd> / <kbd>Ctrl</kbd>+<kbd>Delete</kbd></td><td>Delete the previous / next word</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>G</kbd></td><td>Edit the prompt in your external editor</td></tr>
+          </tbody>
+        </table></div>
+        <h2 id="shortcuts-transcript">Transcript</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>PageUp</kbd> / <kbd>PageDown</kbd></td><td>Scroll by a page</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>Home</kbd></td><td>Jump to the start of the transcript</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>End</kbd></td><td>Jump to the end and follow new output</td></tr>
+            <tr><td><kbd>Shift</kbd>+<kbd>↑</kbd> / <kbd>Shift</kbd>+<kbd>↓</kbd></td><td>Jump to the previous / next prompt you sent</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>O</kbd></td><td>Show or hide tool output</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>T</kbd></td><td>Show or hide thinking blocks</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>X</kbd></td><td>Copy the selection, or the last assistant message</td></tr>
+          </tbody>
+        </table></div>
+        <h2 id="shortcuts-agent">Models and flow</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Next model in the scope</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>L</kbd></td><td>Cycle thinking level</td></tr>
+            <tr><td><kbd>Alt</kbd>+<kbd>Enter</kbd></td><td>Queue a follow-up while the agent works (<kbd>Ctrl</kbd>+<kbd>Q</kbd> on Windows)</td></tr>
+            <tr><td><kbd>Alt</kbd>+<kbd>↑</kbd></td><td>Restore queued messages to the editor</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>Copy the selection; otherwise clear the editor, and press twice to quit</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td><td>Quit when the editor is empty</td></tr>
+          </tbody>
+        </table></div>
+        <h2 id="shortcuts-custom">Custom bindings</h2>
+        <p>Override any binding in <code>~/.a1/agent/keybindings.json</code>, then run <code>/reload</code>.</p>
+      </article>
+
+      <article class="doc" data-page="extensions">
+        <p class="eyebrow">Basics</p>
+        <h1>Extensions &amp; packages</h1>
+        <p class="doc-lead">a1 runs pi packages: extensions, skills, prompt templates, and tools. Install them into the a1 profile from npm, git, or a local folder.</p>
+        <h2 id="extensions-install">Install, list, remove</h2>
+        <div class="doc-code"><pre><code><span class="prompt-glyph">$ </span>a1 install npm:pi-mcp-adapter
+<span class="prompt-glyph">$ </span>a1 list
+<span class="prompt-glyph">$ </span>a1 remove npm:pi-mcp-adapter</code></pre></div>
+        <p>Sources can be <code>npm:@scope/name</code>, <code>git:github.com/user/repo</code>, an <code>https://</code> or <code>ssh://</code> repository URL, or a local path like <code>./my-extension</code>. <code>a1 uninstall</code> is an alias for <code>a1 remove</code>.</p>
+        <h2 id="extensions-update">Update packages</h2>
+        <div class="doc-code"><pre><code><span class="prompt-glyph">$ </span>a1 update --extensions   <span class="code-comment"># all packages</span>
+<span class="prompt-glyph">$ </span>a1 update npm:pi-mcp-adapter   <span class="code-comment"># one package</span></code></pre></div>
+        <h2 id="extensions-mcp">MCP servers</h2>
+        <p>MCP support comes from an extension rather than a built-in service. Install the adapter, launch a1, and run <code>/mcp setup</code>.</p>
+        <div class="doc-note is-warning"><span class="doc-note-title">Trust</span><p>Extensions run code with your permissions. Install only packages and connect only servers you trust.</p></div>
+        <h2 id="extensions-scope">Profile scope</h2>
+        <p>These commands manage the a1 profile only. Packages installed in pi are not visible to a1, and the other way round. Install the extensions you want in each.</p>
+      </article>
+
+      <article class="doc" data-page="skills">
+        <p class="eyebrow">Basics</p>
+        <h1>Skills &amp; templates</h1>
+        <p class="doc-lead">Skills and prompt templates are reusable instructions you invoke from the command menu.</p>
+        <h2 id="skills-skills">Skills</h2>
+        <p>a1 loads skills from <code>~/.a1/agent/skills/</code>, the project's <code>.pi/skills/</code>, and <code>~/.agents/skills/</code> or <code>.agents/skills/</code>.</p>
+        <p>By default, a1 groups them behind a single <code>/skills</code> command that opens a searchable dialog. To jump straight to one, type <code>/skills:</code> followed by its name; typing <kbd>:</kbd> on the highlighted <code>/skills</code> row does the same.</p>
+        <p>Prefer every skill as its own command? Set <strong>Skills</strong> to <code>expand</code> in <code>/settings</code> → Agent to list each one as <code>/skill:&lt;name&gt;</code>.</p>
+        <h2 id="skills-templates">Prompt templates</h2>
+        <p>Any Markdown file in <code>~/.a1/agent/prompts/</code> or the project's <code>.pi/prompts/</code> becomes a slash command named after the file.</p>
+        <div class="doc-code"><pre><code><span class="code-comment"># ~/.a1/agent/prompts/review.md  →  /review</span>
+Review the staged changes for bugs, missing tests, and unclear names.</code></pre></div>
+        <p>Run <code>/reload</code> after adding or editing skills and templates.</p>
+      </article>
+
+      <article class="doc" data-page="settings">
+        <p class="eyebrow">Basics</p>
+        <h1>Settings &amp; files</h1>
+        <p class="doc-lead"><code>/settings</code> holds a1's own options first, followed by the pi engine settings that apply inside a1.</p>
+        <h2 id="settings-a1">a1 settings</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Setting</th><th>Section</th><th>What it controls</th></tr></thead>
+          <tbody>
+            <tr><td>Quit animation</td><td>Generic</td><td>Short animation when you quit. On by default.</td></tr>
+            <tr><td>Update check</td><td>Generic</td><td>Daily check for a newer release. On by default.</td></tr>
+            <tr><td>Scrollbar mode</td><td>Scroll</td><td><code>auto</code>, <code>always</code>, or <code>hidden</code></td></tr>
+            <tr><td>Scrollbar style</td><td>Scroll</td><td><code>thin</code> or <code>thick</code></td></tr>
+            <tr><td>Speed</td><td>Scroll</td><td><code>normal</code>, <code>fast</code>, or <code>high</code></td></tr>
+            <tr><td>Persistent history</td><td>History</td><td>Save prompts across sessions. On by default.</td></tr>
+            <tr><td>History limit</td><td>History</td><td>10 to 100 entries, default 100</td></tr>
+            <tr><td>Prompt suggestions</td><td>Agent</td><td>Next-step suggestions. On by default.</td></tr>
+            <tr><td>Skills</td><td>Agent</td><td><code>collapse</code> into <code>/skills</code>, or <code>expand</code></td></tr>
+            <tr><td>Prompt image limit</td><td>Agent</td><td>1 to 16 images per prompt, default 8</td></tr>
+          </tbody>
+        </table></div>
+        <p>Useful pi settings in the same screen include auto-compact, image display, Mermaid diagrams, default project trust, double-escape action, and <strong>Fullscreen copy on select</strong>. a1 always uses its dark theme, so the theme setting is hidden.</p>
+        <h2 id="settings-files">Files and locations</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Path</th><th>Contents</th></tr></thead>
+          <tbody>
+            <tr><td><code>~/.a1/agent/</code></td><td>The a1 profile: <code>settings.json</code>, <code>auth.json</code>, <code>keybindings.json</code>, <code>models.json</code>, sessions, extensions, skills, prompts</td></tr>
+            <tr><td><code>.pi/</code></td><td>Project-level settings, skills, and prompts</td></tr>
+            <tr><td><code>%APPDATA%\a1\settings\a1.json</code></td><td>a1 settings on Windows</td></tr>
+            <tr><td><code>~/.config/a1/settings/a1.json</code></td><td>a1 settings on macOS and Linux (respects <code>XDG_CONFIG_HOME</code>)</td></tr>
+            <tr><td><code>~/.a1/data/history/</code></td><td>Persistent prompt history</td></tr>
+          </tbody>
+        </table></div>
+        <p>After editing any of these by hand, run <code>/reload</code>.</p>
+        <h2 id="settings-env">Environment variables</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Variable</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>A1_PROFILE_HOME</code></td><td>Use a different home directory for the <code>.a1/agent</code> profile</td></tr>
+            <tr><td><code>A1_CONFIG_DIR</code></td><td>Move a1's settings directory</td></tr>
+            <tr><td><code>A1_DATA_DIR</code></td><td>Move a1's data, including prompt history</td></tr>
+            <tr><td><code>A1_SKIP_VERSION_CHECK=1</code></td><td>Skip the daily update check</td></tr>
+          </tbody>
+        </table></div>
+      </article>
+
+      <article class="doc" data-page="updates">
+        <p class="eyebrow">Basics</p>
+        <h1>Updates</h1>
+        <p class="doc-lead">a1 tells you when a new release is out. It never installs anything on its own.</p>
+        <h2 id="updates-commands">Update commands</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>a1 update</code></td><td>Install the latest release</td></tr>
+            <tr><td><code>a1 update --develop</code></td><td>Install the latest development preview</td></tr>
+            <tr><td><code>a1 update --extensions</code></td><td>Update all installed packages</td></tr>
+            <tr><td><code>a1 update --models</code></td><td>Refresh the model catalogs</td></tr>
+            <tr><td><code>a1 version</code></td><td>Show the installed and latest versions</td></tr>
+          </tbody>
+        </table></div>
+        <p>Updating does not interrupt other a1 windows; they keep running their current version until restarted. Updating within a channel never downgrades.</p>
+        <h2 id="updates-notice">Update notice</h2>
+        <p>At most once a day, a1 checks npm for a newer release on its channel at startup and shows a banner with the command to run. Close it with its ✕. Release builds suggest <code>a1 update</code>; preview builds suggest <code>a1 update --develop</code>.</p>
+        <p>Turn the check off with <strong>Update check</strong> in <code>/settings</code> → Generic, or set <code>A1_SKIP_VERSION_CHECK=1</code>. It is also skipped in CI and when output is not a terminal.</p>
+        <h2 id="updates-whatsnew">What's new</h2>
+        <p>After an update, a1 shows the release notes once at startup. Read them again any time with <code>/changelog</code>.</p>
+      </article>
+
+      <article class="doc" data-page="cli">
+        <p class="eyebrow">Basics</p>
+        <h1>CLI reference</h1>
+        <p class="doc-lead">a1 is interactive. Its command line starts sessions and manages the install; everything else happens inside the app.</p>
+        <h2 id="cli-commands">Commands</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Command</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>a1</code></td><td>Start a new session in the current directory</td></tr>
+            <tr><td><code>a1 --session &lt;id|path&gt;</code></td><td>Resume a session</td></tr>
+            <tr><td><code>a1 --session-dir &lt;dir&gt; --session &lt;id&gt;</code></td><td>Resume from a custom session directory</td></tr>
+            <tr><td><code>a1 install &lt;source&gt;</code></td><td>Install a package</td></tr>
+            <tr><td><code>a1 remove &lt;source&gt;</code></td><td>Remove a package (alias <code>uninstall</code>)</td></tr>
+            <tr><td><code>a1 list</code></td><td>List installed packages</td></tr>
+            <tr><td><code>a1 update [options]</code></td><td>Update a1, packages, or model catalogs. See <a href="#updates">Updates</a>.</td></tr>
+            <tr><td><code>a1 version</code></td><td>Show versions (<code>--version</code>, <code>-v</code>)</td></tr>
+            <tr><td><code>a1 help</code></td><td>Show help (<code>--help</code>, <code>-h</code>)</td></tr>
+          </tbody>
+        </table></div>
+        <div class="doc-note"><span class="doc-note-title">Not supported</span><p>a1 has no print or non-interactive mode, and does not take a prompt, <code>--model</code>, or <code>--continue</code> on the command line. Unrecognized arguments are ignored on purpose, so a typo never starts a session or changes your install.</p></div>
+      </article>
+
+      <!-- CAPABILITIES -->
+
+      <article class="doc" data-page="interface">
+        <p class="eyebrow">Capabilities</p>
+        <h1>Interface</h1>
+        <p class="doc-lead">a1 replaces pi's interface with a fullscreen view built for long sessions: a scrolling transcript above a fixed input dock, with the details you check most kept in sight.</p>
+        <h2 id="interface-follow">Following output</h2>
+        <p>The view follows new output as it streams. Scroll up to read earlier work and it stops following; a floating <code>Jump to bottom (Ctrl+End) ↓</code> button appears, or <code>N new messages</code> if more has arrived. Press <kbd>Ctrl</kbd>+<kbd>End</kbd> or click it to catch up.</p>
+        <h2 id="interface-prompts">Prompts in the transcript</h2>
+        <ul>
+          <li>Each prompt you send shows the time it was sent.</li>
+          <li>The prompt you are reading under stays pinned at the top while you scroll. Click it to jump back to it.</li>
+          <li><kbd>Shift</kbd>+<kbd>↑</kbd> and <kbd>Shift</kbd>+<kbd>↓</kbd> jump between your prompts.</li>
+          <li>Compacted context appears as a single row, such as <code>Compacted from 281,483 tokens</code>.</li>
+        </ul>
+        <h2 id="interface-scrollbar">Scrollbar</h2>
+        <p>Click or drag the scrollbar to move through long transcripts. Its visibility, thickness, and scroll speed are in <code>/settings</code> → Scroll.</p>
+        <h2 id="interface-footer">Footer</h2>
+        <p>The first line shows the project path, git branch, a clickable pull request badge when the branch has one, and the session name. The second shows token and cache usage, cost, context fill (amber above 70%, red above 90%), the model, and the thinking level.</p>
+        <h2 id="interface-notices">Notices</h2>
+        <p>Confirmations, warnings, and errors appear briefly above the editor instead of being added to the transcript, so the conversation stays clean.</p>
+        <h2 id="interface-quit">Quitting</h2>
+        <p>Quitting plays a short animation and leaves only a dim resume hint in your terminal. Turn the animation off with <strong>Quit animation</strong> in <code>/settings</code>.</p>
+      </article>
+
+      <article class="doc" data-page="paste-chips">
+        <p class="eyebrow">Capabilities</p>
+        <h1>Paste chips</h1>
+        <p class="doc-lead">Large pastes, links, files, and images collapse into compact chips in the editor, so your prompt stays readable. The full content is sent when you press Enter.</p>
+        <h2 id="paste-chips-kinds">Kinds of chips</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>Chip</th><th>Created when you paste</th></tr></thead>
+          <tbody>
+            <tr><td><code>[paste #1 +42 lines]</code></td><td>Text longer than 10 lines</td></tr>
+            <tr><td><code>[paste #2 1800 chars]</code></td><td>Text longer than 1,000 characters</td></tr>
+            <tr><td><code>[🔗 github.com/…]</code></td><td>A single link</td></tr>
+            <tr><td><code>[📄 auth.ts]</code></td><td>The path of an existing file</td></tr>
+            <tr><td><code>[📁 src]</code></td><td>The path of a folder</td></tr>
+            <tr><td><code>[🖼  diagram.png]</code></td><td>The path of an image file</td></tr>
+            <tr><td><code>[📷 screenshot-3f9a]</code></td><td>An image from the clipboard</td></tr>
+          </tbody>
+        </table></div>
+        <p>Shorter text is inserted as is.</p>
+        <h2 id="paste-chips-editing">Editing around chips</h2>
+        <p>A chip behaves like a single character: the cursor steps over it, and one <kbd>Backspace</kbd> removes it. Copying editor text copies the full content behind each chip, not the label.</p>
+        <h2 id="paste-chips-send">What gets sent</h2>
+        <ul>
+          <li>Text and link chips expand to their full content.</li>
+          <li>File and folder chips expand to the path. The agent reads the file with its tools; the contents are not attached.</li>
+          <li>Image chips are attached as images.</li>
+        </ul>
+        <h2 id="paste-chips-images">Images</h2>
+        <p>Paste screenshots with <kbd>Ctrl</kbd>+<kbd>V</kbd> (<kbd>Alt</kbd>+<kbd>V</kbd> also works on Windows), or right-click in the editor. Up to 8 images are sent per prompt by default; change this with <strong>Prompt image limit</strong> in <code>/settings</code>. Providers may accept fewer.</p>
+      </article>
+
+      <article class="doc" data-page="prompt-history">
+        <p class="eyebrow">Capabilities</p>
+        <h1>Prompt history</h1>
+        <p class="doc-lead">What you type is remembered across sessions and projects, so yesterday's prompt is a few key presses away.</p>
+        <h2 id="prompt-history-recall">Recall a prompt</h2>
+        <p>Press <kbd>↑</kbd> at the top of the editor to step back through earlier prompts, and <kbd>↓</kbd> to come forward. Moving past the newest entry brings back the draft you were writing. The editor border shows your position, for example <code>History 97/100</code>.</p>
+        <p>History is shared by every session and project that uses the same a1 profile. Repeating a prompt moves it to the front instead of adding a duplicate. Pasted images come back as chips when you recall a prompt.</p>
+        <h2 id="prompt-history-saved">What is saved</h2>
+        <p>Prompts, follow-ups, steering messages, <code>!</code> shell commands, and skill or template commands as you typed them. Agent responses, tool output, credentials, and environment values are never saved.</p>
+        <h2 id="prompt-history-storage">Storage and privacy</h2>
+        <p>History is a local SQLite database in <code>~/.a1/data/history/</code>, one file per profile. Access is limited to your user account where the system supports it.</p>
+        <div class="doc-note is-warning"><span class="doc-note-title">Unencrypted</span><p>History is stored as plain text and can contain anything you typed, including sensitive details.</p></div>
+        <h2 id="prompt-history-settings">Turn it off or clear it</h2>
+        <p>Switch off <strong>Persistent history</strong> in <code>/settings</code> → History; it applies the next time a1 starts. <strong>History limit</strong> keeps between 10 and 100 entries.</p>
+        <p>Turning history off does not delete what is saved. To clear it, close every a1 window that uses the profile, then delete that profile's files in <code>~/.a1/data/history/</code>.</p>
+      </article>
+
+      <article class="doc" data-page="suggestions">
+        <p class="eyebrow">Capabilities</p>
+        <h1>Next-step suggestions</h1>
+        <p class="doc-lead">After a response finishes, a1 can predict what you are likely to ask next and show it as faint text in the empty editor.</p>
+        <h2 id="suggestions-use">Using a suggestion</h2>
+        <ol>
+          <li>Press <kbd>Tab</kbd> to put the suggestion into the editor.</li>
+          <li>Edit it if you like.</li>
+          <li>Press <kbd>Enter</kbd> to send it.</li>
+        </ol>
+        <p>A suggestion is never sent by itself: <kbd>Enter</kbd> does nothing while only the faint text is showing. Start typing to dismiss it; clear your draft and it comes back.</p>
+        <h2 id="suggestions-how">How it works</h2>
+        <p>a1 makes one extra background request to your selected model at its lowest thinking level. Often no suggestion appears, because the model chooses not to guess. Suggestions disappear when you send, switch session or model, or interrupt.</p>
+        <div class="doc-note"><span class="doc-note-title">Usage</span><p>Suggestions use your provider quota like any other request.</p></div>
+        <h2 id="suggestions-off">Turn it off</h2>
+        <p>Switch off <strong>Prompt suggestions</strong> in <code>/settings</code> → Agent. The change applies immediately.</p>
+      </article>
+
+      <article class="doc" data-page="copy">
+        <p class="eyebrow">Capabilities</p>
+        <h1>Selection &amp; copy</h1>
+        <p class="doc-lead">Select text in the transcript with the mouse, like in any other app, and copy it without fighting the terminal.</p>
+        <h2 id="copy-select">Selecting</h2>
+        <ul>
+          <li>Drag to select. The view scrolls when you drag past the edge.</li>
+          <li>Double-click selects a word, triple-click selects a line.</li>
+          <li>Selection still works on visible transcript text while a dialog is open.</li>
+        </ul>
+        <h2 id="copy-copy">Copying</h2>
+        <div class="doc-table-wrap"><table>
+          <thead><tr><th>How</th><th>Copies</th></tr></thead>
+          <tbody>
+            <tr><td>Release the mouse</td><td>The selection, when <strong>Fullscreen copy on select</strong> is on</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>The selection (it does not clear or quit while text is selected)</td></tr>
+            <tr><td><kbd>Ctrl</kbd>+<kbd>X</kbd></td><td>The selection, or the last assistant message when nothing is selected</td></tr>
+            <tr><td><code>/copy</code></td><td>The last agent message</td></tr>
+          </tbody>
+        </table></div>
+        <p>A short notice confirms how many characters were copied.</p>
+        <h2 id="copy-remote">Over SSH</h2>
+        <p>In a remote session, a1 copies through your terminal (OSC 52, up to 64 KiB) when the terminal supports it. It never reads or writes the remote machine's clipboard.</p>
+      </article>
+
+      <article class="doc" data-page="profiles">
+        <p class="eyebrow">Capabilities</p>
+        <h1>Profiles</h1>
+        <p class="doc-lead">a1 and pi keep separate profiles, so trying a1 never touches your pi setup.</p>
+        <h2 id="profiles-separate">Separate from pi</h2>
+        <p>a1 uses <code>~/.a1/agent</code>; pi uses <code>~/.pi/agent</code>. a1 does not copy, merge, or import pi's settings, credentials, sessions, packages, or trust decisions. Log in and install extensions in a1 separately.</p>
+        <p>Both tools can still edit the project files you point them at.</p>
+        <h2 id="profiles-multiple">Several windows</h2>
+        <p>Run as many a1 instances as you like in separate terminals. Closing one never closes another, and they share prompt history when they use the same profile.</p>
+        <h2 id="profiles-move">Moving the profile</h2>
+        <p>Set <code>A1_PROFILE_HOME</code> to use a different home directory for <code>.a1/agent</code>, for example to keep a separate work profile.</p>
+        <h2 id="profiles-report">Reporting a problem</h2>
+        <p>Include the output of <code>a1 version</code>, your operating system and terminal, and a minimal example when you <a href="https://github.com/timurproko/a1/issues">open an issue</a>. Remove private prompts and credentials first.</p>
+      </article>
+
+    </main>
+
+    <aside class="docs-toc" aria-label="On this page" hidden>
+      <p class="docs-toc-title">On this page</p>
+      <nav></nav>
+    </aside>
+  </div>
+
+  <footer class="site-footer docs-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand"><span class="brand-mark" aria-hidden="true">a1</span></div>
+      <nav aria-label="Footer navigation"><a href="https://github.com/timurproko/a1">GitHub ↗</a><a href="https://www.npmjs.com/package/@timurproko/a1">npm ↗</a><a href="https://github.com/timurproko/a1/blob/HEAD/LICENSE">MIT License ↗</a></nav>
+    </div>
+  </footer>
+</body>
+</html>

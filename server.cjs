@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const port = Number(process.env.PORT || 4173);
-const publicFiles = new Set(['index.html', 'styles.css', 'script.js']);
+const publicFiles = new Set(['index.html', 'styles.css', 'script.js', 'docs/index.html', 'docs/docs.css', 'docs/docs.js']);
 const types = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -29,7 +29,8 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  const relative = pathname === '/' ? 'index.html' : pathname.slice(1);
+  let relative = pathname === '/' ? 'index.html' : pathname.slice(1);
+  if (relative === 'docs' || relative === 'docs/') relative = 'docs/index.html';
   const parts = relative.split(/[\\/]/);
   if (parts.some(part => part.startsWith('.')) ||
       !(publicFiles.has(relative) || relative.startsWith('assets/'))) {

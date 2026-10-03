@@ -16,9 +16,10 @@ If port 4173 is occupied, use the existing preview or verify which process owns 
 
 ## Structure
 
-- `index.html`: hero with an illustrative terminal session (build / review / extend tabs), experience features and secondary capabilities, architecture stack diagram, "for pi users" comparison, multi-agent roadmap concept, installation, and 17 FAQs.
+- `index.html`: hero with an illustrative terminal session (build / review / extend tabs), experience features and secondary capabilities, architecture stack diagram, "for pi users" comparison, versioned roadmap (0.1.0 to 1.0.0), installation, and 17 FAQs.
 - `styles.css`: the design system. One blue accent, neutral dark surfaces, Inter for copy and JetBrains Mono for anything "system" (eyebrows, tags, terminal, metadata). Sections share the same primitives: `.eyebrow` + `h2` + `.lead`, `.stack-tag`, `.status`, 1px `--line` borders. Responsive, reduced-motion, and forced-colors styles are at the end.
-- `script.js`: accessible demonstration tabs, bounded replay, clipboard fallback, and FAQ Expand all / Collapse all.
+- `script.js`: accessible demonstration tabs, bounded replay, clipboard fallback, FAQ Expand all / Collapse all, the scrollable roadmap, and live release/develop versions from the npm registry.
+- `docs/`: the documentation page at `/docs/`. `index.html` holds every page as an `<article class="doc" data-page="…">`, grouped in the sidebar as **Basics** (pi workflows as they appear in a1) and **Capabilities** (a1-only features). `docs.js` shows one page per URL hash (`#paste-chips`) with a generated outline, previous/next links, sidebar filter, and code copy buttons; without JavaScript every page renders in order. `docs.css` builds on the site tokens. Content was checked against the a1 checkout's source and docs at v0.2.3; recheck before changing claims, and document only shipped behavior.
 - `assets/favicon.svg`: the site icon. Feature visuals are HTML/CSS mini-UIs inside the page, so they stay consistent with the terminal and need no separate artwork.
 - `assets/social/home.png`: the 1200×630 link preview (LinkedIn, X, Slack, etc.), generated, not hand-drawn. See [Social preview](#social-preview).
 - `scripts/generate-social-preview.mjs`: renders that image with Playwright at 2× (a large hero headline that stays legible in LinkedIn's small thumbnail, with the description and URL kept quiet), and rewrites the meta tags between `<!-- social-preview:start -->` and `<!-- social-preview:end -->` in `index.html`.

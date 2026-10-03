@@ -94,6 +94,93 @@ if (faqToggle) {
   syncFaqToggle();
 }
 
+// Roadmap: on desktop the versions scroll horizontally. Arrows step through them and the strip opens on the current version.
+const roadmap = document.querySelector('.roadmap');
+const roadmapControls = document.querySelector('.roadmap-controls');
+const roadmapArrows = [...document.querySelectorAll('[data-roadmap-step]')];
+const syncRoadmapArrows = () => {
+  const max = roadmap.scrollWidth - roadmap.clientWidth - 1;
+  roadmapArrows[0].disabled = roadmap.scrollLeft <= 1;
+  roadmapArrows[1].disabled = roadmap.scrollLeft >= max;
+  roadmap.classList.toggle('fade-start', !roadmapArrows[0].disabled);
+  roadmap.classList.toggle('fade-end', !roadmapArrows[1].disabled);
+};
+const showCurrentRoadmapItem = () => {
+  const current = roadmap.querySelector('.is-current');
+  if (!current) return;
+  roadmap.style.scrollBehavior = 'auto';
+  roadmap.scrollLeft = Math.max(0, current.offsetLeft - current.offsetWidth);
+  roadmap.style.scrollBehavior = '';
+  syncRoadmapArrows();
+};
+if (roadmap && roadmapControls) {
+  roadmapControls.hidden = false;
+  roadmapArrows.forEach(arrow => arrow.addEventListener('click', () => {
+    const step = roadmap.querySelector('.roadmap-item').offsetWidth * 2;
+    roadmap.scrollBy({ left: step * Number(arrow.dataset.roadmapStep), behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  }));
+  roadmap.addEventListener('scroll', syncRoadmapArrows, { passive: true });
+  // Mouse drag scrolls the strip. Touch and trackpads already scroll natively.
+  let drag = null;
+  roadmap.addEventListener('pointerdown', event => {
+    if (event.pointerType !== 'mouse' || event.button !== 0 || roadmap.scrollWidth <= roadmap.clientWidth) return;
+    drag = { x: event.clientX, left: roadmap.scrollLeft };
+    roadmap.setPointerCapture(event.pointerId);
+    roadmap.classList.add('is-dragging');
+  });
+  roadmap.addEventListener('pointermove', event => {
+    if (drag) roadmap.scrollLeft = drag.left - (event.clientX - drag.x);
+  });
+  const endDrag = () => {
+    if (!drag) return;
+    drag = null;
+    roadmap.classList.remove('is-dragging');
+  };
+  roadmap.addEventListener('pointerup', endDrag);
+  roadmap.addEventListener('pointercancel', endDrag);
+  window.addEventListener('resize', syncRoadmapArrows);
+  showCurrentRoadmapItem();
+}
+
+// Roadmap reveal: versions rise in one after another the first time the strip scrolls into view.
+if (roadmap && 'IntersectionObserver' in window && !reducedMotion.matches) {
+  roadmap.querySelectorAll('.roadmap-item').forEach((item, index) => item.style.setProperty('--i', index));
+  roadmap.classList.add('roadmap-animate');
+  const revealObserver = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    roadmap.classList.add('is-revealed');
+    revealObserver.disconnect();
+  }, { threshold: 0.25 });
+  revealObserver.observe(roadmap);
+}
+
+// Published versions from npm. The release (latest) and develop (next) tags fall back to their tag names, and the 0.2.0 roadmap highlight stays, if this fails.
+const npmVersion = tag => fetch(`https://registry.npmjs.org/@timurproko/a1/${tag}`)
+  .then(response => (response.ok ? response.json() : Promise.reject(response.status)))
+  .then(({ version }) => {
+    if (!/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(version)) return Promise.reject(version);
+    const label = document.querySelector(`[data-npm-tag="${tag}"]`);
+    if (label) label.textContent = `v${version}`;
+    return version;
+  });
+
+npmVersion('latest')
+  .then(version => {
+    const [major, minor] = version.split('.');
+    const target = document.querySelector(`.roadmap-item[data-version="${major}.${minor}.0"]`);
+    if (!target) return;
+    document.querySelectorAll('.roadmap-item').forEach(item => {
+      const current = item === target;
+      item.classList.toggle('is-current', current);
+      if (current) item.setAttribute('aria-current', 'step'); else item.removeAttribute('aria-current');
+      item.querySelector('.roadmap-current')?.remove();
+    });
+    target.querySelector('h3').insertAdjacentHTML('beforeend', '<span class="roadmap-current">current</span>');
+    if (roadmap) showCurrentRoadmapItem();
+  })
+  .catch(() => {});
+npmVersion('next').catch(() => {});
+
 // ASCII fields: decorative canvases driven by [data-ascii] scenes. No data involved.
 (function asciiFields() {
   const RAMP = ' .·:;-=+*%#@';
