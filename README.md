@@ -21,7 +21,7 @@ If port 4173 is occupied, use the existing preview or verify which process owns 
 - `script.js`: accessible demonstration tabs, bounded replay, clipboard fallback, and FAQ Expand all / Collapse all.
 - `assets/favicon.svg`: the site icon. Feature visuals are HTML/CSS mini-UIs inside the page, so they stay consistent with the terminal and need no separate artwork.
 - `assets/social/home.png`: the 1200×630 link preview (LinkedIn, X, Slack, etc.), generated, not hand-drawn. See [Social preview](#social-preview).
-- `scripts/generate-social-preview.mjs`: renders that image with Playwright (just the `a1` mark and the hero headline, so it stays legible as a small thumbnail), and rewrites the meta tags between `<!-- social-preview:start -->` and `<!-- social-preview:end -->` in `index.html`.
+- `scripts/generate-social-preview.mjs`: renders that image with Playwright at 2× (a large hero headline that stays legible in LinkedIn's small thumbnail, with the description and URL kept quiet), and rewrites the meta tags between `<!-- social-preview:start -->` and `<!-- social-preview:end -->` in `index.html`.
 - `server.cjs`: local static preview server. Production remains a static site.
 
 ## Social preview

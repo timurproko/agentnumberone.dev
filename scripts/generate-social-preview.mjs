@@ -2,6 +2,7 @@
 // and keeps the Open Graph / Twitter meta block in index.html in sync with it.
 // Run after changing the page title, description, or hero headline:
 //   npm run social:build
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,6 +14,8 @@ const imagePath = path.join(socialDir, 'home.png');
 const markerStart = '<!-- social-preview:start -->';
 const markerEnd = '<!-- social-preview:end -->';
 const siteName = 'a1';
+// Rendered at 2x (2400x1260) so the text stays crisp after LinkedIn rescales it.
+const scale = 2;
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -66,8 +69,8 @@ function socialMetaBlock({ title, description, url, imageUrl }) {
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${escapeHtml(url)}">
   <meta property="og:image" content="${escapeHtml(imageUrl)}">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="${1200 * scale}">
+  <meta property="og:image:height" content="${630 * scale}">
   <meta property="og:image:alt" content="${escapeHtml(`${title} — social preview`)}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(title)}">
@@ -84,9 +87,9 @@ function injectSocialMeta(html, block) {
   return html.replace(markerPattern, block);
 }
 
-// Only the mark and the headline: LinkedIn often shows this image as a ~160px
-// thumbnail, where anything smaller than the headline becomes unreadable.
-function buildCardHtml({ headline }) {
+// The headline must survive LinkedIn's ~160px thumbnail, so it is large;
+// the description and URL stay quiet and only matter on the full-size card.
+function buildCardHtml({ headline, description, url }) {
   const title = headline
     .map(({ text, accent }) => `<span${accent ? ' class="accent"' : ''}>${escapeHtml(text)}</span>`)
     .join('');
@@ -95,7 +98,7 @@ function buildCardHtml({ headline }) {
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400&family=JetBrains+Mono:wght@700&display=block">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400&family=Inter:wght@400&family=JetBrains+Mono:wght@500;700&display=block">
   <style>
     * { box-sizing: border-box; }
     body {
@@ -106,6 +109,7 @@ function buildCardHtml({ headline }) {
       position: relative;
       background: #0a0a0b;
       color: #ededf0;
+      font-family: Inter, 'Segoe UI', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
     /* One accent glow and a faint grid, matching the hero. */
@@ -121,36 +125,55 @@ function buildCardHtml({ headline }) {
     main {
       position: relative;
       height: 100%;
-      padding: 64px 72px;
+      padding: 56px 72px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
+    .top { display: flex; align-items: center; justify-content: space-between; }
     .mark {
       display: grid;
       place-items: center;
-      width: 104px;
-      height: 104px;
+      width: 80px;
+      height: 80px;
       background: #121f9e;
       color: #fff;
-      font: 700 66px/1 'JetBrains Mono', Consolas, monospace;
+      font: 700 50px/1 'JetBrains Mono', Consolas, monospace;
       letter-spacing: -.08em;
       padding-right: .08em;
     }
+    .url {
+      color: #80808a;
+      font: 500 22px/1 'JetBrains Mono', Consolas, monospace;
+    }
+    .url span { color: #4a60ff; }
     h1 {
       margin: 0;
-      font: 400 136px/.92 'Barlow Condensed', 'Arial Narrow', sans-serif;
+      font: 400 112px/.92 'Barlow Condensed', 'Arial Narrow', sans-serif;
       letter-spacing: -.025em;
       text-transform: uppercase;
     }
     h1 span { display: block; }
     h1 .accent { color: #c3ccff; }
+    p {
+      margin: 22px 0 0;
+      max-width: 900px;
+      color: #80808a;
+      font-size: 24px;
+      line-height: 1.35;
+    }
   </style>
 </head>
 <body>
   <main>
-    <div class="mark">a1</div>
-    <h1>${title}</h1>
+    <div class="top">
+      <div class="mark">a1</div>
+      <div class="url"><span>❯</span> ${escapeHtml(url.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</div>
+    </div>
+    <section>
+      <h1>${title}</h1>
+      <p>${escapeHtml(description)}</p>
+    </section>
   </main>
 </body>
 </html>`;
@@ -166,7 +189,7 @@ async function renderPreview(cardHtml) {
 
   const browser = await chromium.launch({ headless: true });
   try {
-    const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
+    const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: scale });
     await page.setContent(cardHtml, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
     await page.screenshot({ path: imagePath, type: 'png' });
@@ -182,12 +205,15 @@ async function main() {
   const description = getMetaContent(html, 'og:description');
   if (!title || !description) throw new Error('index.html needs og:title and og:description');
 
-  const imageUrl = new URL('/assets/social/home.png', siteUrl).toString();
+  const cardHtml = buildCardHtml({ headline: getHeadline(html), description, url: siteUrl });
+  // ?v= changes whenever the card does, so LinkedIn refetches instead of reusing its cached copy.
+  const version = createHash('sha1').update(`${scale}:${cardHtml}`).digest('hex').slice(0, 8);
+  const imageUrl = new URL(`/assets/social/home.png?v=${version}`, siteUrl).toString();
   const nextHtml = injectSocialMeta(html, socialMetaBlock({ title, description, url: siteUrl, imageUrl }));
   if (nextHtml !== html) await fs.writeFile(indexPath, nextHtml);
 
   await fs.mkdir(socialDir, { recursive: true });
-  await renderPreview(buildCardHtml({ headline: getHeadline(html) }));
+  await renderPreview(cardHtml);
 
   console.log(`Generated ${path.relative(rootDir, imagePath)}`);
 }
