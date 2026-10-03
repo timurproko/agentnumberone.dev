@@ -397,6 +397,12 @@ if (faqToggle) {
   const label = menu?.querySelector('.section-menu-label');
   const list = menu?.querySelector('.section-menu-list');
   const menuLinks = list ? links.map(link => list.appendChild(link.cloneNode(true))) : [];
+  const homeLink = list ? document.createElement('a') : null;
+  if (homeLink) {
+    homeLink.href = '#';
+    homeLink.textContent = 'Home';
+    list.prepend(homeLink);
+  }
 
   function setMenu(open) {
     if (!toggle) return;
@@ -416,7 +422,8 @@ if (faqToggle) {
     active = link;
     links.forEach(item => item.classList.toggle('is-active', item === link));
     menuLinks.forEach((item, index) => item.classList.toggle('is-active', links[index] === link));
-    if (label) label.textContent = link ? link.textContent : 'Menu';
+    homeLink?.classList.toggle('is-active', !link);
+    if (label) label.textContent = link ? link.textContent : 'Home';
     if (!link) { indicator.style.opacity = '0'; return; }
     indicator.style.opacity = '1';
     indicator.style.width = link.offsetWidth + 'px';
@@ -445,8 +452,10 @@ if (faqToggle) {
   });
   // The logo scrolls home: keep the current label until the page reaches the top.
   document.querySelector('.brand')?.addEventListener('click', () => { hold(); setMenu(false); });
+  homeLink?.addEventListener('click', () => { hold(); move(null); setMenu(false); });
   window.addEventListener('scroll', spy, { passive: true });
   window.addEventListener('resize', () => { if (active) move(active); spy(); });
   if (document.fonts?.ready) document.fonts.ready.then(() => { if (active) move(active); });
+  move(null);
   spy();
 })();

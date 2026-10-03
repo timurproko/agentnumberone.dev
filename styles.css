@@ -86,8 +86,6 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .site-nav a:hover, .site-nav a.is-active { color: var(--ink); }
 .nav-indicator { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--accent); opacity: 0; transform: translateX(0); transition: transform .35s cubic-bezier(.2, .7, .2, 1), width .35s cubic-bezier(.2, .7, .2, 1), opacity .2s; pointer-events: none; }
 .header-actions { justify-self: end; display: flex; align-items: center; gap: 18px; }
-.header-link { font-size: 14px; color: var(--ink-2); }
-.header-link:hover { color: var(--ink); }
 .section-menu { display: none; justify-self: center; }
 .section-menu-toggle { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 4px; border: 0; background: transparent; color: var(--ink-2); font: 14px/1 var(--sans); cursor: pointer; }
 .section-menu-toggle[aria-expanded="true"], .section-menu-toggle[aria-expanded="true"] .section-menu-chevron { color: var(--ink); }
@@ -349,7 +347,6 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   .feature-grid, .why-grid { gap: 16px; }
 }
 @media (max-width: 800px) {
-  .header-link { display: none; }
   .site-nav { gap: 18px; }
   .site-nav a { font-size: 13px; }
   .hero-intro { grid-template-columns: 1.25fr .75fr; gap: 20px; padding-block: 56px 48px; }
@@ -376,9 +373,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   html { scroll-padding-top: 56px; }
   .container { width: calc(100% - 32px); }
   .header-inner { height: 56px; gap: 12px; }
-  .header-actions { gap: 14px; }
   .section-menu { display: block; }
-  .header-link { display: inline; }
   .site-nav { display: none; }
   .hero-intro { grid-template-columns: 1fr; gap: 32px; padding-block: 48px 32px; }
   .hero::before { inset: 16px 16px calc(38% + 16px); }
@@ -425,7 +420,6 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 @media (max-width: 380px) {
   .container { width: calc(100% - 24px); }
   .header-inner { gap: 8px; }
-  .header-actions { gap: 10px; }
   .section-menu-toggle { padding: 0 2px; }
   .copy-command { font-size: 12px; gap: 8px; }
 }
