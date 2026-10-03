@@ -184,9 +184,11 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 @keyframes demo-line-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ---------- Sections ---------- */
-.section { position: relative; overflow-x: clip; padding-block: 112px; }
+/* Nav jumps land every section with the same 48px gap below the header as
+   Experience, whatever its own top padding */
+.section { --section-pad: 112px; position: relative; overflow-x: clip; padding-block: var(--section-pad); scroll-margin-top: calc(48px - var(--section-pad)); }
 .section-alt { background: var(--surface); border-block: 1px solid var(--line); }
-#experience { padding-top: 48px; }
+#experience { padding-top: 48px; scroll-margin-top: 0; }
 #foundation { background: radial-gradient(ellipse at 85% 50%, #121f9e1a, transparent 65%), var(--surface); }
 #get-started { border-top: 1px solid var(--line); }
 .section-alt + .section-alt { border-top: 0; }
@@ -454,7 +456,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 /* ---------- Responsive ---------- */
 @media (min-width: 801px) { .desktop-break { display: inline; } }
 @media (max-width: 1024px) {
-  .section { padding-block: 88px; }
+  .section { --section-pad: 88px; }
   .foundation-grid { grid-template-columns: 1fr; gap: 48px; }
   .stack-side { max-width: 640px; }
   .start-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -473,7 +475,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   .terminal { font-size: 12px; }
   .terminal-titlebar { padding-inline: 20px; }
   .terminal-body { --term-pad: 20px; padding: 20px var(--term-pad) 12px; }
-  .section { padding-block: 72px; }
+  .section { --section-pad: 72px; }
   .section-head { margin-bottom: 40px; }
   .lead { font-size: 17px; }
   .feature-grid { grid-template-columns: 1fr; }
@@ -510,7 +512,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   .terminal-titlebar { padding-inline: 14px; }
   .terminal-body { --term-pad: 14px; padding: 16px var(--term-pad) 10px; }
   .demo-panel { height: 276px; }
-  .section { padding-block: 64px; }
+  .section { --section-pad: 64px; }
   .section-head { gap: 14px; margin-bottom: 32px; }
   .lead { font-size: 16px; }
   .feature-card { display: flex; }

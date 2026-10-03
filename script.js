@@ -190,10 +190,10 @@ if ('IntersectionObserver' in window) {
 // Prompt history card: on hover, walk the selection up to the oldest prompt
 // and back down, flashing ↑ or ↓ for each step and recalling each prompt into
 // the editor at its own length.
-const history = document.querySelector('.mini-history');
-if (history) {
-  const card = history.closest('.feature-card');
-  const rows = [...history.querySelectorAll('.mini-row')];
+const historyMini = document.querySelector('.mini-history');
+if (historyMini) {
+  const card = historyMini.closest('.feature-card');
+  const rows = [...historyMini.querySelectorAll('.mini-row')];
   const recalled = card.querySelector('.mini-skel-recalled');
   const keys = Object.fromEntries([...card.querySelectorAll('kbd[data-key]')].map(kbd => [kbd.dataset.key, kbd]));
   const resting = rows.findIndex(row => row.classList.contains('is-active'));
@@ -798,19 +798,31 @@ npmVersion('next').catch(() => {});
     if (current !== active) move(current);
   }
 
-  function select(entry) {
+  // Land every section the same way: its eyebrow 48px below the header, as
+  // Experience sits. Section paddings and centred grids differ, so a plain
+  // anchor jump would leave a different gap above each one.
+  function land(entry, event) {
+    const mark = entry.target.querySelector('.eyebrow, h2') || entry.target;
+    const headerHeight = document.querySelector('.site-header')?.offsetHeight || 72;
+    event.preventDefault();
+    window.scrollTo({ top: mark.getBoundingClientRect().top + window.scrollY - headerHeight - 48, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+    history.pushState(null, '', entry.href);
+  }
+
+  function select(entry, event) {
     hold();
     move(entry);
     setMenu(false);
+    if (entry && event) land(entry, event);
   }
 
   entries.forEach(entry => {
-    entry.navLink?.addEventListener('click', () => select(entry));
-    entry.menuLink?.addEventListener('click', () => select(entry));
+    entry.navLink?.addEventListener('click', event => select(entry, event));
+    entry.menuLink?.addEventListener('click', event => select(entry, event));
   });
   const installEntry = entries.find(entry => entry.href === '#get-started');
   if (installEntry) document.querySelectorAll('a[href="#get-started"]').forEach(link => {
-    if (link !== installEntry.menuLink && link !== installEntry.navLink) link.addEventListener('click', () => select(installEntry));
+    if (link !== installEntry.menuLink && link !== installEntry.navLink) link.addEventListener('click', event => select(installEntry, event));
   });
   homeLink?.addEventListener('click', () => select(null));
   // The logo scrolls home: keep the current label until the page reaches the top.
