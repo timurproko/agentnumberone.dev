@@ -85,7 +85,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .site-nav a { font-size: 14px; color: var(--ink-2); transition: color .15s; }
 .site-nav a:hover, .site-nav a.is-active { color: var(--ink); }
 .nav-indicator { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--accent); opacity: 0; transform: translateX(0); transition: transform .35s cubic-bezier(.2, .7, .2, 1), width .35s cubic-bezier(.2, .7, .2, 1), opacity .2s; pointer-events: none; }
-.header-actions { justify-self: end; display: flex; align-items: center; gap: 18px; }
+.header-actions { justify-self: end; display: flex; align-items: center; gap: 24px; }
 .header-link { font-size: 14px; color: var(--ink-2); transition: color .15s; }
 .header-link:hover, .header-link[aria-current="page"] { color: var(--ink); }
 .section-menu { display: none; justify-self: center; }
@@ -389,7 +389,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   .feature-grid, .why-grid { gap: 16px; }
 }
 @media (max-width: 800px) {
-  .site-nav { gap: 18px; }
+  .site-nav, .header-actions { gap: 18px; }
   .site-nav a { font-size: 13px; }
   .hero-intro { grid-template-columns: 1.25fr .75fr; gap: 20px; padding-block: 56px 48px; }
   .hero-copy h1 { font-size: clamp(54px, 8vw, 66px); }
