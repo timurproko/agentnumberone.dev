@@ -364,6 +364,10 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .sponsor-pin-icon svg { width: 15px; height: 15px; fill: none; stroke: #db61a2; stroke-width: 1.5; stroke-linejoin: round; transition: fill .15s; }
 .sponsor-pin:hover { transform: translateY(-2px); border-color: #db61a266; background: #141416e6; }
 .sponsor-pin:hover .sponsor-pin-icon svg { fill: #db61a2; }
+@property --sponsor-glow-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.sponsor-pin::before { content: ''; position: absolute; inset: -1px; padding: 1.5px; border-radius: inherit; background: conic-gradient(from var(--sponsor-glow-angle), transparent 0 45%, #db61a233 62%, #db61a2 88%, #f5a3cf 100%); -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); opacity: 0; pointer-events: none; animation: sponsor-glow 7s linear 2.4s infinite; }
+@keyframes sponsor-glow { 0% { --sponsor-glow-angle: 0deg; opacity: 0; } 4%, 26% { opacity: 1; } 32%, 100% { --sponsor-glow-angle: 400deg; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .sponsor-pin::before { animation: none; } }
 @media (max-width: 600px) { .sponsor-pin { right: 16px; bottom: 16px; } }
 @media (forced-colors: active) { .sponsor-pin { border-color: ButtonText; } .sponsor-pin-icon svg { stroke: ButtonText; } }
 
