@@ -6,7 +6,15 @@
 .docs-layout { display: grid; grid-template-columns: 216px minmax(0, 1fr) 176px; gap: 40px; align-items: start; padding-block: 48px 96px; }
 
 /* Sidebar */
-.docs-sidebar { position: sticky; top: 96px; max-height: calc(100vh - 120px); overflow-y: auto; padding-right: 8px; scrollbar-width: thin; }
+.docs-sidebar { position: sticky; top: 96px; max-height: calc(100vh - 120px); overflow-y: auto; padding-right: 8px; }
+/* Sidebar scrollbars: thin and hidden until the pointer is over the list. */
+.docs-sidebar, .docs-nav-panel { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+.docs-sidebar:hover, .docs-sidebar:focus-within, .docs-nav-panel:hover { scrollbar-color: var(--line-2) transparent; }
+@supports not (scrollbar-color: auto) {
+  .docs-sidebar::-webkit-scrollbar, .docs-nav-panel::-webkit-scrollbar { width: 6px; }
+  .docs-sidebar::-webkit-scrollbar-thumb, .docs-nav-panel::-webkit-scrollbar-thumb { border-radius: 3px; background: transparent; }
+  .docs-sidebar:hover::-webkit-scrollbar-thumb, .docs-nav-panel:hover::-webkit-scrollbar-thumb { background: var(--line-2); }
+}
 .docs-filter { display: block; width: 100%; height: 36px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); font: 13px var(--sans); }
 .docs-filter::placeholder { color: var(--muted); }
 .docs-filter { transition: border-color .15s, box-shadow .15s; }
