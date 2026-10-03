@@ -9,7 +9,8 @@
 .docs-sidebar { position: sticky; top: 96px; max-height: calc(100vh - 120px); overflow-y: auto; padding-right: 8px; scrollbar-width: thin; }
 .docs-filter { display: block; width: 100%; height: 36px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: var(--radius-sm); background: var(--surface-2); color: var(--ink); font: 13px var(--sans); }
 .docs-filter::placeholder { color: var(--muted); }
-.docs-filter:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.docs-filter { transition: border-color .15s, box-shadow .15s; }
+.docs-filter:focus, .docs-filter:focus-visible { outline: none; border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .docs-group { margin-top: 28px; }
 .docs-group-title { margin-bottom: 8px; font: 500 11px/1.6 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .docs-group ul { border-left: 1px solid var(--line); }
@@ -17,6 +18,9 @@
 .docs-group a:hover { color: var(--ink); }
 .docs-group a[aria-current="page"] { border-left-color: var(--accent); color: var(--ink); font-weight: 500; }
 .docs-empty { margin-top: 20px; font-size: 13px; color: var(--muted); }
+.docs-external { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); }
+.docs-external a { display: block; padding: 6px 0; font-size: 14px; color: var(--muted); transition: color .15s; }
+.docs-external a:hover { color: var(--ink); }
 .docs-menu-toggle { display: none; }
 
 /* Article */
@@ -89,16 +93,19 @@ kbd { display: inline-block; min-width: 22px; padding: 1px 6px; border: 1px soli
   .docs-toc { display: none; }
 }
 @media (max-width: 800px) {
-  .docs-crumb { display: none; }
   .docs-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-top: 24px; }
   .doc td:first-child { white-space: normal; }
+  .doc td:first-child code { white-space: nowrap; overflow-wrap: normal; }
   .doc th, .doc td { padding: 10px 12px; }
-  .docs-sidebar { position: static; max-height: none; padding: 0; }
+  .docs-js .docs-sidebar { position: sticky; top: var(--docs-header-height, 56px); z-index: 15; max-height: none; overflow: visible; margin-top: -12px; padding: 12px 0; background: var(--bg); }
+  html:not(.docs-js) .docs-sidebar { position: static; max-height: none; padding: 0; }
   .docs-js .docs-menu-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 44px; padding: 0 14px; border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--surface-2); color: var(--ink); font-size: 14px; }
   .docs-menu-toggle svg { width: 12px; height: 12px; transition: transform .2s; }
   .docs-menu-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
-  .docs-js .docs-nav-panel { display: none; padding-top: 16px; }
-  .docs-js .docs-nav-panel.is-open { display: block; }
+  /* The page list opens as an overlay under the pinned toggle and scrolls on its own, however long the docs get. */
+  .docs-js .docs-nav-panel { position: fixed; z-index: 14; top: var(--docs-panel-top, 124px); left: 0; right: 0; bottom: 0; overflow-y: auto; overscroll-behavior: contain; padding: 16px var(--docs-panel-x, 16px) 40px; border-top: 1px solid var(--line); background: var(--bg); opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .18s ease, transform .18s ease, visibility 0s .18s; }
+  .docs-js .docs-nav-panel.is-open { opacity: 1; visibility: visible; transform: none; transition: opacity .18s ease, transform .18s ease, visibility 0s; }
+  .docs-menu-open { overflow: hidden; }
   .doc-cards { grid-template-columns: 1fr; }
   .doc-pager { grid-template-columns: 1fr; }
   .doc-pager a[rel="next"] { grid-column: auto; }
@@ -106,6 +113,7 @@ kbd { display: inline-block; min-width: 22px; padding: 1px 6px; border: 1px soli
 }
 @media (forced-colors: active) {
   .docs-group a[aria-current="page"] { border-left-color: Highlight; }
+  .docs-filter:focus { outline: 2px solid Highlight; }
   .doc-code, .doc-note, .doc-cards a, .doc-pager a, kbd { border-color: CanvasText; }
 }
 .docs-brand { display: flex; align-items: center; gap: 12px; }

@@ -47,8 +47,7 @@ function show(hash, { scroll = true } = {}) {
     document.title = `${article.querySelector('h1').textContent} · a1 docs`;
     active = article;
   }
-  navPanel?.classList.remove('is-open');
-  menuToggle?.setAttribute('aria-expanded', 'false');
+  setMenu(false);
   if (menuToggle) menuToggle.querySelector('span').textContent = article.querySelector('h1').textContent;
   if (!scroll) return;
   if (section) section.scrollIntoView();
@@ -73,11 +72,31 @@ function spy() {
 }
 window.addEventListener('scroll', spy, { passive: true });
 
-// Mobile: the sidebar collapses behind a toggle that names the current page.
-menuToggle?.addEventListener('click', () => {
-  const open = !navPanel.classList.contains('is-open');
+// Mobile: the page list is an overlay opened from a toggle pinned under the header. It scrolls on its own and locks the page behind it.
+function setMenu(open) {
+  if (!menuToggle || !navPanel) return;
+  if (open) {
+    const header = document.querySelector('.site-header').getBoundingClientRect();
+    document.documentElement.style.setProperty('--docs-header-height', `${header.height}px`);
+    document.documentElement.style.setProperty('--docs-panel-top', `${menuToggle.getBoundingClientRect().bottom + 12}px`);
+    document.documentElement.style.setProperty('--docs-panel-x', `${menuToggle.getBoundingClientRect().left}px`);
+  }
   navPanel.classList.toggle('is-open', open);
   menuToggle.setAttribute('aria-expanded', String(open));
+  document.documentElement.classList.toggle('docs-menu-open', open);
+}
+menuToggle?.addEventListener('click', () => setMenu(!navPanel.classList.contains('is-open')));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && navPanel?.classList.contains('is-open')) {
+    setMenu(false);
+    menuToggle.focus();
+  }
+});
+const syncHeaderHeight = () => document.documentElement.style.setProperty('--docs-header-height', `${document.querySelector('.site-header').getBoundingClientRect().height}px`);
+syncHeaderHeight();
+window.addEventListener('resize', () => {
+  syncHeaderHeight();
+  if (navPanel?.classList.contains('is-open') && getComputedStyle(menuToggle).display === 'none') setMenu(false);
 });
 
 // Sidebar filter matches page titles and their keywords.
