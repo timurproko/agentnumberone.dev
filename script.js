@@ -365,12 +365,14 @@ if (faqToggle) {
   const nav = document.querySelector('.site-nav');
   if (!nav) return;
   const links = [...nav.querySelectorAll('a[href^="#"]')];
-  const targets = links.map(link => document.querySelector(link.getAttribute('href')));
-  if (!links.length || targets.some(target => !target)) return;
+  if (!links.length || links.some(link => !document.querySelector(link.getAttribute('href')))) return;
   const indicator = document.createElement('span');
   indicator.className = 'nav-indicator';
   indicator.setAttribute('aria-hidden', 'true');
   nav.appendChild(indicator);
+
+  // Every section the page tracks, one per header nav link.
+  const entries = links.map(link => ({ text: link.textContent, href: link.getAttribute('href'), navLink: link, target: document.querySelector(link.getAttribute('href')) }));
 
   let active = null;
   let locked = false;
@@ -396,12 +398,17 @@ if (faqToggle) {
   const toggle = menu?.querySelector('.section-menu-toggle');
   const label = menu?.querySelector('.section-menu-label');
   const list = menu?.querySelector('.section-menu-list');
-  const menuLinks = list ? links.map(link => list.appendChild(link.cloneNode(true))) : [];
   const homeLink = list ? document.createElement('a') : null;
-  if (homeLink) {
+  if (list) {
     homeLink.href = '#';
     homeLink.textContent = 'Home';
-    list.prepend(homeLink);
+    list.appendChild(homeLink);
+    entries.forEach(entry => {
+      entry.menuLink = document.createElement('a');
+      entry.menuLink.href = entry.href;
+      entry.menuLink.textContent = entry.text;
+      list.appendChild(entry.menuLink);
+    });
   }
 
   function setMenu(open) {
@@ -418,12 +425,13 @@ if (faqToggle) {
     });
   }
 
-  function move(link) {
-    active = link;
+  function move(entry) {
+    active = entry;
+    const link = entry?.navLink || null;
     links.forEach(item => item.classList.toggle('is-active', item === link));
-    menuLinks.forEach((item, index) => item.classList.toggle('is-active', links[index] === link));
-    homeLink?.classList.toggle('is-active', !link);
-    if (label) label.textContent = link ? link.textContent : 'Home';
+    entries.forEach(item => item.menuLink?.classList.toggle('is-active', item === entry));
+    homeLink?.classList.toggle('is-active', !entry);
+    if (label) label.textContent = entry ? entry.text : 'Home';
     if (!link) { indicator.style.opacity = '0'; return; }
     indicator.style.opacity = '1';
     indicator.style.width = link.offsetWidth + 'px';
@@ -435,34 +443,29 @@ if (faqToggle) {
     const headerHeight = document.querySelector('.site-header')?.offsetHeight || 72;
     const line = headerHeight + 2;
     let current = null;
-    targets.forEach((target, index) => {
-      if (target.getBoundingClientRect().top <= line) current = links[index];
+    entries.forEach(entry => {
+      if (entry.target.getBoundingClientRect().top <= line) current = entry;
     });
     if (current !== active) move(current);
   }
 
-  links.forEach((link, index) => {
-    const select = () => {
-      hold();
-      move(link);
-      setMenu(false);
-    };
-    link.addEventListener('click', select);
-    menuLinks[index]?.addEventListener('click', select);
+  function select(entry) {
+    hold();
+    move(entry);
+    setMenu(false);
+  }
+
+  entries.forEach(entry => {
+    entry.navLink?.addEventListener('click', () => select(entry));
+    entry.menuLink?.addEventListener('click', () => select(entry));
   });
+  const installEntry = entries.find(entry => entry.href === '#get-started');
+  if (installEntry) document.querySelectorAll('a[href="#get-started"]').forEach(link => {
+    if (link !== installEntry.menuLink && link !== installEntry.navLink) link.addEventListener('click', () => select(installEntry));
+  });
+  homeLink?.addEventListener('click', () => select(null));
   // The logo scrolls home: keep the current label until the page reaches the top.
   document.querySelector('.brand')?.addEventListener('click', () => { hold(); setMenu(false); });
-  homeLink?.addEventListener('click', () => { hold(); move(null); setMenu(false); });
-  // Mobile: Install jumps to the install panel itself, past the section intro.
-  const installPanel = document.querySelector('.install-panel');
-  document.querySelectorAll('a[href="#get-started"]').forEach(link => link.addEventListener('click', event => {
-    if (!installPanel || !window.matchMedia('(max-width: 600px)').matches) return;
-    event.preventDefault();
-    hold();
-    setMenu(false);
-    installPanel.scrollIntoView({ block: 'start' });
-    history.pushState(null, '', '#get-started');
-  }));
   window.addEventListener('scroll', spy, { passive: true });
   window.addEventListener('resize', () => { if (active) move(active); spy(); });
   if (document.fonts?.ready) document.fonts.ready.then(() => { if (active) move(active); });
