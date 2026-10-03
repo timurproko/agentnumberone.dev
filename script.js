@@ -97,15 +97,20 @@ function stopReplay() {
   follow(false);
 }
 
+// Blank the session so it can be generated from the top.
+function primeReplay() {
+  demoPanel.classList.add('is-replaying');
+  demoLines.forEach(line => line.classList.add('is-pending'));
+  demoPanel.querySelectorAll('.tui-out, .tui-took').forEach(el => el.classList.add('is-pending'));
+  follow(false);
+}
+
 async function replay() {
   stopReplay();
   if (reducedMotion.matches) return;
   const id = replayRun;
   const live = () => id === replayRun;
-  demoPanel.classList.add('is-replaying');
-  demoLines.forEach(line => line.classList.add('is-pending'));
-  demoPanel.querySelectorAll('.tui-out, .tui-took').forEach(el => el.classList.add('is-pending'));
-  follow(false);
+  primeReplay();
 
   for (const line of demoLines) {
     if (line.classList.contains('tui-prompt')) {
@@ -170,8 +175,10 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('resize', () => follow(false));
 document.fonts?.ready.then(() => follow(false));
 follow(false);
-// Play the session once when it first scrolls into view.
+// Play the session once when it first scrolls into view. Start blank so the
+// finished transcript doesn't flash before the replay clears it.
 if ('IntersectionObserver' in window) {
+  if (!reducedMotion.matches) primeReplay();
   const observer = new IntersectionObserver(entries => {
     if (!entries.some(entry => entry.isIntersecting)) return;
     observer.disconnect();
