@@ -1,0 +1,11 @@
+{
+  "name": "a1",
+  "short_name": "a1",
+  "icons": [
+    { "src": "/assets/icons/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/icons/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#0a0a0b",
+  "background_color": "#0a0a0b",
+  "display": "browser"
+}

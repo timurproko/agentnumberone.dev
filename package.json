@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "node server.cjs",
-    "social:build": "node scripts/generate-social-preview.mjs"
+    "social:build": "node scripts/generate-social-preview.mjs",
+    "icons:build": "node scripts/generate-favicons.mjs"
   },
   "devDependencies": {
     "playwright": "^1.63.0"
