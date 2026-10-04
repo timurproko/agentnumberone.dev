@@ -187,7 +187,7 @@ if ('IntersectionObserver' in window) {
   observer.observe(document.querySelector('.terminal'));
 }
 
-// Experience cards animate while "live": hovered where there is a mouse, or, on
+// Vision cards animate while "live": hovered where there is a mouse, or, on
 // touch screens (which never hover), the one card nearest the middle of the
 // screen, so only one illustration moves at a time. Cards register their
 // start/stop with onLive; the CSS-only animations key off .is-live.
@@ -858,7 +858,7 @@ npmVersion('next').catch(() => {});
   }
 
   // Land every section the same way: its eyebrow 48px below the header, as
-  // Experience sits. Section paddings and centred grids differ, so a plain
+  // Vision sits. Section paddings and centred grids differ, so a plain
   // anchor jump would leave a different gap above each one.
   function land(entry, event) {
     const mark = entry.target.querySelector('.eyebrow, h2') || entry.target;
