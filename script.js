@@ -454,7 +454,7 @@ if (roadmap && 'IntersectionObserver' in window && !reducedMotion.matches) {
   revealObserver.observe(roadmap);
 }
 
-// Published versions from npm. The release (latest) and develop (next) tags fall back to their tag names, and the 0.2.0 roadmap highlight stays, if this fails.
+// Published versions from npm. The release (latest) and develop (next) tags fall back to their tag names, and the 0.2.x roadmap highlight stays, if this fails.
 const npmVersion = tag => fetch(`https://registry.npmjs.org/@timurproko/a1/${tag}`)
   .then(response => (response.ok ? response.json() : Promise.reject(response.status)))
   .then(({ version }) => {
@@ -467,7 +467,7 @@ const npmVersion = tag => fetch(`https://registry.npmjs.org/@timurproko/a1/${tag
 npmVersion('latest')
   .then(version => {
     const [major, minor] = version.split('.');
-    const target = document.querySelector(`.roadmap-item[data-version="${major}.${minor}.0"]`);
+    const target = document.querySelector(`.roadmap-item[data-version="${major}.${minor}.x"]`);
     if (!target) return;
     document.querySelectorAll('.roadmap-item').forEach(item => {
       const current = item === target;
