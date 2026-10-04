@@ -187,8 +187,9 @@ if ('IntersectionObserver' in window) {
   observer.observe(document.querySelector('.terminal'));
 }
 
-// Experience cards animate while "live": hovered where there is a mouse, or
-// mostly in view on touch screens, which never hover. Cards register their
+// Experience cards animate while "live": hovered where there is a mouse, or, on
+// touch screens (which never hover), the one card nearest the middle of the
+// screen, so only one illustration moves at a time. Cards register their
 // start/stop with onLive; the CSS-only animations key off .is-live.
 const canHover = window.matchMedia('(hover: hover)');
 const liveHandlers = new Map();
@@ -204,14 +205,34 @@ featureCards.forEach(card => {
   card.addEventListener('mouseenter', () => { if (canHover.matches) setLive(card, true); });
   card.addEventListener('mouseleave', () => { if (canHover.matches) setLive(card, false); });
 });
-if ('IntersectionObserver' in window) {
-  const liveObserver = new IntersectionObserver(entries => {
-    if (canHover.matches) return;
-    entries.forEach(entry => setLive(entry.target, entry.intersectionRatio >= 0.6));
-  }, { threshold: [0, 0.6] });
-  featureCards.forEach(card => liveObserver.observe(card));
+// Touch screens: several cards fit on a phone screen at once, so only the one whose
+// centre is nearest the middle of the viewport plays, and none while no card is
+// near the middle. Checked once per frame while scrolling.
+let centreFrame = 0;
+function liveNearestCentre() {
+  centreFrame = 0;
+  if (canHover.matches) return;
+  const middle = window.innerHeight / 2;
+  let nearest = null;
+  let nearestDistance = window.innerHeight * 0.35;
+  featureCards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const distance = Math.abs(rect.top + rect.height / 2 - middle);
+    if (distance < nearestDistance) {
+      nearest = card;
+      nearestDistance = distance;
+    }
+  });
+  featureCards.forEach(card => setLive(card, card === nearest));
 }
-canHover.addEventListener?.('change', () => featureCards.forEach(card => setLive(card, false)));
+const checkCentre = () => { if (!centreFrame) centreFrame = requestAnimationFrame(liveNearestCentre); };
+window.addEventListener('scroll', checkCentre, { passive: true });
+window.addEventListener('resize', checkCentre);
+checkCentre();
+canHover.addEventListener?.('change', () => {
+  featureCards.forEach(card => setLive(card, false));
+  checkCentre();
+});
 
 // Prompt history card: while live, walk the selection up to the oldest prompt
 // and back down, flashing ↑ or ↓ for each step and recalling each prompt into
