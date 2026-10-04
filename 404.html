@@ -56,6 +56,16 @@
     @media (prefers-reduced-motion: reduce) {
       .nf .hero-grid { animation: none; }
     }
+    /* CRT power-off on the way out: the screen squashes to a bright line, then a dot, then the next page loads.
+       html gets its own background so body's no longer paints the canvas and the collapse has black behind it. */
+    html { background: #000; }
+    html.crt-off body { transform-origin: 50% 50vh; animation: crt-off 520ms cubic-bezier(0.7, 0, 0.3, 1) forwards; pointer-events: none; }
+    @keyframes crt-off {
+      0%   { transform: scale(1, 1); filter: brightness(1); opacity: 1; }
+      45%  { transform: scale(1, 0.004); filter: brightness(4); opacity: 1; }
+      75%  { transform: scale(0.003, 0.004); filter: brightness(8); opacity: 1; }
+      100% { transform: scale(0, 0); filter: brightness(8); opacity: 0; }
+    }
   </style>
   <title>Page not found · a1</title>
 </head>
@@ -79,6 +89,23 @@
   </main>
 
   <script>
+    // Same-site links play the CRT power-off before navigating; new tabs, modified clicks and other sites go straight through.
+    (function crtOff() {
+      const root = document.documentElement;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      document.addEventListener('click', event => {
+        const link = event.target.closest('a[href]');
+        if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (link.target && link.target !== '_self') return;
+        const url = new URL(link.href, location.href);
+        if (url.origin !== location.origin || reduce.matches || root.classList.contains('crt-off')) return;
+        event.preventDefault();
+        root.classList.add('crt-off');
+        setTimeout(() => { location.href = url.href; }, 540);
+      });
+      // Coming back with the browser's back button restores the page from cache; switch it back on.
+      window.addEventListener('pageshow', event => { if (event.persisted) root.classList.remove('crt-off'); });
+    })();
     // A different joke on every visit. The markup keeps the first one for no-JS visitors.
     (function headline() {
       const lines = [
