@@ -90,18 +90,24 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .header-actions { justify-self: end; display: flex; align-items: center; gap: 24px; }
 .header-link { font-size: 14px; color: var(--ink-2); transition: color .15s; }
 .header-link:hover, .header-link[aria-current="page"] { color: var(--ink); }
-.section-menu { display: none; justify-self: center; }
-.section-menu-toggle { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 4px; border: 0; background: transparent; color: var(--ink-2); font: 14px/1 var(--sans); cursor: pointer; }
-.section-menu-toggle[aria-expanded="true"], .section-menu-toggle[aria-expanded="true"] .section-menu-chevron { color: var(--ink); }
-@media (hover: hover) { .section-menu-toggle:hover, .section-menu-toggle:hover .section-menu-chevron { color: var(--ink); } }
-.section-menu-chevron { width: 12px; height: 12px; color: var(--ink-2); transition: transform .2s; }
-.section-menu-toggle[aria-expanded="true"] .section-menu-chevron { transform: rotate(180deg); }
-.section-menu-list { position: absolute; top: 100%; left: 0; right: 0; display: flex; flex-direction: column; padding: 4px 16px 8px; border-bottom: 1px solid var(--line); background: #0a0a0bf2; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: var(--shadow); }
-.section-menu-list[hidden] { display: none; }
-.section-menu-list a { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--ink-2); font-size: 15px; }
-.section-menu-list a:last-child { border-bottom: 0; }
-.section-menu-list a:hover, .section-menu-list a.is-active { color: var(--ink); }
-.section-menu-list a.is-active::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.header-link-external { display: inline-flex; align-items: center; gap: 4px; }
+.header-link-external svg { width: 10px; height: 10px; }
+/* Mobile section menu: the same pinned toggle and overlay list as the docs sidebar (docs/docs.css). */
+.section-menu { display: none; }
+.section-menu-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 44px; padding: 0 14px; border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--surface-2); color: var(--ink); font: 14px var(--sans); cursor: pointer; }
+.section-menu-toggle svg { width: 12px; height: 12px; transition: transform .2s; }
+.section-menu-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.section-menu-panel { position: fixed; z-index: 18; top: var(--section-panel-top, 125px); left: 0; right: 0; bottom: 0; overflow-y: auto; overscroll-behavior: contain; padding: 24px var(--section-panel-x, 16px) 40px; border-top: 1px solid var(--line); background: var(--bg); opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .18s ease, transform .18s ease, visibility 0s .18s; }
+.section-menu-panel.is-open { opacity: 1; visibility: visible; transform: none; transition: opacity .18s ease, transform .18s ease, visibility 0s; }
+.section-menu-title { margin-bottom: 8px; font: 500 11px/1.6 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.section-menu-list { display: flex; flex-direction: column; border-left: 1px solid var(--line); }
+.section-menu-list a { display: block; margin-left: -1px; padding: 6px 12px; border-left: 1px solid transparent; font-size: 14px; color: var(--ink-2); transition: color .15s, border-color .15s; }
+.section-menu-list a:hover { color: var(--ink); }
+.section-menu-list a.is-active { border-left-color: var(--accent); color: var(--ink); font-weight: 500; }
+.section-menu-external { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); }
+.section-menu-external a { display: block; padding: 6px 0; font-size: 14px; color: var(--muted); transition: color .15s; }
+.section-menu-external a:hover { color: var(--ink); }
+.section-menu-open { overflow: hidden; }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; isolation: isolate; overflow: hidden; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, var(--blue) 0%, var(--blue) 62%, var(--bg) 62%); }
@@ -192,7 +198,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .section-alt { background: var(--surface); border-block: 1px solid var(--line); }
 #experience { padding-top: 48px; scroll-margin-top: 0; }
 #architecture { background: radial-gradient(ellipse at 85% 50%, #121f9e1a, transparent 65%), var(--surface); }
-#install { border-top: 1px solid var(--line); }
+#installation { border-top: 1px solid var(--line); }
 .section-alt + .section-alt { border-top: 0; }
 .section-head { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; max-width: 720px; margin-bottom: 56px; }
 .section-head-center { align-items: center; text-align: center; margin-inline: auto; }
@@ -468,8 +474,16 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   .feature-grid, .why-grid { gap: 16px; }
 }
 @media (max-width: 800px) {
-  .site-nav, .header-actions { gap: 18px; }
-  .site-nav a { font-size: 13px; }
+  .header-actions { gap: 18px; }
+  /* Section links move into a toggle pinned under the header, as on the docs: 12px + 44px + 12px. */
+  .header-inner { grid-template-columns: auto 1fr; }
+  .site-nav { display: none; }
+  /* GitHub is listed in the section menu (and the docs page list) at this width. */
+  .header-link-external { display: none; }
+  html.js { scroll-padding-top: 140px; }
+  .js body { padding-top: 141px; }
+  .js .faq-tools { top: 140px; }
+  .js .section-menu { display: block; position: fixed; z-index: 19; top: 73px; left: 0; right: 0; padding: 12px 24px; background: var(--bg); }
   .hero-intro { grid-template-columns: 1.25fr .75fr; gap: 20px; padding-block: 56px 48px; }
   .hero-copy h1 { font-size: clamp(54px, 8vw, 66px); }
   .hero-art { transform: none; }
@@ -491,7 +505,9 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 }
 @media (max-width: 600px) {
   html { scroll-padding-top: 56px; }
+  html.js { scroll-padding-top: 124px; }
   .faq-tools { top: 56px; }
+  .js .faq-tools { top: 124px; }
   .start-side .ascii-field-section, .stack-side .ascii-field-section { left: 50%; }
   /* Install panel sits right under the intro, so it is in view as soon as the section is. */
   .start-grid { gap: 0; }
@@ -502,8 +518,8 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   .container { width: calc(100% - 32px); }
   .header-inner { height: 56px; gap: 12px; }
   body { padding-top: 57px; }
-  .section-menu { display: block; }
-  .site-nav { display: none; }
+  .js body { padding-top: 125px; }
+  .js .section-menu { top: 57px; padding-inline: 16px; }
   .hero-intro { grid-template-columns: 1fr; gap: 32px; padding-block: 48px 32px; }
   .hero::before { inset: 16px 16px calc(38% + 16px); }
   .hero-intro.container { width: calc(100% - 66px); }
@@ -548,7 +564,8 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 @media (max-width: 380px) {
   .container { width: calc(100% - 24px); }
   .header-inner { gap: 8px; }
-  .section-menu-toggle { padding: 0 2px; }
+  .header-actions { gap: 14px; }
+  .js .section-menu { padding-inline: 12px; }
   .copy-command { font-size: 12px; gap: 8px; }
 }
 

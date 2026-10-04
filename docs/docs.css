@@ -105,7 +105,7 @@ kbd { display: inline-block; min-width: 22px; padding: 1px 6px; border: 1px soli
   .doc td:first-child { white-space: normal; }
   .doc td:first-child code { white-space: nowrap; overflow-wrap: normal; }
   .doc th, .doc td { padding: 10px 12px; }
-  .docs-js .docs-sidebar { position: sticky; top: var(--docs-header-height, 56px); z-index: 15; max-height: none; overflow: visible; margin-top: -12px; padding: 12px 0; background: var(--bg); }
+  .docs-js .docs-sidebar { position: sticky; top: var(--docs-header-height, 56px); z-index: 15; max-height: none; overflow: visible; margin-top: -24px; padding: 12px 0; background: var(--bg); }
   html:not(.docs-js) .docs-sidebar { position: static; max-height: none; padding: 0; }
   .docs-js .docs-menu-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 44px; padding: 0 14px; border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--surface-2); color: var(--ink); font-size: 14px; }
   .docs-menu-toggle svg { width: 12px; height: 12px; transition: transform .2s; }

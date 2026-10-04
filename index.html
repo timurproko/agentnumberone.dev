@@ -32,6 +32,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
   <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
   <script>
     // Hold the hero until its fonts are ready, so it never renders (and reflows) in the fallback fonts.
     (() => {
@@ -57,11 +58,11 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#" aria-label="a1, home"><span class="brand-mark" aria-hidden="true">a1</span></a>
-      <nav class="site-nav" aria-label="Main navigation"><a href="#experience">Experience</a><a href="#architecture">Architecture</a><a href="#compare">Compare</a><a href="#roadmap">Roadmap</a><a href="#install">Install</a><a href="#faq">FAQ</a></nav>
-      <div class="section-menu"><button class="section-menu-toggle" type="button" aria-expanded="false" aria-controls="section-menu-list"><span class="section-menu-label">Home</span><svg class="section-menu-chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><nav class="section-menu-list" id="section-menu-list" aria-label="Sections" hidden></nav></div>
-      <div class="header-actions"><a class="header-link" href="docs/">Docs</a><a class="button button-small" href="#install">Install</a></div>
+      <nav class="site-nav" aria-label="Main navigation"><a href="#experience">Experience</a><a href="#architecture">Architecture</a><a href="#compare">Compare</a><a href="#roadmap">Roadmap</a><a href="#installation">Installation</a><a href="#faq">FAQ</a></nav>
+      <div class="header-actions"><a class="header-link header-link-external" href="https://github.com/timurproko/a1">GitHub<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4 3h5v5M9 3 3 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="header-link" href="docs/">Docs</a><a class="button button-small" href="#installation">Install</a></div>
     </div>
   </header>
+  <div class="section-menu"><button class="section-menu-toggle" type="button" aria-expanded="false" aria-controls="section-menu-panel"><span class="section-menu-label">Home</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="section-menu-panel" id="section-menu-panel"><p class="section-menu-title">On this page</p><nav class="section-menu-list" aria-label="Sections"></nav><ul class="section-menu-external"><li><a href="https://github.com/timurproko/a1">GitHub ↗</a></li><li><a href="https://www.npmjs.com/package/@timurproko/a1">npm ↗</a></li></ul></div></div>
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
@@ -70,7 +71,7 @@
       <div class="hero-copy">
         <h1 id="hero-title"><span>A coding agent</span> <span>for your terminal,</span> <span class="hero-title-accent">built on pi</span></h1>
         <p class="hero-description">a1 keeps pi’s engine, models, and extensions, and rebuilds the experience around them: persistent prompt history, next-step suggestions, and an interface made for long sessions.</p>
-        <div class="hero-actions"><a class="button" href="#install">Install</a><a class="button button-secondary" href="https://github.com/timurproko/a1">GitHub <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-actions"><a class="button" href="#installation">Install</a><a class="button button-secondary" href="https://github.com/timurproko/a1">GitHub <span aria-hidden="true">↗</span></a></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="ascii-field" data-ascii="morph"><canvas width="520" height="520"></canvas></div>
@@ -375,10 +376,10 @@ Duration  1.9s</pre>
       </div>
     </section>
 
-    <section class="section" id="install" aria-labelledby="start-heading">
+    <section class="section" id="installation" aria-labelledby="start-heading">
       <div class="container start-grid">
         <div class="start-copy">
-          <p class="eyebrow">Install</p>
+          <p class="eyebrow">Installation</p>
           <h2 id="start-heading">Up and running in a minute</h2>
           <p class="lead">Install a1, open a project, and start with a small task. Bring your pi extensions and the model provider you already use.</p>
           <ol class="start-steps">

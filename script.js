@@ -787,10 +787,12 @@ npmVersion('next').catch(() => {});
     scheduleUnlock();
   }
 
-  // Mobile: a toggle naming the current section that opens a list of all sections.
+  // Mobile: a toggle pinned under the header names the current section and opens
+  // an overlay list of all sections, the same way the docs page list works.
   const menu = document.querySelector('.section-menu');
   const toggle = menu?.querySelector('.section-menu-toggle');
   const label = menu?.querySelector('.section-menu-label');
+  const panel = menu?.querySelector('.section-menu-panel');
   const list = menu?.querySelector('.section-menu-list');
   const homeLink = list ? document.createElement('a') : null;
   if (list) {
@@ -805,18 +807,25 @@ npmVersion('next').catch(() => {});
     });
   }
 
+  const isOpen = () => Boolean(panel?.classList.contains('is-open'));
   function setMenu(open) {
-    if (!toggle) return;
+    if (!toggle || !panel) return;
+    if (open) {
+      const box = toggle.getBoundingClientRect();
+      document.documentElement.style.setProperty('--section-panel-top', `${box.bottom + 12}px`);
+      document.documentElement.style.setProperty('--section-panel-x', `${box.left}px`);
+    }
+    panel.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', String(open));
-    list.hidden = !open;
+    document.documentElement.classList.toggle('section-menu-open', open);
   }
 
   if (toggle) {
-    toggle.addEventListener('click', () => setMenu(list.hidden));
-    document.addEventListener('click', event => { if (!menu.contains(event.target)) setMenu(false); });
+    toggle.addEventListener('click', () => setMenu(!isOpen()));
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && !list.hidden) { setMenu(false); toggle.focus(); }
+      if (event.key === 'Escape' && isOpen()) { setMenu(false); toggle.focus(); }
     });
+    window.addEventListener('resize', () => { if (isOpen() && getComputedStyle(menu).display === 'none') setMenu(false); });
   }
 
   function move(entry) {
@@ -832,10 +841,15 @@ npmVersion('next').catch(() => {});
     indicator.style.transform = 'translateX(' + link.offsetLeft + 'px)';
   }
 
+  // Height of what is pinned over the page: the header, plus the section toggle on mobile.
+  function pinnedHeight() {
+    const header = document.querySelector('.site-header')?.offsetHeight || 72;
+    return menu && getComputedStyle(menu).position === 'fixed' ? header + menu.offsetHeight : header;
+  }
+
   function spy() {
     if (locked) { scheduleUnlock(); return; }
-    const headerHeight = document.querySelector('.site-header')?.offsetHeight || 72;
-    const line = headerHeight + 2;
+    const line = pinnedHeight() + 2;
     let current = null;
     entries.forEach(entry => {
       if (entry.target.getBoundingClientRect().top <= line) current = entry;
@@ -848,7 +862,7 @@ npmVersion('next').catch(() => {});
   // anchor jump would leave a different gap above each one.
   function land(entry, event) {
     const mark = entry.target.querySelector('.eyebrow, h2') || entry.target;
-    const headerHeight = document.querySelector('.site-header')?.offsetHeight || 72;
+    const headerHeight = pinnedHeight();
     event.preventDefault();
     window.scrollTo({ top: mark.getBoundingClientRect().top + window.scrollY - headerHeight - 48, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
     history.pushState(null, '', entry.href);
@@ -865,8 +879,8 @@ npmVersion('next').catch(() => {});
     entry.navLink?.addEventListener('click', event => select(entry, event));
     entry.menuLink?.addEventListener('click', event => select(entry, event));
   });
-  const installEntry = entries.find(entry => entry.href === '#install');
-  if (installEntry) document.querySelectorAll('a[href="#install"]').forEach(link => {
+  const installEntry = entries.find(entry => entry.href === '#installation');
+  if (installEntry) document.querySelectorAll('a[href="#installation"]').forEach(link => {
     if (link !== installEntry.menuLink && link !== installEntry.navLink) link.addEventListener('click', event => select(installEntry, event));
   });
   homeLink?.addEventListener('click', () => select(null));
