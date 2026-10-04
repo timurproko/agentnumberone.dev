@@ -214,8 +214,9 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .mini-ui-input { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); }
 .mini-ui-input.is-pinned { margin-top: auto; background: var(--surface-2); color: var(--ink); }
 .mini-caret { display: inline-block; width: 1px; height: 12px; margin-left: 1px; background: var(--accent); vertical-align: -2px; }
-/* The illustrations come alive only while their card is hovered */
-.feature-card:hover .mini-caret { animation: caret-blink 1.1s steps(1) infinite; }
+/* The illustrations come alive only while their card is live: hovered with a
+   mouse, or scrolled into view on touch screens (script.js sets .is-live) */
+.feature-card.is-live .mini-caret { animation: caret-blink 1.1s steps(1) infinite; }
 @keyframes caret-blink { 50% { opacity: 0; } }
 .mini-ui-stream { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 14px 22px 14px 12px; }
 .mini-skel { height: 7px; width: var(--w); border-radius: 3px; background: var(--line-2); }
@@ -224,13 +225,13 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .mini-row .mini-skel, .mini-ui-input .mini-skel { flex: 0 1 auto; min-width: 0; }
 .mini-row.is-active .mini-skel { background: var(--muted); }
 /* Prompt history: older entries fade toward the top; the highlighted one is
-   recalled into the editor below (script.js walks it up and back down on hover,
+   recalled into the editor below (script.js walks it up and back down while live,
    flashing the arrow key for each step) */
 .mini-history .mini-row { padding-block: 6px; }
 .mini-history .mini-row:nth-child(1) { opacity: 0.45; }
 .mini-history .mini-row:nth-child(2) { opacity: 0.7; }
 .mini-skel-recalled { background: var(--ink-2); }
-/* A suggestion waits as grey ghost text after the caret. On hover script.js
+/* A suggestion waits as grey ghost text after the caret. While live script.js
    runs the loop: Tab accepts it (white, caret to its end), Enter sends it into
    the transcript, the agent streams a reply, and a new suggestion appears. */
 .mini-chat { flex: 1; min-height: 0; overflow: hidden; justify-content: flex-end; }
@@ -252,13 +253,13 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .mini-scrollbar { position: absolute; right: 8px; top: 12px; bottom: 12px; width: 3px; border-radius: 2px; background: var(--line); }
 .mini-scrollbar i { position: absolute; left: 0; right: 0; top: 38%; height: 32%; border-radius: 2px; background: var(--muted); }
 /* Long response: the window clips a taller body (four lines sit above it).
-   On hover it scrolls in quick flicks with pauses, up and back, then down and
+   While live it scrolls in quick flicks with pauses, up and back, then down and
    back, like someone scrolling, while the thumb tracks it */
 .mini-ui-scroll .mini-ui-stream { flex: 1; min-height: 0; padding-top: 0; overflow: hidden; }
 .mini-scroll-content { display: flex; flex-direction: column; gap: 8px; margin-top: -52px; }
 @media (prefers-reduced-motion: no-preference) {
-  .feature-card:hover .mini-scroll-content { animation: scroll-body 5.6s infinite; }
-  .feature-card:hover .mini-scrollbar i { animation: scroll-thumb 5.6s infinite; }
+  .feature-card.is-live .mini-scroll-content { animation: scroll-body 5.6s infinite; }
+  .feature-card.is-live .mini-scrollbar i { animation: scroll-thumb 5.6s infinite; }
 }
 @keyframes scroll-body {
   0%, 6% { transform: none; animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1); }

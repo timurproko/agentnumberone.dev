@@ -187,7 +187,33 @@ if ('IntersectionObserver' in window) {
   observer.observe(document.querySelector('.terminal'));
 }
 
-// Prompt history card: on hover, walk the selection up to the oldest prompt
+// Experience cards animate while "live": hovered where there is a mouse, or
+// mostly in view on touch screens, which never hover. Cards register their
+// start/stop with onLive; the CSS-only animations key off .is-live.
+const canHover = window.matchMedia('(hover: hover)');
+const liveHandlers = new Map();
+const onLive = (card, start, stop) => liveHandlers.set(card, { start, stop });
+const setLive = (card, live) => {
+  if (card.classList.contains('is-live') === live) return;
+  card.classList.toggle('is-live', live);
+  const handlers = liveHandlers.get(card);
+  if (handlers) (live ? handlers.start : handlers.stop)();
+};
+const featureCards = [...document.querySelectorAll('.feature-card')];
+featureCards.forEach(card => {
+  card.addEventListener('mouseenter', () => { if (canHover.matches) setLive(card, true); });
+  card.addEventListener('mouseleave', () => { if (canHover.matches) setLive(card, false); });
+});
+if ('IntersectionObserver' in window) {
+  const liveObserver = new IntersectionObserver(entries => {
+    if (canHover.matches) return;
+    entries.forEach(entry => setLive(entry.target, entry.intersectionRatio >= 0.6));
+  }, { threshold: [0, 0.6] });
+  featureCards.forEach(card => liveObserver.observe(card));
+}
+canHover.addEventListener?.('change', () => featureCards.forEach(card => setLive(card, false)));
+
+// Prompt history card: while live, walk the selection up to the oldest prompt
 // and back down, flashing ↑ or ↓ for each step and recalling each prompt into
 // the editor at its own length.
 const historyMini = document.querySelector('.mini-history');
@@ -208,7 +234,7 @@ if (historyMini) {
     keys[key].classList.add('is-pressed');
     release = setTimeout(() => keys[key].classList.remove('is-pressed'), 220);
   };
-  card.addEventListener('mouseenter', () => {
+  onLive(card, () => {
     if (reducedMotion.matches) return;
     let index = resting;
     let step = -1;
@@ -218,8 +244,7 @@ if (historyMini) {
       press(step < 0 ? 'up' : 'down');
       select(index);
     }, 700);
-  });
-  card.addEventListener('mouseleave', () => {
+  }, () => {
     clearInterval(walk);
     clearTimeout(release);
     Object.values(keys).forEach(kbd => kbd.classList.remove('is-pressed'));
@@ -227,7 +252,7 @@ if (historyMini) {
   });
 }
 
-// Suggestion card: on hover, loop accept (Tab) → send (Enter) → the agent
+// Suggestion card: while live, loop accept (Tab) → send (Enter) → the agent
 // streams a reply → a fresh suggestion, like a short a1 session.
 const suggest = document.querySelector('.mini-suggest');
 if (suggest) {
@@ -279,11 +304,10 @@ if (suggest) {
       suggest.classList.remove('is-empty');
     }
   }
-  card.addEventListener('mouseenter', () => {
+  onLive(card, () => {
     if (reducedMotion.matches) return;
     loop(++run);
-  });
-  card.addEventListener('mouseleave', () => {
+  }, () => {
     run += 1;
     clearTimeout(timer);
     Object.values(keys).forEach(kbd => kbd.classList.remove('is-pressed'));
