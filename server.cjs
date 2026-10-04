@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const port = Number(process.env.PORT || 4173);
-const publicFiles = new Set(['index.html', 'favicon.ico', 'apple-touch-icon.png', 'site.webmanifest', 'styles.css', 'script.js', 'docs/index.html', 'docs/docs.css', 'docs/docs.js']);
+const publicFiles = new Set(['index.html', 'favicon.ico', 'apple-touch-icon.png', 'site.webmanifest', 'styles.css', 'script.js', '404.html', 'docs/index.html', 'docs/docs.css', 'docs/docs.js']);
 const types = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -15,6 +15,15 @@ const types = {
   '.ico': 'image/x-icon',
   '.webmanifest': 'application/manifest+json',
 };
+
+// Missing paths get 404.html, as GitHub Pages does in production.
+function notFound(req, res) {
+  fs.readFile(path.join(__dirname, '404.html'), (error, data) => {
+    if (error) { res.writeHead(404).end('Not found'); return; }
+    res.writeHead(404, { 'Content-Type': types['.html'], 'Cache-Control': 'no-store' });
+    res.end(req.method === 'HEAD' ? undefined : data);
+  });
+}
 
 const server = http.createServer((req, res) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
@@ -35,13 +44,13 @@ const server = http.createServer((req, res) => {
   const parts = relative.split(/[\\/]/);
   if (parts.some(part => part.startsWith('.')) ||
       !(publicFiles.has(relative) || relative.startsWith('assets/'))) {
-    res.writeHead(404).end('Not found');
+    notFound(req, res);
     return;
   }
 
   fs.readFile(path.join(__dirname, relative), (error, data) => {
     if (error) {
-      res.writeHead(404).end('Not found');
+      notFound(req, res);
       return;
     }
     res.writeHead(200, {

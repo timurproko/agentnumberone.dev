@@ -24,6 +24,7 @@ If port 4173 is occupied, use the existing preview or verify which process owns 
 - `favicon.ico`, `apple-touch-icon.png` (iOS home screen), `assets/icons/`, `site.webmanifest`: raster icons generated from `assets/favicon.svg` by `npm run icons:build` (`scripts/generate-favicons.mjs`). Rerun after changing the SVG and bump the `?v=` on the icon links so iOS refetches.
 - `assets/social/home.png`: the 1200×630 link preview (LinkedIn, X, Slack, etc.), generated, not hand-drawn. See [Social preview](#social-preview).
 - `scripts/generate-social-preview.mjs`: renders that image with Playwright at 2× (a large hero headline that stays legible in LinkedIn's small thumbnail, with the description and URL kept quiet), and rewrites the meta tags between `<!-- social-preview:start -->` and `<!-- social-preview:end -->` in `index.html`.
+- `404.html`: the not-found page GitHub Pages serves for any missing path, so its URLs are root-relative. A self-contained ASCII "404" (scan line, row glitches, pointer scatter; static under reduced motion), with links back to the home page and docs. No header or footer. `server.cjs` serves it for missing paths too.
 - `server.cjs`: local static preview server. Production remains a static site.
 
 ## Social preview

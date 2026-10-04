@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0b">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="This page doesn’t exist. Head back to the a1 home page or the docs.">
+  <!-- Served by GitHub Pages for any missing path, so every URL here is root-relative. -->
+  <link rel="icon" href="/favicon.ico?v=13" sizes="any">
+  <link rel="icon" href="/assets/favicon.svg?v=13" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=13">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* No header or footer here: the stage fills the viewport. */
+    body { padding-top: 0; }
+    /* 404: the same blue stage, grain and outline as the home hero, with the ASCII field as the centerpiece. */
+    .nf { position: relative; isolation: isolate; overflow: hidden; min-height: 100svh; display: flex; flex-direction: column; background: var(--blue); color: #fff; }
+    .nf .hero-grid { inset: 0; }
+    .nf::before { content: ''; position: absolute; z-index: -1; inset: 16px; border: 1px solid #ffffff26; pointer-events: none; }
+    .nf-inner { flex: 1; display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: center; padding-block: 72px; }
+    @media (min-width: 601px) { .nf .container { width: min(1120px, calc(100% - 66px)); } }
+    .nf-copy { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+    .nf-code { display: inline-flex; align-items: center; gap: 10px; font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #c3ccff; }
+    .nf-code::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 3px #ff7b7233; }
+    .nf h1 { margin-top: 18px; font-size: clamp(52px, 5.4vw, 80px); }
+    .nf h1 > span { display: block; }
+    .nf h1 .accent { color: #c3ccff; }
+    .nf-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .nf-actions .button { background: #fff; border-color: #fff; color: var(--blue); }
+    .nf-actions .button:hover { background: #e0e5ff; border-color: #e0e5ff; }
+    .nf-actions .button-secondary { background: #ffffff0d; border-color: #ffffff66; color: #fff; }
+    .nf-actions .button-secondary:hover { background: #ffffff26; }
+    .nf :focus-visible { outline-color: #fff; }
+
+    .nf-art { position: relative; min-width: 0; }
+    .nf-field { --ascii-rgb: 255, 255, 255; position: relative; width: 100%; aspect-ratio: 4 / 3; cursor: crosshair; touch-action: pan-y; -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 60%, transparent 86%); mask-image: radial-gradient(ellipse at 50% 50%, #000 60%, transparent 86%); }
+    .nf-field canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+    .nf-fallback { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font: 700 clamp(96px, 16vw, 200px)/1 var(--mono); letter-spacing: -.08em; color: #ffffffd9; }
+    .nf-field.is-live .nf-fallback { display: none; }
+
+    @media (max-width: 1024px) {
+      .nf-inner { grid-template-columns: 1fr; align-content: center; gap: 28px; padding-block: 56px; }
+      .nf-art { order: -1; }
+      .nf-field { aspect-ratio: 2 / 1; }
+    }
+    @media (max-width: 600px) {
+      .nf-inner { width: calc(100% - 66px); padding-block: 40px 48px; }
+      .nf h1 { font-size: clamp(44px, 13vw, 60px); }
+      .nf-field { aspect-ratio: 3 / 2; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nf .hero-grid { animation: none; }
+    }
+  </style>
+  <title>Page not found · a1</title>
+</head>
+<body>
+  <main id="main" class="nf">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="container nf-inner">
+      <div class="nf-copy">
+        <p class="nf-code">Error 404 · page not found</p>
+        <h1><span>Even grep</span> <span>couldn’t find</span> <span class="accent">this page</span></h1>
+        <div class="nf-actions"><a class="button" href="/">Back to home</a><a class="button button-secondary" href="/docs/">Read the docs</a></div>
+      </div>
+
+      <div class="nf-art">
+        <div class="nf-field" data-field aria-hidden="true">
+          <p class="nf-fallback">404</p>
+          <canvas></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // A different joke on every visit. The markup keeps the first one for no-JS visitors.
+    (function headline() {
+      const lines = [
+        ['Even grep', 'couldn’t find', 'this page'],
+        ['This page', 'was never', 'committed'],
+        ['git blame', 'says it', 'wasn’t us'],
+        ['The agent', 'looked twice', 'Still nothing'],
+        ['This page', 'fell out of', 'the context'],
+        ['Works on', 'my machine', 'Not here'],
+        ['undefined', 'is not', 'a page'],
+        ['This page', 'lives in', 'another branch'],
+        ['rm -rf’d', 'by someone', 'brave'],
+        ['Plot twist:', 'the link', 'was a typo'],
+        ['We asked', 'the model', 'It shrugged'],
+        ['Page moved,', 'left no', 'forwarding URL'],
+        ['Ctrl+Z', 'can’t undo', 'this one'],
+        ['Merge conflict:', 'this page', 'vs reality'],
+        ['This page', 'is still', 'compiling'],
+        ['404 tokens', 'spent finding', 'nothing'],
+        ['This route', 'ran off to', '/dev/null'],
+        ['Nothing here', 'but stray', 'semicolons'],
+        ['This page', 'didn’t pass', 'code review'],
+        ['Somebody', 'forgot to', 'push this page'],
+        ['Lost in', 'the diff', 'somewhere'],
+        ['This page', 'timed out', 'after 120s'],
+        ['Tests pass', 'but the page', 'is gone'],
+        ['This page', 'was deprecated', 'quietly'],
+        ['Have you tried', 'turning it', 'off and on'],
+        ['Someone', 'squashed', 'this page'],
+        ['This page', 'was garbage', 'collected'],
+        ['An infinite loop', 'ate', 'this page'],
+        ['This page', 'is on', 'a coffee break'],
+        ['TODO', 'write', 'this page'],
+        ['Off by one', 'page', 'probably'],
+        ['This page', 'never left', 'localhost'],
+        ['404 is', 'just', 'a vibe'],
+        ['A null pointer', 'to', 'nowhere'],
+        ['The cache', 'remembers it', 'we don’t'],
+        ['This page', 'was rebased', 'into oblivion'],
+        ['Stack Overflow', 'has no answer', 'for this'],
+        ['This page', 'is stuck', 'in review'],
+        ['The intern', 'deleted it', 'allegedly'],
+        ['Segfault', 'in the', 'sitemap'],
+        ['This page', 'exited', 'with code 1'],
+        ['Even the', 'linter', 'gave up'],
+        ['Nothing to see', 'except', 'this 404'],
+        ['This page', 'is behind', 'a feature flag'],
+        ['The prompt', 'was perfect', 'the page wasn’t'],
+        ['This page', 'went to the', 'shadow realm'],
+        ['We vibe coded', 'it out of', 'existence'],
+        ['Lost', 'somewhere', 'between tabs'],
+        ['This page', 'is open in', 'another tab'],
+        ['A hotfix', 'is coming', 'maybe never'],
+      ];
+      const h1 = document.querySelector('.nf h1');
+      if (!h1) return;
+      const pick = lines[Math.floor(Math.random() * lines.length)];
+      h1.querySelectorAll('span').forEach((span, i) => { span.textContent = pick[i]; });
+    })();
+
+    // ASCII "404": a signal that keeps losing lock. A scan line sweeps across, rows glitch sideways
+    // now and then, and the pointer scatters the glyphs it touches. Decorative only.
+    (function notFoundField() {
+      const field = document.querySelector('[data-field]');
+      const canvas = field?.querySelector('canvas');
+      const ctx = canvas?.getContext('2d', { alpha: true });
+      if (!ctx) return;
+
+      const RAMP = ' .·:;-=+*%#@';
+      const NOISE = '01<>/\\|_#%&$?!';
+      const FPS = 24;
+      const MONO = '"JetBrains Mono", "SFMono-Regular", Consolas, monospace';
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const rgb = getComputedStyle(field).getPropertyValue('--ascii-rgb').trim() || '255,255,255';
+      const colors = [];
+      for (let i = 0; i <= 8; i += 1) colors.push(`rgba(${rgb},${(0.14 + (i / 8) * 0.86).toFixed(3)})`);
+
+      function hash(x, y) {
+        const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+        return n - Math.floor(n);
+      }
+
+      const s = { cols: 0, rows: 0, cell: 11, width: 0, height: 0, ox: 0, oy: 0, mask: null };
+      const pointer = { x: -1e4, y: -1e4, energy: 0 };
+
+      function glyph(c, r, ch, level, color) {
+        ctx.fillStyle = color || colors[Math.max(0, Math.min(8, level))];
+        ctx.fillText(ch, s.ox + (c + 0.5) * s.cell, s.oy + (r + 0.5) * s.cell);
+      }
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        s.width = Math.max(field.clientWidth, 1);
+        s.height = Math.max(field.clientHeight, 1);
+        s.cell = s.width >= 560 ? 10 : s.width >= 360 ? 8 : 7;
+        s.cols = Math.floor(s.width / s.cell);
+        s.rows = Math.floor(s.height / s.cell);
+        s.ox = (s.width - s.cols * s.cell) / 2;
+        s.oy = (s.height - s.rows * s.cell) / 2;
+        canvas.width = Math.round(s.width * dpr);
+        canvas.height = Math.round(s.height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.font = `500 ${Math.round(s.cell * 0.98)}px ${MONO}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Rasterize "404" at one pixel per cell; the alpha becomes glyph density.
+        const off = document.createElement('canvas');
+        off.width = s.cols; off.height = s.rows;
+        const o = off.getContext('2d');
+        o.fillStyle = '#fff';
+        o.textAlign = 'center';
+        o.textBaseline = 'middle';
+        if ('letterSpacing' in o) o.letterSpacing = '-0.06em';
+        o.font = `700 ${Math.round(Math.min(s.rows * 0.95, s.cols * 0.44))}px ${MONO}`;
+        o.fillText('404', s.cols / 2, s.rows / 2 + s.rows * 0.04);
+        const data = o.getImageData(0, 0, s.cols, s.rows).data;
+        s.mask = new Float32Array(s.cols * s.rows);
+        for (let i = 0; i < s.mask.length; i += 1) s.mask[i] = data[i * 4 + 3] / 255;
+      }
+
+      // Glitch bursts: a few rows shift sideways for a moment, a couple of times per cycle.
+      function rowShift(r, t) {
+        const slot = Math.floor(t * 3);
+        const burst = hash(slot, 7.3) > 0.72;
+        if (!burst) return 0;
+        const band = Math.floor(hash(slot, 1.1) * s.rows);
+        const height = 2 + Math.floor(hash(slot, 2.9) * 5);
+        if (r < band || r > band + height) return 0;
+        return Math.round((hash(slot, r) - 0.5) * 14);
+      }
+
+      function draw(t) {
+        ctx.clearRect(0, 0, s.width, s.height);
+        if (!s.mask) return;
+        const { cols, rows, mask } = s;
+        const scan = ((t * 0.32) % 1.4 - 0.2) * cols;
+        const pc = (pointer.x - s.ox) / s.cell, pr = (pointer.y - s.oy) / s.cell;
+        const reach = Math.max(6, Math.min(cols, rows) * 0.2);
+        for (let r = 0; r < rows; r += 1) {
+          const shift = rowShift(r, t);
+          for (let c = 0; c < cols; c += 1) {
+            const sc = c - shift;
+            const inside = sc >= 0 && sc < cols ? mask[r * cols + sc] : 0;
+            const n = hash(c, r);
+            const dx = c - pc, dy = (r - pr) * 1.6;
+            const near = pointer.energy * Math.max(0, 1 - Math.hypot(dx, dy) / reach);
+            const sweep = Math.max(0, 1 - Math.abs(c - scan) / 3);
+
+            if (inside > 0.08) {
+              // Pointer scatters the mark: glyphs near it turn to noise and drop out.
+              if (near > 0.15 && n < near * 1.1) {
+                if (n < near * 0.6) continue;
+                glyph(c, r, NOISE[Math.floor(hash(c + Math.floor(t * 20), r) * NOISE.length)], 8);
+                continue;
+              }
+              if (shift !== 0) { glyph(c, r, NOISE[Math.floor(hash(c, r + Math.floor(t * 24)) * NOISE.length)], 6); continue; }
+              let value = inside * (0.7 + 0.3 * Math.sin(c * 0.45 + t * 1.2) * Math.cos(r * 0.5 - t * 0.8));
+              value = Math.min(1, value + sweep * 0.5);
+              const ch = RAMP[Math.max(1, Math.min(RAMP.length - 1, Math.floor(value * RAMP.length)))];
+              glyph(c, r, ch, 2 + Math.round(value * 6));
+              continue;
+            }
+
+            // Background: sparse blinking dots, the scan line's trail, and sparks around the pointer.
+            if (sweep > 0.3 && n > 0.55) { glyph(c, r, n > 0.85 ? '|' : '·', 1 + Math.round(sweep * 3)); continue; }
+            if (near > 0.2 && n > 1 - near * 0.35) { glyph(c, r, n > 0.97 ? '*' : '·', 2 + Math.round(near * 4)); continue; }
+            const d = hash(c * 0.37, r * 0.91);
+            if (d > 0.86 && Math.sin(d * 40 + t * 0.9) > -0.2) glyph(c, r, '·', 0);
+          }
+        }
+        pointer.energy *= 0.94;
+      }
+
+      let raf = 0, last = 0, startedAt = 0, visible = true;
+      const elapsed = () => (performance.now() - (startedAt || performance.now())) / 1000;
+      function frame(now) {
+        raf = 0;
+        if (!visible || document.hidden || reducedMotion.matches) return;
+        if (now - last >= 1000 / FPS) { last = now; draw((now - startedAt) / 1000); }
+        raf = requestAnimationFrame(frame);
+      }
+      function sync() {
+        if (reducedMotion.matches) { cancelAnimationFrame(raf); raf = 0; draw(1.2); return; }
+        if (visible && !document.hidden) {
+          if (!startedAt) startedAt = performance.now();
+          if (!raf) raf = requestAnimationFrame(frame);
+        } else { cancelAnimationFrame(raf); raf = 0; }
+      }
+      function redraw() { resize(); draw(reducedMotion.matches ? 1.2 : elapsed()); }
+
+      field.addEventListener('pointermove', event => {
+        const box = field.getBoundingClientRect();
+        pointer.x = event.clientX - box.left;
+        pointer.y = event.clientY - box.top;
+        pointer.energy = 1;
+      });
+      field.addEventListener('pointerleave', () => { pointer.energy = 0; });
+
+      field.classList.add('is-live');
+      redraw();
+      if (document.fonts?.ready) document.fonts.ready.then(redraw);
+      if ('ResizeObserver' in window) new ResizeObserver(redraw).observe(field);
+      else window.addEventListener('resize', redraw);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(entries => { visible = entries.some(entry => entry.isIntersecting); sync(); }).observe(field);
+      }
+      document.addEventListener('visibilitychange', sync);
+      reducedMotion.addEventListener('change', sync);
+      sync();
+    })();
+  </script>
+</body>
+</html>
