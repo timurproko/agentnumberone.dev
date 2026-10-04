@@ -55,7 +55,6 @@ p > code, li > code, dd > code, td > code, .faq-answer code, .start-steps code, 
 .stack-tag-neutral { border-color: var(--line-2); background: var(--surface-3); color: var(--ink-2); }
 .status { display: inline-flex; align-items: center; height: 20px; padding: 0 6px; margin-right: 10px; border-radius: 4px; font: 500 11px/1 var(--mono); letter-spacing: .04em; vertical-align: 1px; }
 .status-yes { color: var(--green); background: #7ee78718; }
-.status-planned { color: var(--amber); background: #e3b34118; text-transform: uppercase; }
 kbd { display: inline-block; min-width: 18px; padding: 1px 5px; border: 1px solid var(--line-2); border-bottom-width: 2px; border-radius: 4px; background: var(--surface-3); color: var(--ink-2); font-size: 10px; line-height: 1.4; text-align: center; }
 .prompt-glyph { color: var(--accent); font-weight: 500; }
 .check { color: var(--green); }

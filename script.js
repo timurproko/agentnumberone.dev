@@ -774,13 +774,14 @@ npmVersion('next').catch(() => {});
   let lockStarted = 0;
 
   // Release the hold once the smooth scroll has been idle briefly (or after 3s at most).
+  // The clicked item stays selected; only the next scroll the reader makes re-checks it.
   function scheduleUnlock() {
     clearTimeout(unlockTimer);
     const wait = performance.now() - lockStarted > 3000 ? 0 : 150;
-    unlockTimer = setTimeout(() => { locked = false; spy(); }, wait);
+    unlockTimer = setTimeout(() => { locked = false; }, wait);
   }
 
-  // Freeze the current label while a smooth scroll travels past other sections.
+  // Keep the clicked item selected while a smooth scroll travels past other sections.
   function hold() {
     locked = true;
     lockStarted = performance.now();
@@ -849,7 +850,10 @@ npmVersion('next').catch(() => {});
 
   function spy() {
     if (locked) { scheduleUnlock(); return; }
-    const line = pinnedHeight() + 2;
+    // A section is current once its top reaches the upper third of the visible
+    // area, so the one filling the screen is named before it meets the header.
+    const pinned = pinnedHeight();
+    const line = pinned + (window.innerHeight - pinned) / 3;
     let current = null;
     entries.forEach(entry => {
       if (entry.target.getBoundingClientRect().top <= line) current = entry;
@@ -884,8 +888,8 @@ npmVersion('next').catch(() => {});
     if (link !== installEntry.menuLink && link !== installEntry.navLink) link.addEventListener('click', event => select(installEntry, event));
   });
   homeLink?.addEventListener('click', () => select(null));
-  // The logo scrolls home: keep the current label until the page reaches the top.
-  document.querySelector('.brand')?.addEventListener('click', () => { hold(); setMenu(false); });
+  // The logo scrolls home, so it selects Home like the Home menu item.
+  document.querySelector('.brand')?.addEventListener('click', () => select(null));
   window.addEventListener('scroll', spy, { passive: true });
   window.addEventListener('resize', () => { if (active) move(active); spy(); });
   if (document.fonts?.ready) document.fonts.ready.then(() => { if (active) move(active); });
