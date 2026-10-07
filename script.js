@@ -341,8 +341,28 @@ if (suggest) {
 const copyButton = document.querySelector('#copy-install');
 const copyStatus = document.querySelector('#copy-status');
 const copyCommand = document.querySelector('.copy-command');
+const installCommand = document.querySelector('#install-command');
+const installVersion = document.querySelector('#install-version');
+const installChannelButtons = [...document.querySelectorAll('[data-install-channel]')];
+const publishedVersions = {};
 let copyReset;
 const stopCopyAnimation = () => copyCommand.classList.remove('is-copied');
+const selectInstallChannel = selected => {
+  const tag = selected.dataset.npmTag;
+  installChannelButtons.forEach(button => {
+    const active = button === selected;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  installCommand.textContent = selected.dataset.command;
+  installVersion.dataset.npmTag = tag;
+  installVersion.textContent = publishedVersions[tag] ? `v${publishedVersions[tag]}` : tag;
+  clearTimeout(copyReset);
+  stopCopyAnimation();
+  copyStatus.textContent = '';
+  copyButton.setAttribute('aria-label', 'Copy install command');
+};
+installChannelButtons.forEach(button => button.addEventListener('click', () => selectInstallChannel(button)));
 copyCommand.addEventListener('animationend', event => {
   if (event.animationName === 'copy-flash') stopCopyAnimation();
 });
@@ -350,7 +370,7 @@ reducedMotion.addEventListener('change', stopCopyAnimation);
 copyButton.addEventListener('click', async () => {
   clearTimeout(copyReset);
   stopCopyAnimation();
-  const command = document.querySelector('#install-command');
+  const command = installCommand;
   try {
     if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(command.textContent);
@@ -459,8 +479,8 @@ const npmVersion = tag => fetch(`https://registry.npmjs.org/@timurproko/a1/${tag
   .then(response => (response.ok ? response.json() : Promise.reject(response.status)))
   .then(({ version }) => {
     if (!/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(version)) return Promise.reject(version);
-    const label = document.querySelector(`[data-npm-tag="${tag}"]`);
-    if (label) label.textContent = `v${version}`;
+    publishedVersions[tag] = version;
+    if (installVersion.dataset.npmTag === tag) installVersion.textContent = `v${version}`;
     return version;
   });
 
