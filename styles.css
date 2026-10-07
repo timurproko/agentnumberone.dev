@@ -406,13 +406,6 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
 .install-after p { display: flex; gap: 12px; padding-left: 14px; }
 .install-after code { padding: 0; border: 0; background: none; color: var(--ink-2); font-size: inherit; }
 .install-comment { color: var(--muted); }
-.install-meta { display: grid; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
-.install-meta > div { display: flex; gap: 12px; align-items: baseline; }
-.install-meta dt { flex-shrink: 0; width: 92px; font: 500 11px/1.6 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-.install-meta dd { font: 12.5px/1.6 var(--mono); color: var(--ink-2); overflow-wrap: anywhere; }
-.install-meta dd code { font-size: inherit; }
-.install-meta a { text-decoration: underline; text-underline-offset: 3px; }
-.install-meta a:hover { color: var(--ink); }
 
 /* FAQ */
 .faq-inner { max-width: 860px; }
@@ -554,7 +547,6 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3
   .comparison-footnote, .terminal-note { text-align: left; }
   .install-body { padding: 16px; }
   .copy-command { padding-left: 12px; font-size: 13px; }
-  .install-meta dt { width: 80px; }
   .faq-list summary { padding: 18px 0; font-size: 15px; }
   .faq-answer { padding-right: 16px; font-size: 14px; }
   .footer-inner { padding-block: 28px; }
